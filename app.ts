@@ -55,7 +55,7 @@ app.listen(port, async () => {
   await sequelize
     .authenticate()
     .then(async () => {
-      console.log('DB 연결완료!');
+      console.log('DB 연결완료');
     })
     .catch((e) => {
       console.log(e);
