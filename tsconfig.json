@@ -1,0 +1,15 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    //엄격한지
+    "strict": true,
+    //무슨 문법?
+    "lib": ["ES6", "ES2022"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "typeRoots": []
+  }
+}
