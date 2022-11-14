@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import helmet from 'helmet'; //악성 스크립트 보호
 // import { sequelize } from './models';
 import { Request, Response, NextFunction } from 'express';
 import { sequelize } from './src/models/index';
@@ -9,7 +10,7 @@ import indexRouter from './src/routes/index';
 
 dotenv.config();
 const app = express();
-const port = 3001;
+const port = 3000;
 // const prod: boolean = process.env.NODE_ENV === 'production';
 
 // app.set('port', prod ? process.env.PORT : 3000);

@@ -31,7 +31,7 @@ export interface Date {
   minute: string;
   second: string;
 }
-export interface Weather {
+export interface Weathers {
   pardo: string;
   dt: Date;
   sunrise: Date;
