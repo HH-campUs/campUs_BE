@@ -8,6 +8,7 @@
     //무슨 문법?
     "lib": ["ES6", "ES2022"],
     "module": "CommonJS",
+    "outDir": "./dist",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "typeRoots": []

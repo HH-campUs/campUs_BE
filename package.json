@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "start": "tsc && node app",
     "prettify": "prettier --write *.js **/*.js",
-    "create_db": "ts-node src/migration/create-db.ts"
+    "create_db": "ts-node ./src/migrations/create-db"
   },
   "keywords": [],
   "author": "",
