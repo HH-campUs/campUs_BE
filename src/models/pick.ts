@@ -1,5 +1,4 @@
 import { Association, DataTypes, Model } from 'sequelize';
-// import { dbType } from '.';
 import Camp from './camp';
 import sequelize from './sequlize';
 import User from './user';
