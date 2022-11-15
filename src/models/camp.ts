@@ -1,7 +1,4 @@
-import { DataTypes, Model, HasManyGetAssociationsMixin } from 'sequelize';
-// import { dbType } from '.';
-import Review from './review';
-import Pick from './pick';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from './sequlize';
 
 export class Camp extends Model {
