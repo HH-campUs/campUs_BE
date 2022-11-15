@@ -1,4 +1,4 @@
-export interface Camp {
+export interface Camps {
   facltNm: string;
   induty: string;
   doNm: string;
@@ -31,7 +31,7 @@ export interface Date {
   minute: string;
   second: string;
 }
-export interface Weather {
+export interface Weathers {
   pardo: string;
   dt: Date;
   sunrise: Date;
