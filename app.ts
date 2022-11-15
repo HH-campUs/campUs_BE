@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet'; //악성 스크립트 보호
 // import { sequelize } from './models';
 import { Request, Response, NextFunction } from 'express';
-import { sequelize } from './src/models/index';
+import { sequelize } from './src/models/sequlize';
 import indexRouter from './src/routes/index';
 
 dotenv.config();
