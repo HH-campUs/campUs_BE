@@ -1,10 +1,4 @@
-import {
-  Association,
-  BelongsToGetAssociationMixin,
-  DataTypes,
-  Model,
-} from 'sequelize';
-// import { dbType } from '.';
+import { Association, DataTypes, Model } from 'sequelize';
 import Camp from './camp';
 import sequelize from './sequlize';
 import User from './user';
@@ -15,8 +9,8 @@ export class Pick extends Model {
   public campId!: number;
   public userId!: number;
   //관계 설정
-  public User!: User[];
-  public Camp!: Camp[];
+  public User!: User;
+  public Camp!: Camp;
   //관계 설정
 
   public static associations: {
