@@ -1,5 +1,6 @@
 {
   "ts-node": {
+    "include": ["src", "app.ts"], // build 할 때 이것들을
     "files": true
   },
   "compilerOptions": {
@@ -9,7 +10,7 @@
     "lib": ["ES6", "ES2022"],
     "target": "ES6",
     "module": "CommonJS",
-    "outDir": "./dist", //z컴파일후 디렉토리
+    "outDir": "build", // build한 것들 모여지는 폴더
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "typeRoots": []
