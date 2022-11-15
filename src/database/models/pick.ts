@@ -1,10 +1,4 @@
-import {
-  Association,
-  BelongsToGetAssociationMixin,
-  DataTypes,
-  Model,
-} from 'sequelize';
-// import { dbType } from '.';
+import { Association, DataTypes, Model } from 'sequelize';
 import Camp from './camp';
 import sequelize from './sequlize';
 import User from './user';
