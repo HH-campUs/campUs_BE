@@ -15,8 +15,8 @@ export class Pick extends Model {
   public campId!: number;
   public userId!: number;
   //관계 설정
-  public User!: User[];
-  public Camp!: Camp[];
+  public User!: User;
+  public Camp!: Camp;
   //관계 설정
 
   public static associations: {

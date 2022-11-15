@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 import helmet from 'helmet'; //악성 스크립트 보호
 // import { sequelize } from './models';
 import { Request, Response, NextFunction } from 'express';
-import { sequelize } from './src/models/sequlize';
-import indexRouter from './src/routes/index';
+import { sequelize } from './src/database/models/sequlize';
+import indexRouter from './src/api/routes/index';
 
 dotenv.config();
 const app = express();

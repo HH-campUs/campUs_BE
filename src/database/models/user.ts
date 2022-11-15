@@ -14,9 +14,9 @@ export class User extends Model {
   public password!: string;
   public refreshToken!: string;
   //관계설정 타입
-  public Trip!: Trip[];
-  public Review!: Review[];
-  public Pick!: Pick[];
+  public Trip!: Trip;
+  public Review!: Review;
+  public Pick!: Pick;
 }
 
 //? 모델 생성

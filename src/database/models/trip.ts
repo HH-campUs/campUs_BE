@@ -12,7 +12,7 @@ export class Trip extends Model {
   public readonly updatedAt!: Date;
 
   //관계 설정 타입
-  public User!: User[];
+  declare public User: User;
   //관계 설정
   public static associations: {
     Trip: Association<Trip>;
