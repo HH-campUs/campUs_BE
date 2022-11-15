@@ -1,4 +1,4 @@
-export interface Camp {
+export interface Camps {
   facltNm: string;
   induty: string;
   doNm: string;
