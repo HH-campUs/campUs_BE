@@ -4,8 +4,6 @@ import { Camps, Weathers, Date } from '../interface/interface';
 import { Weather } from '../models/weather';
 import { Camp } from '../models/camp';
 import dotenv from 'dotenv';
-import { captureRejectionSymbol } from 'events';
-
 dotenv.config();
 //55개 66페 3300
 // console.log(process.env.Weather_Key, 'dd');
