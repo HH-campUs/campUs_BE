@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "nodemon --exec ts-node app.ts",
     "prettify": "prettier --write *.js **/*.js",
-    "create_db": "ts-node src/migration/create-db.ts",
+    "create_db": "ts-node ./src/config/create_db.ts",
     "migrate": "ts-node ./src/config/migrate",
     "data": "ts-node ./src/data/data"
   },

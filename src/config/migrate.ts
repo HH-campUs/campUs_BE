@@ -12,6 +12,7 @@ console.log(`======Create ${table} Table======`);
 async function migrate() {
   for (let i = 0; i < table.length; i++) {
     await table[i]
+      //sync <=데이터베이스 연동와 자동 연동하기
       .sync({ force: true }) //true : 삭제후 migrate , false : 삭제 안하고 migrate
       .then(() => {
         console.log(`✅Success Create ${table[i]} Table`);

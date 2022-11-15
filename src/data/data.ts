@@ -6,7 +6,7 @@ import { Camp } from '../models/camp';
 import dotenv from 'dotenv';
 
 dotenv.config();
-//55개 66페 3300
+
 async function createcamp() {
   axios
     .get(
@@ -46,24 +46,6 @@ async function createcamp() {
       }
     });
 }
-
-// 서울: [37.5635, 126.98], 1
-// 경기: [37.5864, 127.0462], 2
-// 강원: [37.8304, 128.3719], 3
-// 제주: [33.4856, 126.5003],4
-// 전남: [34.8130, 126.465],5
-// 전북: [35.8172, 127.1110],6
-// 광주: [35.1569, 126.8533],7
-// 경남: [35.2347, 128.6941],8
-// 경북: [35.8896, 128.6027],9
-// 울산: [35.5354, 129.3136],10
-// 대구: [35.8685, 128.60356],11
-// 부산: [35.1770, 129.0769],12
-// 충남: [36.3238, 127.4229],13
-// 충북: [36.6325, 127.4935],14
-// 세종: [36.4800, 127.2890],15
-// 대전: [36.3471, 127.3865],16
-// 인천: [37.4532, 126.7073]17
 
 async function createweather() {
   const pardoXY = [
@@ -155,11 +137,11 @@ async function deleteweather() {
   // console.log('캠핑 저장완료');
   // schedule.scheduleJob({ hour: 5 }, async () => {
   // 새벽 5시에 로직구현
-  // await deleteweather();
-  // await sleep(3000);
-  // console.log('삭제 완료');
-  // await createweather();
-  // await sleep(3000);
-  // console.log('날씨 저장완료');
+  await deleteweather();
+  await sleep(3000);
+  console.log('삭제 완료');
+  await createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
   // });
 })();
