@@ -35,62 +35,80 @@ Weather.init(
       type: DataTypes.INTEGER,
     },
     pardo: {
+      allowNull: false,
       type: DataTypes.STRING(50),
     },
     dt: {
+      allowNull: false,
       type: DataTypes.STRING(50),
     },
     sunrise: {
+      allowNull: false,
       type: DataTypes.STRING(50),
     },
     sunset: {
+      allowNull: false,
       type: DataTypes.STRING(50),
     },
     humidity: {
+      allowNull: false,
       type: DataTypes.STRING(50),
     },
     day: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     min: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     max: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     night: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     eve: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     morn: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     wind_speed: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     clouds: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     uvi: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     pop: {
+      allowNull: false,
       type: DataTypes.MEDIUMINT,
     },
     rain: {
+      allowNull: true,
       type: DataTypes.MEDIUMINT,
     },
     snow: {
+      allowNull: true,
       type: DataTypes.MEDIUMINT,
     },
   },
   {
+    sequelize, //? 생성한 Sequelize 객체 패싱
     modelName: 'weather',
     tableName: 'Weather',
-    sequelize, //? 생성한 Sequelize 객체 패싱
     freezeTableName: true,
+    timestamps: false,
   }
 );
 export default Weather;
