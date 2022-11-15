@@ -4,11 +4,9 @@ import { Camps, Weathers, Date } from '../interface/interface';
 import { Weather } from '../models/weather';
 import { Camp } from '../models/camp';
 import dotenv from 'dotenv';
-import { DATE } from 'sequelize';
 
 dotenv.config();
 //55개 66페 3300
-// console.log(process.env.Weather_Key, 'dd');
 async function createcamp() {
   axios
     .get(
@@ -42,10 +40,10 @@ async function createcamp() {
         };
       });
       // console.log(camps);
-      // for (let i = 0; i < camps.length; i += 100) {
-      //   await Camp.bulkCreate(camps.slice(i, i + 100));
-      //   console.log(i, i + 100);
-      // }
+      for (let i = 0; i < camps.length; i += 100) {
+        await Camp.bulkCreate(camps.slice(i, i + 100));
+        console.log(i, i + 100);
+      }
     });
 }
 
@@ -138,7 +136,7 @@ async function createweather() {
         });
 
         // console.log(weathers);
-        // await Weather.bulkCreate(weathers);
+        await Weather.bulkCreate(weathers);
       });
   }
 }
@@ -152,16 +150,16 @@ async function deleteweather() {
 }
 
 (async () => {
-  await createcamp();
-  await sleep(3000);
-  console.log('캠핑 저장완료');
+  // await createcamp();
+  // await sleep(3000);
+  // console.log('캠핑 저장완료');
   // schedule.scheduleJob({ hour: 5 }, async () => {
   // 새벽 5시에 로직구현
   // await deleteweather();
   // await sleep(3000);
   // console.log('삭제 완료');
-  await createweather();
-  await sleep(3000);
-  console.log('날씨 저장완료');
+  // await createweather();
+  // await sleep(3000);
+  // console.log('날씨 저장완료');
   // });
 })();

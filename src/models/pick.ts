@@ -1,7 +1,11 @@
-import { BelongsToGetAssociationMixin, DataTypes, Model } from 'sequelize';
-import { dbType } from '.';
+import {
+  Association,
+  BelongsToGetAssociationMixin,
+  DataTypes,
+  Model,
+} from 'sequelize';
+// import { dbType } from '.';
 import Camp from './camp';
-
 import sequelize from './sequlize';
 import User from './user';
 
@@ -14,14 +18,18 @@ export class Pick extends Model {
   public User!: User[];
   public Camp!: Camp[];
   //관계 설정
-  public getUser!: BelongsToGetAssociationMixin<User>;
-  public getCamp!: BelongsToGetAssociationMixin<Camp>;
+
+  public static associations: {
+    Camp: Association<Camp>;
+    Pick: Association<Pick>;
+    User: Association<User>;
+  };
 }
 
 //? 모델 생성
 Pick.init(
   {
-    PickId: {
+    pickId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -38,15 +46,30 @@ Pick.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'pick',
-    tableName: 'Pick',
+    modelName: 'Pick',
+    tableName: 'pick',
     freezeTableName: true,
     timestamps: false,
   }
 );
 
-export const associate = (db: dbType) => {
-  db.Pick.belongsTo(db.User, { targetKey: 'userId', foreignKey: 'userId' });
-  db.Pick.belongsTo(db.Camp, { targetKey: 'campId', foreignKey: 'campId' });
-};
+Camp.hasMany(Pick, {
+  sourceKey: 'campId',
+  foreignKey: 'campId',
+  as: 'Pick',
+});
+Pick.belongsTo(Camp, {
+  foreignKey: 'campId',
+  as: 'Camp',
+});
+User.hasMany(Pick, {
+  sourceKey: 'userId',
+  foreignKey: 'userId',
+  as: 'Pick',
+});
+Pick.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'User',
+});
+
 export default Pick;

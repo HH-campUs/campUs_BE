@@ -1,5 +1,5 @@
-import { DataTypes, Model, HasManyGetAssociationsMixin } from 'sequelize';
-import { dbType } from '.';
+import { DataTypes, Model } from 'sequelize';
+// import { dbType } from '.';
 import Pick from './pick';
 import Review from './review';
 import sequelize from './sequlize';
@@ -17,10 +17,6 @@ export class User extends Model {
   public Trip!: Trip[];
   public Review!: Review[];
   public Pick!: Pick[];
-  //관계 설정
-  public getTrip!: HasManyGetAssociationsMixin<Trip>;
-  public getReview!: HasManyGetAssociationsMixin<Review>;
-  public getPick!: HasManyGetAssociationsMixin<Trip>;
 }
 
 //? 모델 생성
@@ -55,15 +51,11 @@ User.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'user',
-    tableName: 'User',
+    modelName: 'User',
+    tableName: 'user',
     freezeTableName: true,
     timestamps: false,
   }
 );
-export const associate = (db: dbType) => {
-  db.User.hasMany(db.Trip, { sourceKey: 'userId', foreignKey: 'userId' });
-  db.User.hasMany(db.Review, { sourceKey: 'userId', foreignKey: 'userId' });
-  db.User.hasMany(db.Pick, { sourceKey: 'userId', foreignKey: 'userId' });
-};
+
 export default User;

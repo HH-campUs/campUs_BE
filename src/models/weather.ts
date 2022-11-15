@@ -21,8 +21,6 @@ export class Weather extends Model {
   public morn!: number;
   public rain?: number;
   public snow?: number;
-
-  public static associations: {};
 }
 
 //? 모델 생성
@@ -105,8 +103,8 @@ Weather.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'weather',
-    tableName: 'Weather',
+    modelName: 'Weather',
+    tableName: 'weather',
     freezeTableName: true,
     timestamps: false,
   }

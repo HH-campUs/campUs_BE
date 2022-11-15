@@ -1,6 +1,6 @@
-import { BelongsToGetAssociationMixin, DataTypes, Model } from 'sequelize';
+import { Association, DataTypes, Model } from 'sequelize';
 import sequelize from './sequlize';
-import { dbType } from './index';
+// import { dbType } from './index';
 import User from './user';
 
 export class Trip extends Model {
@@ -8,11 +8,16 @@ export class Trip extends Model {
   public readonly tripId!: number;
   public userId!: number;
   public date!: Date;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 
   //관계 설정 타입
   public User!: User[];
   //관계 설정
-  public getUser!: BelongsToGetAssociationMixin<User>;
+  public static associations: {
+    Trip: Association<Trip>;
+    User: Association<User>;
+  };
 }
 
 //? 모델 생성
@@ -35,13 +40,19 @@ Trip.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'trip',
-    tableName: 'Trip',
+    modelName: 'Trip',
+    tableName: 'trip',
     freezeTableName: true,
     timestamps: false,
   }
 );
-export const associate = (db: dbType) => {
-  db.Trip.belongsTo(db.User, { targetKey: 'userId', foreignKey: 'userId' });
-};
+User.hasMany(Trip, {
+  sourceKey: 'userId',
+  foreignKey: 'userId',
+  as: 'Trip',
+});
+Trip.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'User',
+});
 export default Trip;

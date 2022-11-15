@@ -1,5 +1,5 @@
-import { BelongsToGetAssociationMixin, DataTypes, Model } from 'sequelize';
-import { dbType } from '.';
+import { Association, DataTypes, Model } from 'sequelize';
+// import { dbType } from '.';
 import Camp from './camp';
 
 import sequelize from './sequlize';
@@ -12,14 +12,18 @@ export class Review extends Model {
   public userId!: number;
   public reviewImg?: string;
   public reviewComment!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
   //관계 설정 타입
   public User!: User[];
   public Camp!: Camp[];
   //관계 설정
-  public getUser!: BelongsToGetAssociationMixin<User>;
-  public getCamp!: BelongsToGetAssociationMixin<Camp>;
+  public static associations: {
+    Camp: Association<Camp>;
+    Review: Association<Review>;
+    User: Association<User>;
+  };
 }
-
 //? 모델 생성
 Review.init(
   {
@@ -48,14 +52,29 @@ Review.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'review',
-    tableName: 'Review',
+    modelName: 'Review',
+    tableName: 'review',
     freezeTableName: true,
-    timestamps: false,
   }
 );
-export const associate = (db: dbType) => {
-  db.Review.belongsTo(db.User, { targetKey: 'userId', foreignKey: 'userId' });
-  db.Review.belongsTo(db.Camp, { targetKey: 'campId', foreignKey: 'campId' });
-};
+
+Camp.hasMany(Review, {
+  sourceKey: 'campId',
+  foreignKey: 'campId',
+  as: 'Review',
+});
+Review.belongsTo(Camp, {
+  foreignKey: 'campId',
+  as: 'Camp',
+});
+User.hasMany(Review, {
+  sourceKey: 'userId',
+  foreignKey: 'userId',
+  as: 'Review',
+});
+Review.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'User',
+});
+
 export default Review;
