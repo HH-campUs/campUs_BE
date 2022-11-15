@@ -2,24 +2,24 @@
 import { QueryInterface, Sequelize, Options } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
-
+//options 구현 옵션
 class options implements Options {
   dialect!: 'mysql';
   username!: string;
   password!: string;
 }
-
+//데이터베이스 옵션
 const createDBOptions = new options();
 createDBOptions.username = process.env.DB_USER || 'root';
 createDBOptions.password = process.env.DB_PASSWORD || 'your password';
 createDBOptions.dialect = 'mysql';
-
+//DB_NAME 없을시 new DateBase 생성
 let db_name = process.env.DB_NAME || 'new DataBase';
 
 const dbCreateSequelize = new Sequelize(createDBOptions);
 
 console.log(`======Create DataBase : ${db_name}======`);
-
+//데이터베이스 생성 메서드
 dbCreateSequelize
   .getQueryInterface()
   .createDatabase(db_name)

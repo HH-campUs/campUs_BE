@@ -1,6 +1,9 @@
-import { DataTypes, Model, Association } from 'sequelize';
+import { Association, DataTypes, Model } from 'sequelize';
+// import { dbType } from '.';
+import Camp from './camp';
 
 import sequelize from './sequlize';
+import User from './user';
 
 export class Review extends Model {
   //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
@@ -9,14 +12,22 @@ export class Review extends Model {
   public userId!: number;
   public reviewImg?: string;
   public reviewComment!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+  //관계 설정 타입
+  public User!: User[];
+  public Camp!: Camp[];
   //관계 설정
-  public static associations: {};
+  public static associations: {
+    Camp: Association<Camp>;
+    Review: Association<Review>;
+    User: Association<User>;
+  };
 }
-
 //? 모델 생성
 Review.init(
   {
-    PickId: {
+    reviewId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -41,10 +52,29 @@ Review.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'review',
-    tableName: 'Review',
+    modelName: 'Review',
+    tableName: 'review',
     freezeTableName: true,
-    timestamps: false,
   }
 );
+
+Camp.hasMany(Review, {
+  sourceKey: 'campId',
+  foreignKey: 'campId',
+  as: 'Review',
+});
+Review.belongsTo(Camp, {
+  foreignKey: 'campId',
+  as: 'Camp',
+});
+User.hasMany(Review, {
+  sourceKey: 'userId',
+  foreignKey: 'userId',
+  as: 'Review',
+});
+Review.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'User',
+});
+
 export default Review;

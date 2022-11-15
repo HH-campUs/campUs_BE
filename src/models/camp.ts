@@ -1,4 +1,7 @@
-import { DataTypes, Model, Association } from 'sequelize';
+import { DataTypes, Model, HasManyGetAssociationsMixin } from 'sequelize';
+// import { dbType } from '.';
+import Review from './review';
+import Pick from './pick';
 import sequelize from './sequlize';
 
 export class Camp extends Model {
@@ -26,8 +29,6 @@ export class Camp extends Model {
   public lookUp!: number;
   public eqpmnLendCl?: string;
   public createdtime!: Date;
-
-  public static associations: {};
 }
 
 //? 모델 생성
@@ -131,10 +132,11 @@ Camp.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
-    modelName: 'camp',
-    tableName: 'Camp',
+    modelName: 'Camp',
+    tableName: 'camp',
     freezeTableName: true,
     timestamps: false,
   }
 );
+
 export default Camp;
