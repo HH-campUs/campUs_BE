@@ -1,4 +1,7 @@
-import { DataTypes, Model, Association } from 'sequelize';
+import { DataTypes, Model, HasManyGetAssociationsMixin } from 'sequelize';
+import { dbType } from '.';
+import Review from './review';
+import Pick from './pick';
 import sequelize from './sequlize';
 
 export class Camp extends Model {
@@ -26,8 +29,12 @@ export class Camp extends Model {
   public lookUp!: number;
   public eqpmnLendCl?: string;
   public createdtime!: Date;
-
-  public static associations: {};
+  //관계설정 타입
+  public Review!: Review[];
+  public Pick!: Pick[];
+  //관계 설정
+  public getReview!: HasManyGetAssociationsMixin<Review>;
+  public getPick!: HasManyGetAssociationsMixin<Pick>;
 }
 
 //? 모델 생성
@@ -137,4 +144,10 @@ Camp.init(
     timestamps: false,
   }
 );
+export const associate = (db: dbType) => {
+  //캠핑장은 많은 찜을 가질수 있음
+  db.Camp.hasMany(db.Pick, { sourceKey: 'campId', foreignKey: 'campId' });
+  //캠핑장은 많은 리뷰를 가질수 있음
+  db.Camp.hasMany(db.Review, { sourceKey: 'campId', foreignKey: 'campId' });
+};
 export default Camp;

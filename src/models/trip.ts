@@ -1,14 +1,18 @@
-import { DataTypes, Model, Association } from 'sequelize';
-
+import { BelongsToGetAssociationMixin, DataTypes, Model } from 'sequelize';
 import sequelize from './sequlize';
+import { dbType } from './index';
+import User from './user';
 
 export class Trip extends Model {
   //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
   public readonly tripId!: number;
   public userId!: number;
   public date!: Date;
+
+  //관계 설정 타입
+  public User!: User[];
   //관계 설정
-  public static associations: {};
+  public getUser!: BelongsToGetAssociationMixin<User>;
 }
 
 //? 모델 생성
@@ -37,4 +41,7 @@ Trip.init(
     timestamps: false,
   }
 );
+export const associate = (db: dbType) => {
+  db.Trip.belongsTo(db.User, { targetKey: 'userId', foreignKey: 'userId' });
+};
 export default Trip;
