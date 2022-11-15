@@ -1,15 +1,26 @@
-import { Weather } from '../models/weather'; //방금 만들어준 user model
+import Weather from '../models/weather'; //방금 만들어준 Weather
+import Camp from '../models/camp';
+import User from '../models/user';
+import Pick from '../models/pick';
+import Review from '../models/review';
+import Trip from '../models/trip';
 
-console.log('======Create User Table======');
+const table = [Weather, Camp, User, Pick, Review, Trip];
+console.log(`======Create ${table} Table======`);
 
-const create_table_users = async () => {
-  await Weather.sync({ force: true })
-    .then(() => {
-      console.log('✅Success Create User Table');
-    })
-    .catch((err) => {
-      console.log('❗️Error in Create User Table : ', err);
-    });
-};
+async function migrate() {
+  for (let i = 0; i < table.length; i++) {
+    await table[i]
+      .sync({ force: true })
+      .then(() => {
+        console.log(`✅Success Create ${table[i]} Table`);
+      })
+      .catch((err) => {
+        console.log(`❗️Error in Create ${table[i]} Table : `, err);
+      });
+  }
+}
 
-create_table_users();
+(async () => {
+  await migrate();
+})();
