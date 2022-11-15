@@ -1,18 +1,18 @@
 import axios from 'axios';
-// import schedule from 'node-schedule';
-import { Camp, Weather, Date } from '../interface/interface';
-
+import schedule from 'node-schedule';
+import { Camp, Weathers, Date } from '../interface/interface';
+import { Weather } from '../models/weather';
 import dotenv from 'dotenv';
 
 dotenv.config();
 //55개 66페 3300
-console.log(process.env.Weather_Key, 'dd');
+// console.log(process.env.Weather_Key, 'dd');
 async function createcamp() {
-  await axios
+  axios
     .get(
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
-    .then((res) => {
+    .then(async (res) => {
       const camp = res.data.response.body.items.item;
       const camps = camp.map((x: Camp) => {
         return {
@@ -41,7 +41,7 @@ async function createcamp() {
       });
       // console.log(camps);
       // for (let i = 0; i < camps.length; i += 100) {
-      //   // Camp.bulkCreate(camps.slice(i, i + 100));
+      //   // await Camp.bulkCreate(camps.slice(i, i + 100));
       //   console.log(i, i + 100);
       // }
     });
@@ -86,11 +86,11 @@ async function createweather() {
     [37.4532, 126.7073, '인천'],
   ];
   for (const XY of pardoXY) {
-    await axios
+    axios
       .get(
         `https://api.openweathermap.org/data/3.0/onecall?lat=${XY[0]}&lon=${XY[1]}&exclude=current,minutely,hourly,alerts&lang=kr&appid=${process.env.Weather_Key}&units=metric`
       )
-      .then((res) => {
+      .then(async (res) => {
         function Unix_timestamp(t: Date) {
           const date = new Date(+t * 1000);
           const year = date.getFullYear();
@@ -113,7 +113,7 @@ async function createweather() {
             second.substr(-2)
           );
         }
-        const weathers = res.data.daily.map((x: Weather) => {
+        const weathers = res.data.daily.map((x: Weathers) => {
           return {
             pardo: XY[2],
             dt: Unix_timestamp(x.dt).slice(0, 10).split('-').join(''),
@@ -136,7 +136,7 @@ async function createweather() {
         });
 
         // console.log(weathers);
-        // Weather.bulkCreate(weathers)
+        await Weather.bulkCreate(weathers);
       });
   }
 }
@@ -146,20 +146,20 @@ function sleep(ms: any) {
 }
 
 async function deleteweather() {
-  // Weather.destroy({ where: {} });
+  await Weather.destroy({ where: {} });
 }
 
 (async () => {
-  // await createcamp();
-  // await sleep(3000);
-  // console.log('캠핑 저장완료');
-  // schedule.scheduleJob({ hour: 5 }, async () => {
-  // 새벽 5시에 로직구현
-  // await deleteweather();
-  // await sleep(3000);
-  // console.log('삭제 완료');
-  // await createweather();
-  // await sleep(3000);
-  // console.log('날씨 저장완료');
-  // });
+  await createcamp();
+  await sleep(3000);
+  console.log('캠핑 저장완료');
+  schedule.scheduleJob({ hour: 5 }, async () => {
+    // 새벽 5시에 로직구현
+    await deleteweather();
+    await sleep(3000);
+    console.log('삭제 완료');
+    await createweather();
+    await sleep(3000);
+    console.log('날씨 저장완료');
+  });
 })();

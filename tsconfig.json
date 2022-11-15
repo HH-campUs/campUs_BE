@@ -7,8 +7,9 @@
     "strict": true,
     //무슨 문법?
     "lib": ["ES6", "ES2022"],
+    "target": "ES6",
     "module": "CommonJS",
-    "outDir": "./dist",
+    "outDir": "./dist", //z컴파일후 디렉토리
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "typeRoots": []
