@@ -5,8 +5,10 @@ import userServ from './userServ';
 
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
+
 export default {
-  signup: async (req: Request, res: Response, next: NextFunction) => {
+
+  signup : async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { profileImg, email, nickname, password }: Users = req.body;
       const signupUser = { profileImg, email, nickname, password };
@@ -18,5 +20,6 @@ export default {
       console.trace(err);
       res.status(400).send({ errorMessage: '회원가입 실패' });
     }
-  },
-};
+  }
+}
+

@@ -1,4 +1,3 @@
-import User from '../../database/models/user';
 import { Users } from '../../interface/user';
 
 export default {
