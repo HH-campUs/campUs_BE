@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
     where: { userId: 1 },
     include: [{ model: Camp, as: 'Camp' }],
   });
-  res.send(app);                                                                    
+  res.send(app);
 });
 
 router.use("/camps",reviewRouter)

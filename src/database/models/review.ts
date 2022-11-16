@@ -56,7 +56,6 @@ Review.init(
     freezeTableName: true,
   }
 );
-
 Camp.hasMany(Review, {
   sourceKey: 'campId',
   foreignKey: 'campId',

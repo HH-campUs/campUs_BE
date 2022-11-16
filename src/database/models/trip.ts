@@ -54,4 +54,5 @@ Trip.belongsTo(User, {
   foreignKey: 'userId',
   as: 'User',
 });
+
 export default Trip;
