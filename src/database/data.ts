@@ -4,6 +4,7 @@ import { Camps, Weathers, Date } from '../interface/openApi';
 import { Weather } from './models/weather';
 import { Camp } from './models/camp';
 import dotenv from 'dotenv';
+import { captureRejectionSymbol } from 'events';
 
 dotenv.config();
 
