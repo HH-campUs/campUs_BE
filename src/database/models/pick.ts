@@ -53,14 +53,14 @@ Camp.hasMany(Pick, {
   foreignKey: 'campId',
   as: 'Pick',
 });
-Pick.belongsTo(Camp, {
-  foreignKey: 'campId',
-  as: 'Camp',
-});
 User.hasMany(Pick, {
   sourceKey: 'userId',
   foreignKey: 'userId',
   as: 'Pick',
+});
+Pick.belongsTo(Camp, {
+  foreignKey: 'campId',
+  as: 'Camp',
 });
 Pick.belongsTo(User, {
   foreignKey: 'userId',
