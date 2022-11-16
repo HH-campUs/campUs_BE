@@ -132,9 +132,9 @@ async function deleteweather() {
 }
 
 (async () => {
-  // await createcamp();
-  // await sleep(3000);
-  // console.log('캠핑 저장완료');
+  await createcamp();
+  await sleep(3000);
+  console.log('캠핑 저장완료');
   // schedule.scheduleJob({ hour: 5 }, async () => {
   // 새벽 5시에 로직구현
   await deleteweather();
