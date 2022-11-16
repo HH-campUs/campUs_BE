@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import Camp from '../../database/models/camp';
 import Pick from '../../database/models/pick';
+import reviewRouter from "./review"
 
 const router = Router();
 
@@ -11,5 +12,7 @@ router.get('/', async (req, res, next) => {
   });
   res.send(app);                                                                    
 });
+
+router.use("/camps",reviewRouter)
 
 export default router;
