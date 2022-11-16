@@ -19,4 +19,4 @@ reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
 //내가쓴리뷰조회
 reviewrouter.get('/review', reviewController.getMyReview);
 
-export default reviewController;
+export default reviewrouter;

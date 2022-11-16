@@ -8,6 +8,10 @@ import { captureRejectionSymbol } from 'events';
 
 dotenv.config();
 
+function sleep(ms: any) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
 async function createcamp() {
   axios
     .get(
@@ -40,7 +44,6 @@ async function createcamp() {
           eqpmnLendCl: x.eqpmnLendCl,
         };
       });
-      // console.log(camps);
       for (let i = 0; i < camps.length; i += 100) {
         await Camp.bulkCreate(camps.slice(i, i + 100));
         console.log(i, i + 100);
@@ -49,6 +52,10 @@ async function createcamp() {
 }
 
 async function createweather() {
+  await Weather.destroy({ where: {} });
+  await sleep(3000);
+  console.log('삭제 완료');
+
   const pardoXY = [
     [37.5635, 126.98, '서울'],
     [37.5864, 127.0462, '경기'],
@@ -117,32 +124,18 @@ async function createweather() {
             snow: x.snow,
           };
         });
-
-        // console.log(weathers);
         await Weather.bulkCreate(weathers);
       });
   }
 }
 
-function sleep(ms: any) {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-async function deleteweather() {
-  await Weather.destroy({ where: {} });
-}
-
-(async () => {
-  await createcamp();
-  await sleep(3000);
-  console.log('캠핑 저장완료');
-  // schedule.scheduleJob({ hour: 5 }, async () => {
-  // 새벽 5시에 로직구현
-  await deleteweather();
-  await sleep(3000);
-  console.log('삭제 완료');
-  await createweather();
-  await sleep(3000);
-  console.log('날씨 저장완료');
-  // });
+export default (async () => {
+  // await createcamp();
+  // await sleep(3000);
+  // console.log('캠핑 저장완료');
+  schedule.scheduleJob({ hour: 5 }, async () => {
+    await createweather();
+    await sleep(3000);
+    console.log('날씨 저장완료');
+  });
 })();
