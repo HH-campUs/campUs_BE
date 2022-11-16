@@ -1,5 +1,6 @@
+import { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
-import review from "../review/reviewRepo"
+import review from "./reviewRepo"
 
 const router = Router();
 
