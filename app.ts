@@ -7,7 +7,8 @@ import helmet from 'helmet'; //악성 스크립트 보호
 import { Request, Response, NextFunction } from 'express';
 import { sequelize } from './src/database/models/sequlize';
 import indexRouter from './src/api/routes/index';
-
+import createData from './src/database/data';
+import error from './src/middlewares/errorhandler';
 dotenv.config();
 const app = express();
 const port = 3000;
@@ -44,7 +45,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/', indexRouter);
-
+//에러발생시 logger로 넘어옴
+app.use(error.errorLogger);
+//에러발생시 Handler로 이동
+app.use(error.errorHandler);
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   res.status(500).send('서버 에러 발생! 서버 콘솔을 확인하세요.');
@@ -52,6 +56,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 app.listen(port, async () => {
   console.log(`${port}로 실행중`);
+  createData; //날씨 저장
   // authenticate 메소드로 연결 확인
   await sequelize
     .authenticate()

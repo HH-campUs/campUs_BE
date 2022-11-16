@@ -1,8 +1,7 @@
-import User from '../../database/models/user';
-import { SignUser } from '../../interface/user'
+import { Users } from '../../interface/user';
 
 export default {
-  SignUp : async ({profileImg, email, nickname, password}:SignUser) => {
-    await User.create({profileImg, email, nickname, password});
-  }
-}
+  signup: async ({ profileImg, email, nickname, password }: Users) => {
+    await User.create({ profileImg, email, nickname, password });
+  },
+};

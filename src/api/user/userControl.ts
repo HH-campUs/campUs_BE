@@ -1,7 +1,6 @@
 //서비스로 불러와서 바로 사용가능 서비스도 인스턴스로 내보내기
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../../database/models/user';
-import { SignUser } from '../../interface/user'
+import { Users } from '../../interface/user';
 import userServ from './userServ';
 
 //바로 사용가능 하다 인스턴스 시킬수 없음
@@ -10,11 +9,11 @@ import userServ from './userServ';
 export default {
 
   signup : async (req: Request, res: Response, next: NextFunction) => {
-      const { profileImg, email, nickname, password }:SignUser = req.body;
     try {
-      const signUser = { profileImg, email, nickname, password }
-      // console.log(profileImg, email, nickname, password); 
-      await userServ.signUp(signUser);
+      const { profileImg, email, nickname, password }: Users = req.body;
+      const signupUser = { profileImg, email, nickname, password };
+      // console.log(profileImg, email, nickname, password);
+      await userServ.signup(signupUser);
       res.status(200).send({ message: '회원가입 성공' });
     } catch (err) {
       console.log(err);

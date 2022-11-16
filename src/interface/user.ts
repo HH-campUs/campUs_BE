@@ -1,6 +1,7 @@
-export interface SignUser {
-    profileImg?: string;
-    email: string;
-    nickname: string;
-    password: string;
+export interface Users {
+  profileImg: string;
+  email: string;
+  nickname: string;
+  password: string;
+  refreshToken?: string;
 }
