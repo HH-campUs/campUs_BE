@@ -15,8 +15,6 @@ export default {
       nickname: nickname,
       password: await bcrypt.hash(password, Number(process.env.SALT_ROUND)),
     };
-
     await userRepo.signup(signUser);
-    console.log('레포여');
   },
 };
