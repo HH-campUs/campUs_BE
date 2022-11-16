@@ -1,7 +1,7 @@
 export interface Users {
-  profileImg: string;
+  profileImg?: string;
   email: string;
-  nickname: string;
+  nickname?: string;
   password: string;
   refreshToken?: string;
 }
