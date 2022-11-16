@@ -1,4 +1,5 @@
 import { Users } from '../../interface/user';
+import User from '../../database/models/user';
 
 export default {
   signup: async ({ profileImg, email, nickname, password }: Users) => {

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import campRouter from './camp'
-import userRouter from '../routes/user';
+import campRouter from './camp';
+import userRouter from './user';
 
 const router = Router();
 
