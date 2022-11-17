@@ -47,8 +47,8 @@ export default {
   //내가쓴리뷰조회
   findOneuser: async (userId: number) => {
     const myreview = await reviewRepo.findOneReview(userId);
-    return{
-      myreview: myreview?.reviewComment
-    }
+    return {
+      myreview: myreview?.reviewComment,
+    };
   },
 };
