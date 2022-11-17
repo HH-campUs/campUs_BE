@@ -40,13 +40,13 @@ export default {
       const { reviewImg, reviewComment } = req.body;
       const { userId } = res.locals.user;
 
-      const findcomment = await reviewService.updateReview(
+      const findreview = await reviewService.updateReview(
         reviewId!,
         reviewImg,
         reviewComment,
         userId
       );
-      res. status(200).json({ data: findcomment, massage: '리뷰수정완료' })
+      res. status(200).json({ data: findreview, massage: '리뷰수정완료' })
     } catch (error) {
       next(error)
     }
