@@ -36,9 +36,20 @@ export default {
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { reviewId } = req.params;
+      const { reviewId }:review = req.params;
       const { reviewImg, reviewComment } = req.body;
-    } catch (error) {}
+      const { userId } = res.locals.user;
+
+      const findcomment = await reviewService.updateReview(
+        reviewId!,
+        reviewImg,
+        reviewComment,
+        userId
+      );
+      res. status(200).json({ data: findcomment, massage: '리뷰수정완료' })
+    } catch (error) {
+      next(error)
+    }
   },
 
   // //리뷰삭제
