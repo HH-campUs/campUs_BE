@@ -37,18 +37,21 @@ export default {
   },
 
   //리뷰찾기
-  findOneReview: async (
-    reviewId: number
-    ) => {
-    const reviews = await Review.findOne(
-      { where: { reviewId } }
-      );
+  findOneReview: async (reviewId: number) => {
+    const reviews = await Review.findOne({ where: { reviewId } });
     return reviews;
   },
 
-  //   //리뷰삭제
+  //리뷰삭제
+  deleteReview: async (reviewId: number) => {
+    const deleteReview = await Review.destroy({
+      where:{reviewId}
+    })
+    return deleteReview
+  },
+
+  //   //내가쓴리뷰조회
   //   deleteReview : async (campId:number) => {
   //     return await Review.findAll({where : {campId}})
   //  },
-  //   //내가쓴리뷰조회
 };
