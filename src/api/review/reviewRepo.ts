@@ -1,3 +1,4 @@
+import { number } from 'joi';
 import Review from '../../database/models/review';
 
 export default {
@@ -29,11 +30,22 @@ export default {
     userId: number
   ) => {
     const updateReview = await Review.update(
-      {reviewComment:reviewComment, reviewImg: reviewImg},
-      {where:{reviewId:reviewId, userId: userId}}
-    )
-    return updateReview
+      { reviewComment: reviewComment, reviewImg: reviewImg },
+      { where: { reviewId: reviewId, userId: userId } }
+    );
+    return updateReview;
   },
+
+  //리뷰찾기
+  findOneReview: async (
+    reviewId: number
+    ) => {
+    const reviews = await Review.findOne(
+      { where: { reviewId } }
+      );
+    return reviews;
+  },
+
   //   //리뷰삭제
   //   deleteReview : async (campId:number) => {
   //     return await Review.findAll({where : {campId}})
