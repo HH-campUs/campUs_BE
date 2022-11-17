@@ -1,27 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
+import {review} from '../../interface/review'
+import Review from '../../database/models/review';
 import reviewService from './reviewServ'; //받아온다
 
-class reviewController {
+export default {
   //캠핑장 리뷰조회
-  getReview = async (req: Request, res: Response, next: NextFunction) => {
+  getReview : async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = res.locals.user;
-      const campId = req.params;
-      const getReview = await this.reviewService.findOneReview(userId,campId)
+      const {campId}:review = req.params;
       
-      res.status(200).json(getReview)
+      const data = await reviewService.getReview({campId})
+      res.status(200).json({
+       
+      })
     } catch (error) {
-      res.status(error.status || 400).send({ message: error.message });
+      res.status(400).send({ message: error.message });
     }
-
-    // try {
-    //     const{userId,campId} =req.body
-    //     })
-    // } catch (error) {
-    console.error();
-    res.status(500).json({ message: error.message });
-    // }
-  };
+  }
 
   // {
   //     “userId” : 1,
@@ -40,4 +35,3 @@ class reviewController {
   //내가쓴리뷰조회
 }
 
-export default reviewController;
