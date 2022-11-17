@@ -59,11 +59,11 @@ export default {
       const { reviewId }: review = req.params;
       // const { userId } = res.locals.user;
       const userId = 1;
-      const review = await reviewService.deleteReview({
-        reviewId,
+      const review = await reviewService.deleteReview(
+        reviewId!,
         userId
-      })
-      res.status(200).json({ massage: '리뷰삭제완료' })
+      )
+      res.status(200).json( { massage: '리뷰삭제완료' })
     } catch (error) {
       next(error);
     }
