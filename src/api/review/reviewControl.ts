@@ -36,7 +36,7 @@ export default {
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { reviewId }:review = req.params;
+      const { reviewId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
       // const { userId } = res.locals.user;
       const userId = 1;
@@ -47,13 +47,28 @@ export default {
         reviewComment,
         userId
       );
-      res. status(200).json({ massage: '리뷰수정완료' })
+      res.status(200).json({ massage: '리뷰수정완료' });
     } catch (error) {
-      next(error)
+      next(error);
     }
   },
 
-  // //리뷰삭제
+  //리뷰삭제
+  deleteReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { reviewId }: review = req.params;
+      // const { userId } = res.locals.user;
+      const userId = 1;
+      const review = await reviewService.deleteReview({
+        reviewId,
+        userId
+      })
+      res.status(200).json({ massage: '리뷰삭제완료' })
+    } catch (error) {
+      next(error);
+    }
+  },
+  //내가쓴리뷰조회
   // deleteReview : async (req: Request, res: Response, next: NextFunction) => {
   //   try {
 

@@ -14,7 +14,7 @@ reviewrouter.post('/:campId/review', reviewController.createReview);
 reviewrouter.put('/:campId/:reviewId', reviewController.updateReview);
 
 //리뷰삭제
-// reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
+reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
 
 //내가쓴리뷰조회
 // reviewrouter.get('/review', reviewController.getMyReview);
