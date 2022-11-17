@@ -73,7 +73,7 @@ export default {
     try {
       const { userId }: review = req.params;
             // const userId = 1;
-            const myreview = await reviewService.deleteReview(userId)
+            const myreview = await reviewService.findOneuser(userId!)
 
             res.status(200).json({data: myreview})
 
