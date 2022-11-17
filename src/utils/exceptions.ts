@@ -1,5 +1,4 @@
-import { ErrorConstructor } from "../interface/Error";
-
+import { ErrorConstructor } from '../interface/Error';
 
 //오류 선언해준다는 의미
 declare let Error: ErrorConstructor;
@@ -18,10 +17,18 @@ class InvalidParamsError extends Error {
 //유효성 검사 에러
 class ValidationErrors extends Error {
   constructor(message: string, status?: number) {
-    super(message)
+    super(message);
     this.status = status || 412;
     this.name = 'ValidationError';
   }
 }
+//인증 에러
+class Unauthorized extends Error {
+  constructor(message: string, status?: number) {
+    super(message);
+    this.status = status || 401;
+    this.name = 'ValidationError';
+  }
+}
 
-export default { InvalidParamsError, ValidationErrors };
+export default { InvalidParamsError, ValidationErrors, Unauthorized };

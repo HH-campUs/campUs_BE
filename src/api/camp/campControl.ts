@@ -1,7 +1,5 @@
-import {Request, Response, NextFunction} from 'express'
+import { Request, Response, NextFunction } from 'express';
 
 export default {
-    getAllCamp : async(req:Request, res:Response, next:NextFunction)=> {
-
-    }
-} 
+  getAllCamp: async (req: Request, res: Response, next: NextFunction) => {},
+};

@@ -3,8 +3,6 @@ export interface Users {
   email?: string;
   nickname?: string;
   password?: string;
-  refreshToken?: string;
-  RefreshToken?:string
-  userId?:number
-  accessToken?:string
+  userId?: number;
+  [key: string]: any;
 }

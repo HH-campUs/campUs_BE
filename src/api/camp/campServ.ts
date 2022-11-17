@@ -1,5 +1,3 @@
 export default {
-    getAllCamp : async()=>{
-
-    }
-}
+  getAllCamp: async () => {},
+};
