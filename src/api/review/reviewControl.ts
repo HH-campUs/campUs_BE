@@ -69,11 +69,16 @@ export default {
     }
   },
   //내가쓴리뷰조회
-  // deleteReview : async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
+  getMyReview : async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId }: review = req.params;
+            // const userId = 1;
+            const myreview = await reviewService.deleteReview(userId)
 
-  //   } catch (error) {
+            res.status(200).json({data: myreview})
 
-  //   }
-  // },
+    } catch (error) {
+      next(error);
+    }
+  },
 };

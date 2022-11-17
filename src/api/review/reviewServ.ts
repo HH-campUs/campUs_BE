@@ -38,11 +38,17 @@ export default {
       );
   },
   //리뷰삭제
-  deleteReview : async (reviewId:number, userId:number) => {
-    const findOneReview = await reviewRepo.findOneReview(reviewId)
-    if (findOneReview?.userId === userId){
-      return await reviewRepo.deleteReview(reviewId)
+  deleteReview: async (reviewId: number, userId: number) => {
+    const findOneReview = await reviewRepo.findOneReview(reviewId);
+    if (findOneReview?.userId === userId) {
+      return await reviewRepo.deleteReview(reviewId);
     }
   },
-  // //내가쓴리뷰조회
+  //내가쓴리뷰조회
+  findOneuser: async (userId: number) => {
+    const myreview = await reviewRepo.findOneReview(userId);
+    return{
+      myreview: myreview?.reviewComment
+    }
+  },
 };

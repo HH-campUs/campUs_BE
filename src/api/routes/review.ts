@@ -17,6 +17,6 @@ reviewrouter.put('/:campId/:reviewId', reviewController.updateReview);
 reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
 
 //내가쓴리뷰조회
-// reviewrouter.get('/review', reviewController.getMyReview);
+reviewrouter.get('/review', reviewController.getMyReview);
 
 export default reviewrouter;

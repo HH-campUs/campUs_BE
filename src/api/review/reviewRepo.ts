@@ -51,7 +51,7 @@ export default {
   },
 
   //   //내가쓴리뷰조회
-  //   deleteReview : async (campId:number) => {
+  //   getMyReview : async (campId:number) => {
   //     return await Review.findAll({where : {campId}})
   //  },
 };
