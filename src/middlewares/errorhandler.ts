@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { SystemError } from '../interface/Error';
+
 const errorLogger = (
   err: Error,
   req: Request,
@@ -9,10 +11,7 @@ const errorLogger = (
   next(err); // errorLogger -> errorHandler
 };
 
-interface SystemError {
-  status: number;
-  message: string;
-}
+
 //에러 핸들러를 사용
 const errorHandler = (
   err: SystemError,

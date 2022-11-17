@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import userRouter from './user';
 import reviewRouter from './review';
-import campRouter from './camp'
+import campRouter from './camp';
 
 const router = Router();
 

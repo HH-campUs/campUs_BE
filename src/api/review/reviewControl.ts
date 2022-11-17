@@ -1,37 +1,41 @@
 import { Request, Response, NextFunction } from 'express';
 import {review} from '../../interface/review'
-import Review from '../../database/models/review';
 import reviewService from './reviewServ'; //받아온다
 
 export default {
   //캠핑장 리뷰조회
   getReview : async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {campId}:review = req.params;
-      
-      const data = await reviewService.getReview({campId})
+      const {campId}:review = req.params
+      const data = await reviewService.getReview(Number(campId))
       res.status(200).json({
-       
+       data
       })
     } catch (error) {
-      res.status(400).send({ message: error.message });
+      next(error);
     }
-  }
+  },
 
-  // {
-  //     “userId” : 1,
-  //     “campId” : 1,
-  //     “reviewImg” : ”img.png”,
-  //     “reviewComment” : ”리뷰입니다”
-  //   }
-  //   /camps/:campId/review
+//     // try {
+//     //     const{userId,campId} =req.body
+//     //     })
+//     // } catch (error) {
+//     console.error();
+//     res.status(500).json({ message: error.message });
+//     // }
+//   };
 
-  //리뷰작성
+//   // {
+//   //     “userId” : 1,
+//   //     “campId” : 1,
+//   //     “reviewImg” : ”img.png”,
+//   //     “reviewComment” : ”리뷰입니다”
+//   //   }
+//   //   /camps/:campId/review
 
-  //리뷰수정
+//   //리뷰작성
 
-  //리뷰삭제
+//   //리뷰수정
 
-  //내가쓴리뷰조회
+//   //리뷰삭제
 }
-
