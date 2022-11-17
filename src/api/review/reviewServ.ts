@@ -37,9 +37,12 @@ export default {
         reviewId
       );
   },
-  // //리뷰삭제
-  // deleteReview : async (campId:number) => {
-  //   return await reviewRepo.getReview(campId)
-  // },
+  //리뷰삭제
+  deleteReview : async (reviewId:number, userId:number) => {
+    const findOneReview = await reviewRepo.findOneReview(reviewId)
+    if (findOneReview?.userId === userId){
+      return await reviewRepo.deleteReview(reviewId)
+    }
+  },
   // //내가쓴리뷰조회
 };
