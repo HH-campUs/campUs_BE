@@ -1,5 +1,4 @@
 import { Association, DataTypes, Model } from 'sequelize';
-// import { dbType } from '.';
 import Camp from './camp';
 
 import sequelize from './sequlize';
@@ -15,8 +14,8 @@ export class Review extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   //관계 설정 타입
-  public User!: User[];
-  public Camp!: Camp[];
+  public User!: User;
+  public Camp!: Camp;
   //관계 설정
   public static associations: {
     Camp: Association<Camp>;
@@ -57,7 +56,6 @@ Review.init(
     freezeTableName: true,
   }
 );
-
 Camp.hasMany(Review, {
   sourceKey: 'campId',
   foreignKey: 'campId',

@@ -1,6 +1,5 @@
 import { Association, DataTypes, Model } from 'sequelize';
 import sequelize from './sequlize';
-// import { dbType } from './index';
 import User from './user';
 
 export class Trip extends Model {
@@ -12,7 +11,7 @@ export class Trip extends Model {
   public readonly updatedAt!: Date;
 
   //관계 설정 타입
-  public User!: User[];
+  public User!: User;
   //관계 설정
   public static associations: {
     Trip: Association<Trip>;
@@ -55,4 +54,5 @@ Trip.belongsTo(User, {
   foreignKey: 'userId',
   as: 'User',
 });
+
 export default Trip;
