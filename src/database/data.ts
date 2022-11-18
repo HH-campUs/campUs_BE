@@ -134,8 +134,8 @@ export default (async () => {
   await sleep(3000);
   console.log('캠핑 저장완료');
   // schedule.scheduleJob({ hour: 5 }, async () => {
-    await createweather();
-    await sleep(3000);
-    console.log('날씨 저장완료');
+  await createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
   // });
 })();
