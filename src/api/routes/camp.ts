@@ -1,8 +1,8 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import Camp from '../camp/campControl';
 
 const router = Router();
 
-router.get('/', Camp.getAllCamp);
+router.get('/camps', Camp.getTopicCamp);
 
 export default router;
