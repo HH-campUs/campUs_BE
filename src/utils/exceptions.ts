@@ -22,5 +22,13 @@ class ValidationErrors extends Error {
     this.name = 'ValidationError';
   }
 }
+//인증 에러
+class Unauthorized extends Error {
+  constructor(message: string, status?: number) {
+    super(message);
+    this.status = status || 401;
+    this.name = 'ValidationError';
+  }
+}
 
-export default { InvalidParamsError, ValidationErrors };
+export default { InvalidParamsError, ValidationErrors, Unauthorized };

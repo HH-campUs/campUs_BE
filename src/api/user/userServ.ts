@@ -8,42 +8,51 @@ dotenv.config();
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
 export default {
-  
-  signup: async ({email, password }: Users) => {
+  signup: async ({ email, password }: Users) => {
     // try{
-      const findUser = await userRepo.findUser(email!)
-      if(email === findUser?.email){
-        throw new Error.ValidationErrors('중복된 이메일 입니다.')
-      }
-      const signUser = {
-        email: email,
-        nickname: email!.split('@')[0],
-        password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
-      };
-      await userRepo.signup(signUser);
+    const findUser = await userRepo.findUser(email!);
+    if (email === findUser?.email) {
+      throw new Error.ValidationErrors('중복된 이메일 입니다.');
+    }
+    const signUser = {
+      email: email,
+      nickname: email!.split('@')[0],
+      password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
+    };
+    await userRepo.signup(signUser);
     // }catch(err){
     //   console.log(err ,"서비스에서 잡았어요")
     // }
   },
-  login: async ({email, password }: Users) => {
+  login: async ({ email, password }: Users) => {
     // try{
-      const findUser = await userRepo.findUser(email!)
-      if(email === findUser?.email){
-        throw new Error.ValidationErrors('중복된 이메일 입니다.')
-      }
-      const signUser = {
-        email: email,
-        nickname: email!.split('@')[0],
-        password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
-      };
-      await userRepo.login(signUser);
+    const findUser = await userRepo.findUser(email!);
+    if (email === findUser?.email) {
+      throw new Error.ValidationErrors('중복된 이메일 입니다.');
+    }
+    const signUser = {
+      email: email,
+      nickname: email!.split('@')[0],
+      password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
+    };
+    await userRepo.login(signUser);
     // }catch(err){
     //   console.log(err ,"서비스에서 잡았어요")
     // }
   },
-  updateUser: async ({nickname , profileImg}:Users)=>{
-    const updateUser = {nickname , profileImg}
-    await userRepo.updateUser(updateUser)
-  }
-
+  updateUser: async ({ nickname, profileImg, userId }: Users) => {
+    const findUser = await userRepo.findByPk(userId!);
+    if (findUser?.userId !== userId) {
+      throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
+    }
+    const updateUser = { nickname, profileImg, userId };
+    await userRepo.updateUser(updateUser);
+  },
+  getmyPage: async (userId: number) => {
+    const findUser = await userRepo.findByPk(userId!);
+    if (findUser?.userId !== userId) {
+      throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
+    }
+    return await userRepo.getmyPage(userId);
+  },
 };

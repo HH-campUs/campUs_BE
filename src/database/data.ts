@@ -4,7 +4,6 @@ import { Camps, Weathers, Date } from '../interface/openApi';
 import { Weather } from './models/weather';
 import { Camp } from './models/camp';
 import dotenv from 'dotenv';
-import { captureRejectionSymbol } from 'events';
 
 dotenv.config();
 
@@ -107,6 +106,9 @@ async function createweather() {
           return {
             pardo: XY[2],
             dt: Unix_timestamp(x.dt).slice(0, 10).split('-').join(''),
+            date: ['일', '월', '화', '수', '목', '금', '토'][
+              new Date(`${Unix_timestamp(x.dt).slice(0, 10)}`).getDay()
+            ],
             sunrise: Unix_timestamp(x.sunrise),
             sunset: Unix_timestamp(x.sunset),
             day: x.temp.day,
@@ -124,6 +126,7 @@ async function createweather() {
             snow: x.snow,
           };
         });
+        // console.log(weathers)
         await Weather.bulkCreate(weathers);
       });
   }
@@ -133,7 +136,7 @@ export default (async () => {
   // await createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  schedule.scheduleJob({ hour : 5 }, async () => {
+  schedule.scheduleJob({ hour: 5 }, async () => {
     await createweather();
     await sleep(3000);
     console.log('날씨 저장완료');

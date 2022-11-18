@@ -9,6 +9,7 @@ export class Pick extends Model {
   public readonly PickId!: number;
   public campId!: number;
   public userId!: number;
+  public readonly createdAt!: Date;
   //관계 설정
   public User!: User;
   public Camp!: Camp;
@@ -44,7 +45,7 @@ Pick.init(
     modelName: 'Pick',
     tableName: 'pick',
     freezeTableName: true,
-    timestamps: false,
+    updatedAt: false,
   }
 );
 //두모델에서 사용한걸 하위모델에서 작성함
