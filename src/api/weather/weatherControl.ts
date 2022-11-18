@@ -8,7 +8,7 @@ export default {
       const { pardo, dt }: weathers = req.body;
       const Weather = { pardo, dt };
       const weather = await weatherServ.getweather(Weather);
-      res.status(200).send({ weather });
+      res.status(200).json(weather);
     } catch (err) {
       next(err);
     }

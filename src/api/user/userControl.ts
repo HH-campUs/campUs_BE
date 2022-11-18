@@ -31,7 +31,7 @@ export default {
       const Tokens = await Token.createTokens(loginUser);
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).send(Tokens);
+      res.status(200).json(Tokens);
     } catch (err) {
       next(err);
     }

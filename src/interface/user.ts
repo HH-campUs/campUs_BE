@@ -6,3 +6,17 @@ export interface Users {
   userId?: number;
   [key: string]: any;
 }
+
+export interface profile{
+    provider:string
+    id: number
+    username: string
+    _json:{
+      id:number
+      properties:{
+        profile_image:string
+        id:number
+        nickname:number
+      }
+    }
+}
