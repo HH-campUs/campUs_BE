@@ -14,6 +14,9 @@ export default {
   findUser: async (email: string) => {
     return await User.findOne({ where: { email } });
   },
+  findByPk: async (userId: number) => {
+    return await User.findByPk(userId);
+  },
   //로그인
   login: async ({ email, nickname, password }: Users) => {
     await User.create({ email, nickname, password });
@@ -22,11 +25,12 @@ export default {
   updaterefreshToken: async ({ email, refreshToken }: Users) => {
     await User.update({ refreshToken }, { where: { email } });
   },
-  updateUser: async ({ nickname, profileImg }: Users) => {
-    await User.update({ nickname, profileImg }, { where: {} });
+  //유저정보 수정
+  updateUser: async ({ nickname, profileImg, userId }: Users) => {
+    await User.update({ nickname, profileImg }, { where: { userId } });
   },
+  //마이 페이지 조회
   getmyPage: async (userId: number) => {
-    console.log(userId, '레포임');
     return await User.findAll({
       where: { userId },
       attributes: ['nickname', 'profileImg'],
@@ -35,7 +39,6 @@ export default {
           model: Review,
           as: 'Review',
           attributes: ['reviewImg', 'reviewComment'],
-          order: [['createdAt', 'DESC']],
         },
         {
           model: Pick,
@@ -60,11 +63,13 @@ export default {
               attributes: ['campId', 'campName', 'address', 'ImageUrl'],
             },
           ],
-          order: [['createdAt', 'DESC']],
         },
+      ],
+      order: [
+        [Trip, 'createdAt', 'DESC'],
+        [Pick, 'createdAt', 'DESC'],
+        [Review, 'createdAt', 'DESC'],
       ],
     });
   },
 };
-// {model : Pick, as : "Pick"},
-// {model: Trip , as :"Trip"}

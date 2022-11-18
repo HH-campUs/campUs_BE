@@ -40,14 +40,19 @@ export default {
     //   console.log(err ,"서비스에서 잡았어요")
     // }
   },
-  updateUser: async ({ nickname, profileImg }: Users) => {
-    const updateUser = { nickname, profileImg };
+  updateUser: async ({ nickname, profileImg, userId }: Users) => {
+    const findUser = await userRepo.findByPk(userId!);
+    if (findUser?.userId !== userId) {
+      throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
+    }
+    const updateUser = { nickname, profileImg, userId };
     await userRepo.updateUser(updateUser);
   },
   getmyPage: async (userId: number) => {
-    console.log('서비스임', userId);
-    const app = await userRepo.getmyPage(userId);
-    console.log(app, 't서비스에서 찾은값');
-    return app;
+    const findUser = await userRepo.findByPk(userId!);
+    if (findUser?.userId !== userId) {
+      throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
+    }
+    return await userRepo.getmyPage(userId);
   },
 };

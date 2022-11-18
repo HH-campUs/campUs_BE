@@ -38,8 +38,9 @@ export default {
   },
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const { userId }: Users = res.locals.user;
       const { nickname, profileImg }: Users = req.body;
-      const updateUser = { nickname, profileImg };
+      const updateUser = { nickname, profileImg, userId };
       await userServ.updateUser(updateUser);
       res.status(201).send({ message: '수정 완료' });
     } catch (err) {
@@ -51,7 +52,7 @@ export default {
       const { userId }: Users = res.locals.user;
       const myPage = await userServ.getmyPage(userId!);
       console.log(userId);
-      res.status(200).json({ myPage });
+      res.status(200).json(myPage);
     } catch (err) {
       next(err);
     }
