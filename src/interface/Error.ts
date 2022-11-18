@@ -3,11 +3,11 @@ export interface Error {
   name: string;
   message: string;
   stack?: string;
-  status?:number
+  status?: number;
 }
 //에러 생성자
 export interface ErrorConstructor {
-  new(message?: string): Error;
+  new (message?: string): Error;
 }
 //시스템 에러
 export interface SystemError {

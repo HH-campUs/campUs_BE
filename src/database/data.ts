@@ -130,6 +130,7 @@ async function createweather() {
 }
 
 export default (async () => {
+
   // await createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
@@ -138,4 +139,5 @@ export default (async () => {
     await sleep(3000);
     console.log('날씨 저장완료');
   });
+
 })();
