@@ -11,7 +11,7 @@ import error from './src/middlewares/errorhandler';
 
 dotenv.config();
 const app = express();
-const port = 3000;
+const port = 3001;
 // const prod: boolean = process.env.NODE_ENV === 'production';
 
 // app.set('port', prod ? process.env.PORT : 3000);
@@ -49,14 +49,14 @@ app.use('/', indexRouter);
 app.use(error.errorLogger);
 //에러발생시 Handler로 이동
 app.use(error.errorHandler);
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   res.status(500).send('서버 에러 발생! 서버 콘솔을 확인하세요.');
 });
 
 app.listen(port, async () => {
   console.log(`${port}로 실행중`);
-  createData; //날씨 저장
+  // await createData; //날씨 저장
   // authenticate 메소드로 연결 확인
   await sequelize
     .authenticate()
