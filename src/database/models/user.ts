@@ -29,6 +29,8 @@ User.init(
     },
     profileImg: {
       allowNull: true,
+      defaultValue:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150807_176%2Fe2voo_1438935101901YtpDh_PNG%2F%25B9%25AB%25C1%25A6-1.png&type=a340',
       type: DataTypes.STRING(255),
     },
     email: {

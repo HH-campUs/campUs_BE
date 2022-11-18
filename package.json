@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon --exec ts-node app.ts",
-    "prettify": "prettier --write *.js **/*.js",
+    "prettify": "prettier --write *.ts **/*.ts",
     "create_db": "ts-node ./src/database/config/create_db.ts",
     "migrate": "ts-node ./src/database/config/migrate.ts",
     "data": "ts-node ./src/database/data.ts"
@@ -30,6 +30,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "helmet": "^6.0.0",
+    "joi": "^17.7.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",
