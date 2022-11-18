@@ -12,7 +12,7 @@ import error from './src/middlewares/errorhandler';
 import { Error } from 'sequelize';
 dotenv.config();
 const app = express();
-const port = 3000;
+const port = 3001;
 // const prod: boolean = process.env.NODE_ENV === 'production';
 
 // app.set('port', prod ? process.env.PORT : 3000);

@@ -1,13 +1,16 @@
 import { Router } from 'express';
 
 import userRouter from './user';
-// import reviewRouter from './review';
+import reviewRouter from './review';
 import campRouter from './camp';
-// import reviewRouter from './review';
+
 
 const router = Router();
 
-// router.use('/camps', reviewRouter);
+router.use('/camps', reviewRouter);
+router.use('/users', reviewRouter);
+router.use('/search', reviewRouter);
+
 router.use('/users', userRouter);
 router.use('/', campRouter);
 

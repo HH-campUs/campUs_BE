@@ -1,43 +1,93 @@
-// import { Request, Response, NextFunction } from 'express';
-// import reviewService from './reviewServ'; //받아온다
+import { Request, Response, NextFunction } from 'express';
+import { review } from '../../interface/review';
+import reviewService from './reviewServ'; //받아온다
 
-// class reviewController {
-//   //캠핑장 리뷰조회
-//   getReview = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const { userId } = res.locals.user;
-//       const campId = req.params;
-//       const getReview = await this.reviewService.findOneReview(userId,campId)
+export default {
+  //캠핑장 리뷰조회
+  getReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { campId }: review = req.params;
+      const data = await reviewService.getReview(Number(campId));
+      res.status(200).json({
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  //리뷰작성
+  createReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // const {userId} =res.locals.user
+      const userId = 1;
+      const { campId }: review = req.params;
+      const { reviewImg, reviewComment } = req.body;
+      await reviewService.createReview(
+        userId,
+        campId!,
+        reviewImg,
+        reviewComment
+      );
+      res.status(201).json({ ok: true, massage: '리뷰작성완료' });
+    } catch (error) {
+      next(error);
+    }
+  },
+  //리뷰수정
+  updateReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { reviewId }: review = req.params;
+      const { reviewImg, reviewComment } = req.body;
+      // const { userId } = res.locals.user;
+      const userId = 1;
 
-//       res.status(200).json(getReview)
-//     } catch (error) {
-//       res.status(error.status || 400).send({ message: error.message });
-//     }
+      const findreview = await reviewService.updateReview(
+        reviewId!,
+        reviewImg,
+        reviewComment,
+        userId
+      );
+      res.status(200).json({ massage: '리뷰수정완료' });
+    } catch (error) {
+      next(error);
+    }
+  },
 
-//     // try {
-//     //     const{userId,campId} =req.body
-//     //     })
-//     // } catch (error) {
-//     console.error();
-//     res.status(500).json({ message: error.message });
-//     // }
-//   };
+  //리뷰삭제
+  deleteReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { reviewId }: review = req.params;
+      // const { userId } = res.locals.user;
+      const userId = 1;
+      const review = await reviewService.deleteReview(reviewId!, userId);
+      res.status(200).json({ massage: '리뷰삭제완료' });
+    } catch (error) {
+      next(error);
+    }
+  },
+  // //내가쓴리뷰조회
+  // getMyReview: async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     // const { userId } = res.locals.user;
+  //     const userId = 1;
+  //     const myreview = await reviewService.getMyReview( userId);
 
-//   // {
-//   //     “userId” : 1,
-//   //     “campId” : 1,
-//   //     “reviewImg” : ”img.png”,
-//   //     “reviewComment” : ”리뷰입니다”
-//   //   }
-//   //   /camps/:campId/review
+  //     return res.status(200).json({ data: myreview });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
+  //검색하기
+  search: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // const { userId } = res.locals.user;
+      const userId = 1;
+      const {keyword} = req.body
+      const result = await reviewService.search(userId, keyword);
 
-//   //리뷰작성
-
-//   //리뷰수정
-
-//   //리뷰삭제
-
-//   //내가쓴리뷰조회
-// }
-
-// export default reviewController;
+      return res.status(200).json({ data: result });
+    } catch (error) {
+      next(error);
+    }
+  },
+};

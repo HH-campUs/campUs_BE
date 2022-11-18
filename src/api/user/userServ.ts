@@ -11,18 +11,39 @@ export default {
   
   signup: async ({email, password }: Users) => {
     // try{
-      const findUser = await userRepo.findUser(email)
+      const findUser = await userRepo.findUser(email!)
       if(email === findUser?.email){
         throw new Error.ValidationErrors('중복된 이메일 입니다.')
       }
       const signUser = {
         email: email,
-        nickname: email.split('@')[0],
-        password: await bcrypt.hash(password, Number(process.env.SALT_ROUND)),
+        nickname: email!.split('@')[0],
+        password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
       };
       await userRepo.signup(signUser);
     // }catch(err){
     //   console.log(err ,"서비스에서 잡았어요")
     // }
   },
+  login: async ({email, password }: Users) => {
+    // try{
+      const findUser = await userRepo.findUser(email!)
+      if(email === findUser?.email){
+        throw new Error.ValidationErrors('중복된 이메일 입니다.')
+      }
+      const signUser = {
+        email: email,
+        nickname: email!.split('@')[0],
+        password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
+      };
+      await userRepo.login(signUser);
+    // }catch(err){
+    //   console.log(err ,"서비스에서 잡았어요")
+    // }
+  },
+  updateUser: async ({nickname , profileImg}:Users)=>{
+    const updateUser = {nickname , profileImg}
+    await userRepo.updateUser(updateUser)
+  }
+
 };
