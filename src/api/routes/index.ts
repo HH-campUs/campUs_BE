@@ -14,7 +14,7 @@ const router = Router();
 
 router.use('/camps', reviewRouter);
 router.use('/users', userRouter);
-router.use('/users', reviewRouter);
+// router.use('/users', reviewRouter);
 router.use('/search', reviewRouter);
 router.use('/', campRouter);
 router.use('/weathers', Weather);

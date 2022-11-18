@@ -18,8 +18,8 @@ export default {
   //리뷰작성
   createReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const {userId} =res.locals.user
-      const userId = 1;
+      console.log(res.locals)
+      const {userId} =res.locals.user
       const { campId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
       await reviewService.createReview(
@@ -38,9 +38,7 @@ export default {
     try {
       const { reviewId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
-      // const { userId } = res.locals.user;
-      const userId = 1;
-
+      const { userId } = res.locals.user;
       const findreview = await reviewService.updateReview(
         reviewId!,
         reviewImg,
@@ -57,8 +55,7 @@ export default {
   deleteReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
-      // const { userId } = res.locals.user;
-      const userId = 1;
+      const { userId } = res.locals.user;
       const review = await reviewService.deleteReview(reviewId!, userId);
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {

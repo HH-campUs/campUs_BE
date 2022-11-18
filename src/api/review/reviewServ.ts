@@ -30,7 +30,8 @@ export default {
     userId: number
   ) => {
     const findreview = await reviewRepo.findOneReview(reviewId);
-    if (findreview!.userId === userId)
+    if (findreview?.userId === userId)
+  
       return await reviewRepo.updateReview(
         userId,
         reviewImg,
