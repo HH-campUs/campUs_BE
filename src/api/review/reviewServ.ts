@@ -1,3 +1,4 @@
+import Review from '../../database/models/review';
 import reviewRepo from './reviewRepo';
 
 export default {
@@ -44,11 +45,29 @@ export default {
       return await reviewRepo.deleteReview(reviewId);
     }
   },
-  //내가쓴리뷰조회
-  findOneuser: async (userId: number) => {
-    const myreview = await reviewRepo.findOneReview(userId);
-    return {
-      myreview: myreview?.reviewComment,
-    };
+  // //내가쓴리뷰조회
+  // getMyReview: async (userId: number) => {
+  //   const myreview = await reviewRepo.getMyReview(userId);
+  //   return  {
+  //     userId:myreview.userId,
+
+      
+  //   }
+  // },
+
+  //검색하기
+  search: async (userId: number, keyword:string) => {
+    const getcamp= await reviewRepo.search(userId, keyword);
+    const campData = getcamp.map((camp:any) => {
+      // let boolean;
+      // camp.ispick.length ? (boolean = true) : (boolean = false);
+      return {
+        campId: camp.campId,
+        // createdAt: camp.createdAt,
+        // choiceCount: camp.choiceCount,
+        // isPick: boolean,
+      };
+    });
+    // return  {userId:camp.userId,      }
   },
-};
+}

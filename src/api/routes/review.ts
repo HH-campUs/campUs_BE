@@ -4,6 +4,10 @@ import reviewController from '../review/reviewControl';
 const reviewrouter = Router();
 
 reviewrouter.route('/');
+
+//검색하기
+reviewrouter.get('/', reviewController.search);
+
 //캠핑장 리뷰조회
 reviewrouter.get('/:campId/review', reviewController.getReview);
 
@@ -17,6 +21,7 @@ reviewrouter.put('/:campId/:reviewId', reviewController.updateReview);
 reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
 
 //내가쓴리뷰조회
-reviewrouter.get('/review', reviewController.getMyReview);
+// reviewrouter.get('/review', reviewController.getMyReview);
+
 
 export default reviewrouter;

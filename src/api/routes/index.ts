@@ -8,6 +8,7 @@ const router = Router();
 
 router.use('/camps', reviewRouter);
 router.use('/users', reviewRouter);
+router.use('/search', reviewRouter);
 
 router.use('/users', userRouter);
 router.use('/camps', campRouter);

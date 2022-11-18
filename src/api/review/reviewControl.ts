@@ -59,24 +59,33 @@ export default {
       const { reviewId }: review = req.params;
       // const { userId } = res.locals.user;
       const userId = 1;
-      const review = await reviewService.deleteReview(
-        reviewId!,
-        userId
-      )
-      res.status(200).json( { massage: '리뷰삭제완료' })
+      const review = await reviewService.deleteReview(reviewId!, userId);
+      res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {
       next(error);
     }
   },
-  //내가쓴리뷰조회
-  getMyReview : async (req: Request, res: Response, next: NextFunction) => {
+  // //내가쓴리뷰조회
+  // getMyReview: async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     // const { userId } = res.locals.user;
+  //     const userId = 1;
+  //     const myreview = await reviewService.getMyReview( userId);
+
+  //     return res.status(200).json({ data: myreview });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
+  //검색하기
+  search: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId }: review = req.params;
-            // const userId = 1;
-            const myreview = await reviewService.findOneuser(userId!)
+      // const { userId } = res.locals.user;
+      const userId = 1;
+      const {keyword} = req.body
+      const result = await reviewService.search(userId, keyword);
 
-            res.status(200).json({data: myreview})
-
+      return res.status(200).json({ data: result });
     } catch (error) {
       next(error);
     }
