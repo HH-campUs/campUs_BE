@@ -13,7 +13,7 @@ import error from './src/middlewares/errorhandler';
 dotenv.config();
 const app = express();
 const prod: boolean = process.env.NODE_ENV === 'production';
-
+const DOMAIN = process.env.DOMAIN
 app.set('port', prod ? process.env.PORT : 3000);
 
 app.use(express.json());
@@ -35,15 +35,9 @@ if (prod) {
   );
   try {
     const options = {
-      ca: fs.readFileSync(
-        `/etc/letsencrypt/live/${process.env.DOMAIN}/fullchain.pem`
-      ),
-      key: fs.readFileSync(
-        `/etc/letsencrypt/live/${process.env.DOMAIN}/privkey.pem`
-      ),
-      cert: fs.readFileSync(
-        `/etc/letsencrypt/live/${process.env.DOMAIN}/cert.pem`
-      ),
+      ca: fs.readFileSync(`/etc/letsencrypt/live/${DOMAIN}/fullchain.pem`),
+      key: fs.readFileSync(`/etc/letsencrypt/live/${DOMAIN}/privkey.pem`),
+      cert: fs.readFileSync(`/etc/letsencrypt/live/${DOMAIN}/cert.pem`),
     };
     HTTPS.createServer(options, app).listen(app.get('port'), async () => {
       console.log('https 서버가 실행되었습니다. 포트 :: ' + app.get('port'));
