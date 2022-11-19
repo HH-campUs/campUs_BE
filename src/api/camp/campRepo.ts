@@ -69,7 +69,7 @@ export default {
             eqpmnLendCl: {
               [Op.like]: `%${topic}%`,
             },
-          }
+          },
         ],
       },
     });

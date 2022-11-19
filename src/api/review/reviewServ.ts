@@ -51,14 +51,13 @@ export default {
   //   return  {
   //     userId:myreview.userId,
 
-      
   //   }
   // },
 
   //검색하기
-  search: async (userId: number, keyword:string) => {
-    const getcamp= await reviewRepo.search(userId, keyword);
-    const campData = getcamp.map((camp:any) => {
+  search: async (userId: number, keyword: string) => {
+    const getcamp = await reviewRepo.search(userId, keyword);
+    const campData = getcamp.map((camp: any) => {
       // let boolean;
       // camp.ispick.length ? (boolean = true) : (boolean = false);
       return {
@@ -70,4 +69,4 @@ export default {
     });
     // return  {userId:camp.userId,      }
   },
-}
+};

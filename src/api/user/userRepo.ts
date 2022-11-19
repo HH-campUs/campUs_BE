@@ -11,10 +11,10 @@ export default {
     await User.create({ email, nickname, password });
   },
   //유저정보 찾기
-  findUser: async (email: string) => {
+  findUser: async ({email}: Users) => {
     return await User.findOne({ where: { email } });
   },
-  findByPk: async (userId: number) => {
+  findByPk: async ({userId}:Users) => {
     return await User.findByPk(userId);
   },
   //로그인
@@ -30,7 +30,7 @@ export default {
     await User.update({ nickname, profileImg }, { where: { userId } });
   },
   //마이 페이지 조회
-  getmyPage: async (userId: number) => {
+  getmyPage: async ({userId}:Users) => {
     return await User.findAll({
       where: { userId },
       attributes: ['nickname', 'profileImg'],

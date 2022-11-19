@@ -51,6 +51,8 @@ Review.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
+    charset: "utf8", // 한국어 설정
+    collate: "utf8_general_ci", // 한국어 설정
     modelName: 'Review',
     tableName: 'review',
     freezeTableName: true,

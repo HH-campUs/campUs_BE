@@ -82,7 +82,7 @@ export default {
     try {
       // const { userId } = res.locals.user;
       const userId = 1;
-      const {keyword} = req.body
+      const { keyword } = req.body;
       const result = await reviewService.search(userId, keyword);
 
       return res.status(200).json({ data: result });
