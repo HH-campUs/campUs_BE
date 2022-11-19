@@ -7,16 +7,16 @@ export interface Users {
   [key: string]: any;
 }
 
-export interface profile{
-    provider:string
-    id: number
-    username: string
-    _json:{
-      id:number
-      properties:{
-        profile_image:string
-        id:number
-        nickname:number
-      }
-    }
+export interface profile {
+  provider: string;
+  id: number;
+  username: string;
+  _json: {
+    id: number;
+    properties: {
+      profile_image: string;
+      id: number;
+      nickname: number;
+    };
+  };
 }

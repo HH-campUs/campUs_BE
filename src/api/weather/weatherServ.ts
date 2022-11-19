@@ -1,4 +1,3 @@
-
 import { weathers } from '../../interface/weather';
 import weatherRepo from './weatherRepo';
 
@@ -38,6 +37,7 @@ export default {
         return weather;
       }
     });
-    return weather.filter((element)=> element !== undefined && element !== null)
+    return weather.filter((element) => element !== undefined && element !== null
+    );
   },
 };
