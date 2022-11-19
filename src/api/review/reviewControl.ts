@@ -62,23 +62,23 @@ export default {
       next(error);
     }
   },
-  // //내가쓴리뷰조회
-  // getMyReview: async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     // const { userId } = res.locals.user;
-  //     const userId = 1;
-  //     const myreview = await reviewService.getMyReview( userId);
+  //내가쓴리뷰조회
+  getMyReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = res.locals.user;
+      const { reviewId }: review = req.params;
+      const myreview = await reviewService.getMyReview( userId, reviewId!);
 
-  //     return res.status(200).json({ data: myreview });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
+      return res.status(200).json({ data: myreview });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   //검색하기
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const { userId } = res.locals.user;
-      const userId = 1;
+      const { userId } = res.locals.user;
       const {keyword} = req.body
       const result = await reviewService.search(userId, keyword);
 

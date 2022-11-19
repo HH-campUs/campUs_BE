@@ -23,7 +23,7 @@ reviewrouter.put('/:campId/:reviewId', authmiddleware, reviewController.updateRe
 reviewrouter.delete('/:campId/:reviewId', authmiddleware, reviewController.deleteReview);
 
 //내가쓴리뷰조회
-// reviewrouter.get('/review', authmiddleware,reviewController.getMyReview);
+reviewrouter.get('/review', authmiddleware,reviewController.getMyReview);
 
 
 export default reviewrouter;

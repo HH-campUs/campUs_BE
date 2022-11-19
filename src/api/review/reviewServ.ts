@@ -46,15 +46,13 @@ export default {
       return await reviewRepo.deleteReview(reviewId);
     }
   },
-  // //내가쓴리뷰조회
-  // getMyReview: async (userId: number) => {
-  //   const myreview = await reviewRepo.getMyReview(userId);
-  //   return  {
-  //     userId:myreview.userId,
-
-      
-  //   }
-  // },
+  //내가쓴리뷰조회
+  getMyReview: async (userId: number, reviewId: number) => {
+    const myreview = await reviewRepo.findUser(userId, reviewId);
+    return  {
+      userId:myreview!.userId,     
+    }
+  },
 
   //검색하기
   search: async (userId: number, keyword:string) => {
