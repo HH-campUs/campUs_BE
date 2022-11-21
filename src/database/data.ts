@@ -141,15 +141,15 @@ rule.minute = 0;  //정각
 rule.tz = "Asia/Seoul";  //한국시간
 
 export default async () => {
-  // createcamp();
-  // await sleep(3000);
-  // console.log('캠핑 저장완료');
+  createcamp();
+  await sleep(3000);
+  console.log('캠핑 저장완료');
   // schedule.scheduleJob(rule , async () => {
-  // await Weather.destroy({ where: {} });
-  // await sleep(3000);
-  // console.log('삭제 완료');
-  // createweather();
-  // await sleep(3000);
-  // console.log('날씨 저장완료');
+  await Weather.destroy({ where: {} });
+  await sleep(3000);
+  console.log('삭제 완료');
+  createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
   // });
 }

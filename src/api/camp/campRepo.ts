@@ -2,7 +2,6 @@ import { Camp } from '../../database/models/camp';
 import { Trip } from '../../database/models/trip';
 import { Pick } from '../../database/models/pick';
 import { Topic } from '../../database/models/topic';
-import { Op } from 'sequelize';
 import { topic, trip } from '../../interface/camp'
 
 export default {
@@ -15,6 +14,7 @@ export default {
   },
 
   myTripSave: async({userId, date, campId}:trip)=>{
+    console.log(typeof campId)
     return await Trip.create({
       userId, campId, date
     })
