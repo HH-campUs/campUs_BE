@@ -7,17 +7,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-function sleep(ms: any) {
-  return new Promise((r) => setTimeout(r, ms));
-}
 
 async function createcamp() {
+
   axios
     .get(
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
     .then(async (res) => {
-      const camp = res.data.response.body.items.item;
+
+      const camp = res.data.response.body.items.item
       const camps = camp.map((x: Camps) => {
         return {
           campName: x.facltNm,
@@ -47,15 +46,12 @@ async function createcamp() {
       });
       for (let i = 0; i < camps.length; i += 100) {
         await Camp.bulkCreate(camps.slice(i, i + 100));
-        console.log(i, i + 100);
+        console.log(i, i + 100);//스케쥴 종료
       }
     });
 }
 
 async function createweather() {
-  await Weather.destroy({ where: {} });
-  await sleep(3000);
-  console.log('삭제 완료');
 
   const pardoXY = [
     [37.5635, 126.98, '서울'],
@@ -127,19 +123,33 @@ async function createweather() {
             rain: x.rain,
             snow: x.snow,
           };
-        });
+        })
         await Weather.bulkCreate(weathers);
+        console.log(weathers.length)
       });
   }
 }
 
-export default (async () => {
-  // await createcamp();
+function sleep(ms: any) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+const rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0, 6)];
+rule.hour = 5;    //5시
+rule.minute = 0;  //정각
+rule.tz = "Asia/Seoul";  //한국시간
+
+export default async () => {
+  // createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  // // schedule.scheduleJob({ hour: 5 }, async () => {
-  // await createweather();
+  // schedule.scheduleJob(rule , async () => {
+  // await Weather.destroy({ where: {} });
+  // await sleep(3000);
+  // console.log('삭제 완료');
+  // createweather();
   // await sleep(3000);
   // console.log('날씨 저장완료');
   // });
-})();
+}

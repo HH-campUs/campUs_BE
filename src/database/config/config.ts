@@ -1,3 +1,4 @@
+import { bool } from 'aws-sdk/clients/signer';
 import dotenv from 'dotenv';
 dotenv.config();
 type Config = {
@@ -10,7 +11,7 @@ type Config = {
 interface IConfigGroup {
   development: Config;
   test: Config;
-  production: Config;
+  production: Config
 }
 
 const config: IConfigGroup = {
@@ -28,6 +29,7 @@ const config: IConfigGroup = {
     database: 'campus',
     host: '127.0.0.1',
     dialect: 'mysql',
+    logging:false
   },
   production: {
     username: 'root',
@@ -35,6 +37,7 @@ const config: IConfigGroup = {
     database: 'campus',
     host: '127.0.0.1',
     dialect: 'mysql',
+    logging:false
   },
 };
 
