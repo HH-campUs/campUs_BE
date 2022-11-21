@@ -1,8 +1,8 @@
-import { Request, Response,NextFunction,Router } from 'express';
+import { Router } from 'express';
 import passport from 'passport';
-import jwt from 'jsonwebtoken'
-import {User} from '../../database/models/user'
-import { profile } from '../../interface/user';
+import dotenv from 'dotenv'
+import kakaoCallback from '../../utils/kakaojwt'
+dotenv.config()
 const router = Router();
 // ,'account_email'
 //* 카카오로 로그인하기 라우터 ***********************
@@ -10,22 +10,10 @@ const router = Router();
 router.get('/',passport.authenticate('kakao', {scope: ['profile_nickname', 'profile_image'],})
 ); //scope 속성
 
+
+
 //? 위에서 카카오 서버 로그인이 되면, 카카오 redirect url 설정에 따라 이쪽 라우터로 오게 된다.
 //? 그리고 passport 로그인 전략// kakaoStrategy에서 실패한다면 실행
-
-const kakaoCallback =(req:Request,res:Response,next:NextFunction)=>{
-  try{
-    passport.authenticate('kakao',{failureRedirect : "/login"}, //인증 실패시 콜백
-    (err:Error, user:profile, info)=>{
-    if(err) return next(err)
-    console.log(user)
-    })
-    }catch(err){
-      next(err);
-    }
-}
-
-router.get('/callback', kakaoCallback);
-
+router.get('/callback',kakaoCallback);
 
 export default router;
