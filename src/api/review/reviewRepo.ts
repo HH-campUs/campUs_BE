@@ -64,7 +64,7 @@ export default {
   //     include:[{model:User}] });
   // },
 
-  //검색하기
+  //캠핑장이름검색
   search: async (keyword: string) => {
     const searchResult = await Camp.findAll({
       where: {
@@ -72,7 +72,6 @@ export default {
           [Op.like]: '%' + keyword + '%',
         },
       },
-      include: [{ model:Camp }],
     });
     return searchResult;
   },

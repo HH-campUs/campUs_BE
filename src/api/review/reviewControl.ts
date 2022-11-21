@@ -74,14 +74,13 @@ export default {
     }
   },
 
-  //검색하기
+  //캠핑장이름검색
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const { userId } = res.locals.user;
       const { keyword } = req.body;
       const result = await reviewService.search(keyword);
 
-      return res.status(200).json(result);
+      return res.status(200).json({data:result});
     } catch (error) {
       next(error);
     }

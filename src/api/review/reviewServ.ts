@@ -1,3 +1,4 @@
+import { captureRejectionSymbol } from 'events';
 import Review from '../../database/models/review';
 import reviewRepo from './reviewRepo';
 
@@ -62,16 +63,38 @@ export default {
     });
   },
 
-  //검색하기
+  //캠핑장이름검색
   search: async (keyword: string) => {
-    const getcamp = await reviewRepo.search(keyword);
+    const getCampName = await reviewRepo.search(keyword);
 
-    const campData = getcamp.map((camp: any) => {
+    const campName = getCampName.map((camp: any) => {
 
       return {
         campId: camp.campId,
+        campName: camp.campName,
+        induty: camp.induty,
+        doNm: camp.doNm,
+        sigunguNm: camp.sigunguNm,
+        address: camp.address,
+        X: camp.X,
+        Y: camp.Y,
+        operPdCl: camp.operPdCl,
+        operDeCl: camp.operDeCl,
+        animal: camp.animal,
+        ImageUrl: camp.ImageUrl,
+        homePage: camp.homePage,
+        sbrsCl: camp.sbrsCl,
+        posblFcltyCl: camp.posblFcltyCl,
+        wtrplCo: camp.wtrplCo,
+        swrmCo: camp.swrmCo,
+        toiletCo: camp.toiletCo,
+        manageSttus: camp.manageSttus,
+        themaEnvrnCl: camp.themaEnvrnCl,
+        lookUp: camp.lookUp,
+        eqpmnLendCl: camp.eqpmnLendCl,
+        createdtime: camp.createdtime,
       };
     });
-    return { camp: campData };
+    return { camp: campName };
   },
 };
