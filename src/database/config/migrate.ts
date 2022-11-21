@@ -6,6 +6,7 @@ import User from '../models/user';
 import Pick from '../models/pick';
 import Review from '../models/review';
 import Trip from '../models/trip';
+import sequelize from '../models/sequlize';
 
 /*table 리스트르르 받아서 배열로 저장
  referenced by a foreign key constrain 에러로 인한 drop create 테이블 리스트분리
@@ -25,10 +26,11 @@ async function migrate() {
         console.log(`❗️Error in drop ${dropTable[i]} Table : `, err);
       });
   }
+
   for (let i = 0; i < createTable.length; i++) {
     await createTable[i]
       //sync <=데이터베이스 연동와 자동 연동하기
-      .sync({ force: true }) //true : 삭제후 migrate , false : 삭제 안하고 migrate
+      .sync({ force: false }) //true : 삭제후 migrate , false : 삭제 안하고 migrate
       .then(() => {
         console.log(`✅Success Create ${createTable[i]} Table`);
       })
@@ -36,8 +38,10 @@ async function migrate() {
         console.log(`❗️Error in Create ${createTable[i]} Table : `, err);
       });
   }
+  sequelize.sync();
 }
 
 (async () => {
+  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`)
   await migrate();
 })();
