@@ -13,10 +13,10 @@ export default {
 
   //리뷰작성
   createReview: async (
-    userId: number,
-    campId: number,
-    reviewImg: string,
-    reviewComment: string
+{    userId,
+    campId,
+    reviewImg,
+    reviewComment}:review
   ) => {
     await Review.create({
       userId,

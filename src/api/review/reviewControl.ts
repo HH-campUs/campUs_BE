@@ -17,22 +17,17 @@ export default {
     }
   },
   //리뷰작성
-  createReview: async (
-    req: Request<review>,
-    res: Response,
-    next: NextFunction
-  ) => {
+  createReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(res.locals);
-      const { userId } = res.locals.user;
+      const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
-      await reviewService.createReview(
+      await reviewService.createReview({
         userId,
-        campId!,
+        campId,
         reviewImg,
-        reviewComment
-      );
+        reviewComment,
+      });
       res.status(201).json({ ok: true, massage: '리뷰작성완료' });
     } catch (error) {
       next(error);

@@ -12,17 +12,12 @@ export default {
   },
 
   //리뷰작성
-  createReview: async (
-    userId: number,
-    campId: number,
-    reviewImg: string,
-    reviewComment: string
-  ) => {
+  createReview: async ({ userId, campId, reviewImg, reviewComment }:review) => {
     return await reviewRepo.createReview(
-      userId,
+{      userId,
       campId,
       reviewImg,
-      reviewComment
+      reviewComment}
     );
   },
 
@@ -32,7 +27,12 @@ export default {
   },
 
   //리뷰수정
-  updateReview: async ({ reviewId, reviewImg, reviewComment, userId }:review) => {
+  updateReview: async ({
+    reviewId,
+    reviewImg,
+    reviewComment,
+    userId,
+  }: review) => {
     const findByauthor = await reviewRepo.findReviewAuthor(reviewId!);
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
