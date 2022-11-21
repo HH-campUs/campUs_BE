@@ -31,7 +31,7 @@ Weather.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     pardo: {
       allowNull: false,
@@ -59,51 +59,51 @@ Weather.init(
     },
     day: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     min: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     max: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     night: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     eve: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     morn: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     wind_speed: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     clouds: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     uvi: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     pop: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     rain: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     snow: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
   },
   {

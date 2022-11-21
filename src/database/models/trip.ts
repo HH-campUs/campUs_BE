@@ -29,15 +29,15 @@ Trip.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     userId: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     campId: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     date: {
       allowNull: false,
