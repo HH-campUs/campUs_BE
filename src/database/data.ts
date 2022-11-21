@@ -41,6 +41,8 @@ async function createcamp() {
           themaEnvrnCl: x.themaEnvrnCl,
           createdtime: x.createdtime,
           eqpmnLendCl: x.eqpmnLendCl,
+          featureNm : x.featureNm,
+          clturEvent: x.clturEvent
         };
       });
       for (let i = 0; i < camps.length; i += 100) {

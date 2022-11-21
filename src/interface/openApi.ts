@@ -20,6 +20,8 @@ export interface Camps {
   themaEnvrnCl: string;
   createdtime: string;
   eqpmnLendCl: string;
+  featureNm :string;
+  clturEvent:string;
 }
 
 export interface Date {
