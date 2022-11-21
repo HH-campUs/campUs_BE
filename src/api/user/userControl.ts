@@ -4,12 +4,12 @@ import { Users } from '../../interface/user';
 import userServ from './userServ';
 import { signSchema } from '../../utils/validation';
 import Token from '../../utils/jwt';
-import Error from '../../utils/exceptions';
+
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
 
 export default {
-  signup: async (req: Request, res: Response, next: NextFunction) => {
+  signup: async (req: Request , res: Response, next: NextFunction) => {
     try {
       const { email, password }: Users = await signSchema.validateAsync(req.body);
       await userServ.signup({email, password });
