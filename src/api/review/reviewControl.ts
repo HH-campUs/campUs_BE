@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { number } from 'joi';
 import { review } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
 
@@ -16,7 +17,7 @@ export default {
     }
   },
   //리뷰작성
-  createReview: async (req: Request, res: Response, next: NextFunction) => {
+  createReview: async (req: Request<review>, res: Response, next: NextFunction) => {
     try {
       console.log(res.locals);
       const { userId } = res.locals.user;
@@ -51,17 +52,35 @@ export default {
     }
   },
 
+  // //리뷰삭제
+  // deleteReview: async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const { reviewId }: review = req.params;
+  //     const { userId } = res.locals.user;
+  //     const review = await reviewService.deleteReview(reviewId!, userId);
+  //     res.status(200).json({ massage: '리뷰삭제완료' });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
   //리뷰삭제
   deleteReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
       const { userId } = res.locals.user;
-      const review = await reviewService.deleteReview(reviewId!, userId);
+      const findreview = await reviewService.findReviewAuthor(reviewId!);
+
+      if (userId !== findreview?.userId){
+        return res.status(400).json({errorMessage:"권한이 없습니다."})
+      }
+      await reviewService.deleteReview(reviewId!,userId)
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {
       next(error);
     }
   },
+
+
   //내가쓴리뷰조회
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {

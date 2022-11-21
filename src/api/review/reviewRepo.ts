@@ -25,6 +25,13 @@ export default {
     });
     return;
   },
+
+  //리뷰작성자찾기
+  findReviewAuthor: async (reviewId: number) => {;
+    return await Review.findByPk(reviewId);
+  },
+
+
   //리뷰수정
   updateReview: async (
     reviewId: number,
