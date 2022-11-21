@@ -41,6 +41,8 @@ async function createcamp() {
           themaEnvrnCl: x.themaEnvrnCl,
           createdtime: x.createdtime,
           eqpmnLendCl: x.eqpmnLendCl,
+          featureNm : x.featureNm,
+          clturEvent: x.clturEvent
         };
       });
       for (let i = 0; i < camps.length; i += 100) {
@@ -133,13 +135,13 @@ async function createweather() {
 }
 
 export default (async () => {
-  // await createcamp();
-  // await sleep(3000);
-  // console.log('캠핑 저장완료');
-  schedule.scheduleJob({ hour: 5 }, async () => {
+  await createcamp();
+  await sleep(3000);
+  console.log('캠핑 저장완료');
+  // schedule.scheduleJob({ hour: 5 }, async () => {
     await createweather();
     await sleep(3000);
     console.log('날씨 저장완료');
-  });
+  // });
 
 })();
