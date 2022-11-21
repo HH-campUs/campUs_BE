@@ -31,7 +31,6 @@ export default {
   ) => {
     const findreview = await reviewRepo.findOneReview(reviewId);
     if (findreview?.userId === userId)
-  
       return await reviewRepo.updateReview(
         userId,
         reviewImg,
@@ -47,26 +46,32 @@ export default {
     }
   },
   //내가쓴리뷰조회
-  getMyReview: async (userId: number, reviewId: number) => {
-    const myreview = await reviewRepo.findUser(userId, reviewId);
-    return  {
-      userId:myreview!.userId,     
-    }
+  getMyReview: async (userId: number) => {
+    const myreivew = await reviewRepo.getMyReview(userId);
+
+    return myreivew.map((x: any) => {
+      return {
+        reviewId: x.userId,
+        userId: x.userId,
+        campId: x.campId,
+        reviewImg: x.reviewImg,
+        reviewComment: x.reviewComment,
+        createdAt: x.createdAt,
+        updatedAt: x.updatedAt,
+      };
+    });
   },
 
   //검색하기
-  search: async (userId: number, keyword:string) => {
-    const getcamp= await reviewRepo.search(userId, keyword);
-    const campData = getcamp.map((camp:any) => {
-      // let boolean;
-      // camp.ispick.length ? (boolean = true) : (boolean = false);
+  search: async (keyword: string) => {
+    const getcamp = await reviewRepo.search(keyword);
+
+    const campData = getcamp.map((camp: any) => {
+
       return {
         campId: camp.campId,
-        // createdAt: camp.createdAt,
-        // choiceCount: camp.choiceCount,
-        // isPick: boolean,
       };
     });
-    // return  {userId:camp.userId,      }
+    return { camp: campData };
   },
-}
+};

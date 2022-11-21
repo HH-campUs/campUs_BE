@@ -10,7 +10,7 @@ dotenv.config();
 export default {
   signup: async ({ email, password }: Users) => {
     // try{
-    const findUser = await userRepo.findUser(email!);
+    const findUser = await userRepo.findUser({email});
     if (email === findUser?.email) {
       throw new Error.ValidationErrors('중복된 이메일 입니다.');
     }
@@ -26,7 +26,7 @@ export default {
   },
   login: async ({ email, password }: Users) => {
     // try{
-    const findUser = await userRepo.findUser(email!);
+    const findUser = await userRepo.findUser({email});
     if (email === findUser?.email) {
       throw new Error.ValidationErrors('중복된 이메일 입니다.');
     }
@@ -41,18 +41,17 @@ export default {
     // }
   },
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
-    const findUser = await userRepo.findByPk(userId!);
+    const findUser = await userRepo.findByPk({userId});
     if (findUser?.userId !== userId) {
       throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
     }
-    const updateUser = { nickname, profileImg, userId };
-    await userRepo.updateUser(updateUser);
+    await userRepo.updateUser({nickname, profileImg, userId});
   },
-  getmyPage: async (userId: number) => {
-    const findUser = await userRepo.findByPk(userId!);
+  getmyPage: async ({userId}:Users) => {
+    const findUser = await userRepo.findByPk({userId});
     if (findUser?.userId !== userId) {
       throw new Error.ValidationErrors('유저가 일치 하지 않습니다');
     }
-    return await userRepo.getmyPage(userId);
+    return await userRepo.getmyPage({userId});
   },
 };

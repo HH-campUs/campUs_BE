@@ -18,8 +18,8 @@ export default {
   //리뷰작성
   createReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(res.locals)
-      const {userId} =res.locals.user
+      console.log(res.locals);
+      const { userId } = res.locals.user;
       const { campId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
       await reviewService.createReview(
@@ -66,10 +66,9 @@ export default {
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = res.locals.user;
-      const { reviewId }: review = req.params;
-      const myreview = await reviewService.getMyReview( userId, reviewId!);
+      const myreview = await reviewService.getMyReview(userId);
 
-      return res.status(200).json({ data: myreview });
+      res.status(200).json({ data: myreview });
     } catch (error) {
       next(error);
     }
@@ -78,11 +77,11 @@ export default {
   //검색하기
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = res.locals.user;
-      const {keyword} = req.body
-      const result = await reviewService.search(userId, keyword);
+      // const { userId } = res.locals.user;
+      const { keyword } = req.body;
+      const result = await reviewService.search(keyword);
 
-      return res.status(200).json({ data: result });
+      return res.status(200).json(result);
     } catch (error) {
       next(error);
     }

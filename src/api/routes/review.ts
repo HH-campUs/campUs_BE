@@ -25,5 +25,4 @@ reviewrouter.delete('/:campId/:reviewId', authmiddleware, reviewController.delet
 //내가쓴리뷰조회
 reviewrouter.get('/review', authmiddleware,reviewController.getMyReview);
 
-
 export default reviewrouter;

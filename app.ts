@@ -3,7 +3,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import helmet from 'helmet'; //악성 스크립트 보호
-import { Request, Response, NextFunction } from 'express';
 import { sequelize } from './src/database/models/sequlize';
 import indexRouter from './src/api/routes/index';
 import createData from './src/database/data';
@@ -14,15 +13,6 @@ const app = express();
 const prod: boolean = process.env.NODE_ENV === 'production';
 
 app.set('port', prod ? process.env.PORT : 3000);
-
-sequelize
-  .authenticate()
-    .then(async () => {
-      console.log('DB 연결완료');
-    })
-    .catch((e) => {
-      console.log(e);
-    });
 
 if (prod) {
   app.use(helmet());
@@ -49,12 +39,16 @@ app.use('/', indexRouter);
 app.use(error.errorLogger);
 //에러발생시 Handler로 이동
 app.use(error.errorHandler);
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
-  res.status(500).send('서버 에러 발생! 서버 콘솔을 확인하세요.');
-});
 
 app.listen(app.get('port'), async () => {
   console.log(`${app.get('port')}로 실행중`);
-     createData; //날씨 저장
+  await createData; 
+  await sequelize.authenticate()
+    .then(async () => {
+      console.log('DB 연결완료');
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log('DB 연결실패');
+    });
 });
