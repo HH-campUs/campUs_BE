@@ -1,11 +1,9 @@
-
 import { weathers } from '../../interface/weather';
 import weatherRepo from './weatherRepo';
 
 export default {
   getweather: async ({ pardo, dt }: weathers) => {
-    const weathers = { pardo, dt };
-    const findWeather = await weatherRepo.getweather(weathers);
+    const findWeather = await weatherRepo.getweather({pardo});
     //날씨 가공 함수
     const fomatReturnData = (data: weathers) => {
       return {
@@ -38,6 +36,7 @@ export default {
         return weather;
       }
     });
-    return weather.filter((element)=> element !== undefined && element !== null)
+    return weather.filter((element) => element !== undefined && element !== null
+    );
   },
 };

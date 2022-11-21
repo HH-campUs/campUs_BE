@@ -2,7 +2,7 @@ import { number } from 'joi';
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
 import User from '../../database/models/user';
-import { Op }  from"sequelize"
+import { Op } from 'sequelize';
 
 export default {
   //캠핑장 리뷰조회
@@ -53,23 +53,26 @@ export default {
     return deleteReview;
   },
 
-  // //내가쓴리뷰조회
-  // getMyReview: async (campId: number) => {
-  //   return await Review.findAll({ where: { campId } });
+  //내가쓴리뷰조회
+  getMyReview: async (userId: number) => {
+    return await Review.findAll({ where: { userId } });
+  },
+  // //유저찾기
+  // findUser: async (userId:number, reviewId:number) => {
+  //   return await User.findOne({
+  //      where: { reviewId: reviewId, userId:userId },
+  //     include:[{model:User}] });
   // },
 
-  //검색하기
-  search: async (userId:number, keyword:string) => {
+  //캠핑장이름검색
+  search: async (keyword: string) => {
     const searchResult = await Camp.findAll({
       where: {
         campName: {
-          [Op.like]: "%" + keyword + "%",
+          [Op.like]: '%' + keyword + '%',
         },
       },
-      include: [
-        {model: User, attributes:['nickname',"userImg"]}
-      ]
-    })
-    return searchResult
+    });
+    return searchResult;
   },
 };

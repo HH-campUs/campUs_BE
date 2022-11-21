@@ -11,11 +11,8 @@ import Error from '../../utils/exceptions';
 export default {
   signup: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, password }: Users = await signSchema.validateAsync(
-        req.body
-      );
-      const signupUser = { email, password };
-      await userServ.signup(signupUser);
+      const { email, password }: Users = await signSchema.validateAsync(req.body);
+      await userServ.signup({email, password });
       res.status(201).send({ message: '회원가입 성공' });
     } catch (err) {
       next(err);
@@ -24,11 +21,8 @@ export default {
 
   login: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, password }: Users = await signSchema.validateAsync(
-        req.body
-      );
-      const loginUser = { email, password };
-      const Tokens = await Token.createTokens(loginUser);
+      const { email, password }: Users = await signSchema.validateAsync(req.body);
+      const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
       res.status(200).json(Tokens);
@@ -50,7 +44,7 @@ export default {
   getmyPage: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId }: Users = res.locals.user;
-      const myPage = await userServ.getmyPage(userId!);
+      const myPage = await userServ.getmyPage({userId});
       console.log(userId);
       res.status(200).json(myPage);
     } catch (err) {

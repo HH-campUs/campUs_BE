@@ -11,7 +11,7 @@ export default {
   //리프레쉬 토큰 발급
   createTokens: async ({ email, password }: Users) => {
     //유저정보 확인
-    const user = await UserRepo.findUser(email!);
+    const user = await UserRepo.findUser({email});
     //유저확인
     if (!user) {
       throw new Error.ValidationErrors(
@@ -29,7 +29,7 @@ export default {
     const RefreshToken = jwt.sign(
       { userId: user.userId },
       process.env.JWT_KEY!,
-      { expiresIn: '7d' }
+      { expiresIn: '30s' }
     ); // Refresh Token이 7일 뒤에 만료되도록 설정합니다.
     //에세스 토큰 발급
     const AccessToken = jwt.sign(
@@ -64,7 +64,7 @@ export default {
   //에세스 토큰 재발급
   createAccessTokenRe: async (userId: number): Promise<string> => {
     return jwt.sign({ userId: userId }, process.env.JWT_KEY!, {
-      expiresIn: '10s',
+      expiresIn: '30s',
     }); // JWT에서 Payload를 가져옵니다.
   },
 };

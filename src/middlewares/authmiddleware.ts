@@ -16,8 +16,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     // const accessToken = req.cookies.accessToken;
     // const refreshToken = req.cookies.refreshToken;
     //토큰이 없다면~
-    if (!accesstoken)
-      return res.status(401).json({ message: 'AccessToken이 존재하지 않습니다.' });
+    if (!accesstoken)return res.status(401).json({ message: 'AccessToken이 존재하지 않습니다.' });
     //에쎄스 토큰 검증하기
     const decodeAccessToken = await jwt.validateAccessToken(accesstoken);
     //인증된 에쎄스 토큰이 없을시
@@ -27,14 +26,18 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       //리프레쉬 토큰 검증
       const decodeRefreshToken = await jwt.validateRefreshToken(refreshtoken);
       //리프레쉬 토큰 만료시
-      if (decodeRefreshToken == false) return res.status(401).json({ message: 'RefreshToken이 일치하지 않거나 만료 되었습니다.' });
+      if (decodeRefreshToken == false)return res.status(401).json({ message: 'RefreshToken이 일치하지 않거나 만료 되었습니다.' });
       let userId = decodeRefreshToken.userId;
       //리프레쉬 토큰이 있을때 유저정보로 찾아오기
       const findUser = await User.findByPk(userId);
       const findRefreshToken = findUser!.refreshToken;
       //암호화해서 저장된 리프레쉬 토큰이랑 같은지 검증
-      const campareRefreshToken = bcrypt.compareSync(refreshtoken,findRefreshToken);
-      if (campareRefreshToken == false)return res.status(401).json({ message: 'RefreshToken이 일치하지 않거나 만료 되었습니다.' });
+      const campareRefreshToken = bcrypt.compareSync(
+        refreshtoken,
+        findRefreshToken
+      );
+      if (campareRefreshToken == false)
+        return res.status(401).json({ message: 'RefreshToken이 일치하지 않거나 만료 되었습니다.' });
       // 리프레쉬 정상에 AccessToken 만료시 재발급
       const AccessToken = await jwt.createAccessTokenRe(userId);
       //쿠키로 보내줌
