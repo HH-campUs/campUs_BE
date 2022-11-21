@@ -1,4 +1,4 @@
-import { Association, DataTypes, Model, BelongsToMany } from 'sequelize';
+import { DataTypes, Model, BelongsToMany } from 'sequelize';
 import Camp from './camp';
 import sequelize from './sequlize';
 
@@ -34,18 +34,22 @@ Topic.init(
     sequelize,
     modelName: 'Topic',
     tableName: 'topic',
+    charset: "utf8", // 한국어 설정
+    collate: "utf8_general_ci", // 한국어 설정
     freezeTableName: true,
     createdAt:false,
     updatedAt: false,
   }
 );
+
 Topic.belongsToMany(Camp, {
     through: 'topicMapping',
-    foreignKey: 'topicId'
+    foreignKey: 'topicId',
 });
 Camp.belongsToMany(Topic, {
     through: 'topicMapping',
-    foreignKey: 'campId'
+    foreignKey: 'campId',
+    onDelete: 'CASCADE'
 });
 
 export default Topic;
