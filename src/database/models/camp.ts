@@ -35,7 +35,7 @@ Camp.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     campName: {
       allowNull: true,
@@ -116,7 +116,7 @@ Camp.init(
     lookUp: {
       allowNull: false,
       defaultValue: 0,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     eqpmnLendCl: {
       allowNull: true,
@@ -125,6 +125,14 @@ Camp.init(
     createdtime: {
       allowNull: false,
       type: DataTypes.DATE,
+    },
+    featureNm: {
+      allowNull: true,
+      type: DataTypes.TEXT,
+    },
+    clturEvent: {
+      allowNull: true,
+      type: DataTypes.TEXT,
     },
   },
   {

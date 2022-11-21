@@ -11,12 +11,12 @@ passportCogfig();
 
 const router = Router();
 
-router.use('/camps', reviewRouter);
 router.use('/users', userRouter);
-router.use('/users', reviewRouter);
-router.use('/search', reviewRouter);
+router.use('/kakao',kakao)
 router.use('/', campRouter);
 router.use('/weathers', Weather);
-router.use('/kakao', kakao);
+router.use('/camps', reviewRouter);
+router.use('/users', reviewRouter);
+router.use('/search', reviewRouter);
 
 export default router;

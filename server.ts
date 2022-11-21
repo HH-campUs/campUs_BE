@@ -13,7 +13,9 @@ import error from './src/middlewares/errorhandler';
 dotenv.config();
 const app = express();
 const prod: boolean = process.env.NODE_ENV === 'production';
+
 const Domain = process.env.DOMAIN
+
 app.set('port', prod ? process.env.PORT : 3000);
 
 app.use(express.json());
@@ -41,7 +43,7 @@ if (prod) {
     };
     HTTPS.createServer(options, app).listen(app.get('port'), async () => {
       console.log('https 서버가 실행되었습니다. 포트 :: ' + app.get('port'));
-      await createData;
+      createData();
       await sequelize
         .authenticate()
         .then(async () => {
@@ -60,7 +62,7 @@ if (prod) {
   app.listen(app.get('port'), async () => {
     console.log('HTTPS 서버가 실행되지 않습니다.');
     console.log(`${app.get('port')}로 실행중`);
-    await createData;
+    createData();
     await sequelize
       .authenticate()
       .then(async () => {
@@ -72,3 +74,4 @@ if (prod) {
       });
   });
 }
+

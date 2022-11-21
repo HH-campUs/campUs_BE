@@ -27,7 +27,7 @@ User.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     kakaoId: {
       allowNull: true,

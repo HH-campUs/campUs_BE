@@ -6,7 +6,7 @@ type Config = {
   password: string;
   database: string;
   host: string;
-  [key: string]: string | boolean;//객체에 키와 벨류가 있으면키도 문자 밸류도 문자
+  [key: string]: string | boolean; //객체에 키와 벨류가 있으면키도 문자 밸류도 문자
 };
 interface IConfigGroup {
   development: Config;
@@ -21,7 +21,7 @@ const config: IConfigGroup = {
     database: process.env.DB_NAME!,
     host: process.env.DB_HOST!,
     dialect: 'mysql',
-    logging:false
+    logging: false
   },
   test: {
     username: 'root',

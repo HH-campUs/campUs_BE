@@ -1,77 +1,46 @@
 import { Camp } from '../../database/models/camp';
+import { Trip } from '../../database/models/trip';
+import { Pick } from '../../database/models/pick';
+import { Topic } from '../../database/models/topic';
 import { Op } from 'sequelize';
-import { QueryTypes, Sequelize } from 'sequelize';
+import { topic, trip } from '../../interface/camp'
 
 export default {
-  getTopicCamp: async (topic: string) => {
+  getTopicCamp: async ({topic}:topic) => {
     // console.log(topic, '레포');
     // console.log(Camp);
-    return await Camp.findAll({
-      // campName, induty, doNm, sigunguNm, manageSttus, themaEnvrnCl, eqpmnLendCl
-      where: {
-        [Op.or]: [
-          {
-            campName: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            induty: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            doNm: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            sigunguNm: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            address: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            operPdCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            operDeCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            animal: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            sbrsCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            posblFcltyCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            themaEnvrnCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-          {
-            eqpmnLendCl: {
-              [Op.like]: `%${topic}%`,
-            },
-          },
-        ],
-      },
+    const getCamp = await Camp.findAll({
+      
     });
   },
+
+  myTripSave: async({userId, date, campId}:trip)=>{
+    return await Trip.create({
+      userId, campId, date
+    })
+  },
+
+  myTripRemove: async({userId, tripId}:trip)=>{
+    return await Trip.destroy({
+      where: {userId, tripId}
+    })
+  },
+
+  campPickFind: async(userId:number, campId:number)=>{
+    return await Pick.findOne({
+      where: {userId, campId}
+    })
+  },
+
+  campPick: async(userId:number, campId:number)=>{
+    return await Pick.create({
+      userId, campId
+    })
+  },
+
+  campUnPick: async(userId:number, campId:number)=>{
+    return await Pick.destroy({
+      where: {userId, campId}
+    })
+  }
 };

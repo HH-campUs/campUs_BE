@@ -1,3 +1,4 @@
+import { captureRejectionSymbol } from 'events';
 import Review from '../../database/models/review';
 import reviewRepo from './reviewRepo';
 
@@ -30,7 +31,7 @@ export default {
     userId: number
   ) => {
     const findreview = await reviewRepo.findOneReview(reviewId);
-    if (findreview!.userId === userId)
+    if (findreview?.userId === userId)
       return await reviewRepo.updateReview(
         userId,
         reviewImg,
@@ -45,28 +46,55 @@ export default {
       return await reviewRepo.deleteReview(reviewId);
     }
   },
-  // //내가쓴리뷰조회
-  // getMyReview: async (userId: number) => {
-  //   const myreview = await reviewRepo.getMyReview(userId);
-  //   return  {
-  //     userId:myreview.userId,
+  //내가쓴리뷰조회
+  getMyReview: async (userId: number) => {
+    const myreivew = await reviewRepo.getMyReview(userId);
 
-  //   }
-  // },
-
-  //검색하기
-  search: async (userId: number, keyword: string) => {
-    const getcamp = await reviewRepo.search(userId, keyword);
-    const campData = getcamp.map((camp: any) => {
-      // let boolean;
-      // camp.ispick.length ? (boolean = true) : (boolean = false);
+    return myreivew.map((x: any) => {
       return {
-        campId: camp.campId,
-        // createdAt: camp.createdAt,
-        // choiceCount: camp.choiceCount,
-        // isPick: boolean,
+        reviewId: x.userId,
+        userId: x.userId,
+        campId: x.campId,
+        reviewImg: x.reviewImg,
+        reviewComment: x.reviewComment,
+        createdAt: x.createdAt,
+        updatedAt: x.updatedAt,
       };
     });
-    // return  {userId:camp.userId,      }
+  },
+
+  //캠핑장이름검색
+  search: async (keyword: string) => {
+    const getCampName = await reviewRepo.search(keyword);
+
+    const campName = getCampName.map((camp: any) => {
+
+      return {
+        campId: camp.campId,
+        campName: camp.campName,
+        induty: camp.induty,
+        doNm: camp.doNm,
+        sigunguNm: camp.sigunguNm,
+        address: camp.address,
+        X: camp.X,
+        Y: camp.Y,
+        operPdCl: camp.operPdCl,
+        operDeCl: camp.operDeCl,
+        animal: camp.animal,
+        ImageUrl: camp.ImageUrl,
+        homePage: camp.homePage,
+        sbrsCl: camp.sbrsCl,
+        posblFcltyCl: camp.posblFcltyCl,
+        wtrplCo: camp.wtrplCo,
+        swrmCo: camp.swrmCo,
+        toiletCo: camp.toiletCo,
+        manageSttus: camp.manageSttus,
+        themaEnvrnCl: camp.themaEnvrnCl,
+        lookUp: camp.lookUp,
+        eqpmnLendCl: camp.eqpmnLendCl,
+        createdtime: camp.createdtime,
+      };
+    });
+    return { camp: campName };
   },
 };
