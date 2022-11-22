@@ -19,14 +19,15 @@ export default {
     try{
       const { userId } = await res.locals.user;
       const { campId } = req.params; // await 불필요
-      const { date } = await req.body
+      const { address, date } = await req.body
       const ids: trip ={
         userId,
         campId:Number(campId),
+        address,
         date
       }
-      const a = await campServ.myTripSave(ids);
-      res.status(201).json({a, message : "여행일정 등록"})
+      await campServ.myTripSave(ids);
+      res.status(201).json({message : "여행일정 등록"})
     }catch(err){
       next(err);
     }
