@@ -124,8 +124,8 @@ async function createweather() {
             snow: x.snow,
           };
         })
-        await Weather.bulkCreate(weathers);
-        console.log(weathers.length)
+        // await Weather.bulkCreate(weathers);
+        console.log(weathers)
       });
   }
 }
@@ -148,7 +148,7 @@ export default async () => {
   // await Weather.destroy({ where: {} });
   // await sleep(3000);
   // console.log('삭제 완료');
-  // createweather();
+  createweather();
   // await sleep(3000);
   // console.log('날씨 저장완료');
   // });
