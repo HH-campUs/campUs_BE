@@ -15,27 +15,27 @@ export default(req:Request, res:Response, next:NextFunction) => {
         console.log(user)
         if (err) return next(err);
         const { userId } = user;
-        const accessToken = jwt.sign(
+        const AccessToken = jwt.sign(
           { userId: userId },
           process.env.JWT_KEY!,
           { expiresIn: "3h" }
         );
-        const refreshToken = jwt.sign(
+        const RefreshToken = jwt.sign(
           { userId: userId },
           process.env.JWT_KEY!,
           { expiresIn: "7d" }
         );
         const salt = bcrypt.genSaltSync(Number(process.env.SALT_ROUND!));
-        const RefreshToken = bcrypt.hashSync(refreshToken, salt);
-        await User.update({RefreshToken}, {where : {userId}})
-        res.cookie("refreshToken", refreshToken);
-        res.cookie("accessToken", accessToken);
+        const refreshToken = bcrypt.hashSync(RefreshToken, salt);
+        await User.update({refreshToken}, {where : {userId}})
+        res.cookie("refreshToken", RefreshToken);
+        res.cookie("accessToken", AccessToken);
         // result = { userId, accessToken, refreshToken, nickname };
         res.status(200).json({
           message: "로그인 성공",
-          accesstoken: accessToken,
-          refreshtoken: refreshToken,
-        });
+          accesstoken: AccessToken,
+          refreshtoken: RefreshToken,
+        })
         // res.redirect(
         // );
       }

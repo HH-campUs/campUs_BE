@@ -3,6 +3,7 @@ import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
 import User from '../../database/models/user';
 import { Op } from 'sequelize';
+import { review } from '../../interface/review';
 
 export default {
   //캠핑장 리뷰조회
@@ -12,10 +13,10 @@ export default {
 
   //리뷰작성
   createReview: async (
-    userId: number,
-    campId: number,
-    reviewImg: string,
-    reviewComment: string
+{    userId,
+    campId,
+    reviewImg,
+    reviewComment}:review
   ) => {
     await Review.create({
       userId,
@@ -25,12 +26,19 @@ export default {
     });
     return;
   },
+
+  //리뷰작성자찾기
+  findReviewAuthor: async (reviewId: number) => {;
+    return await Review.findByPk(reviewId);
+  },
+
+
   //리뷰수정
   updateReview: async (
-    reviewId: number,
-    reviewImg: string,
-    reviewComment: string,
-    userId: number
+{    reviewId,
+    reviewImg,
+    reviewComment,
+    userId}:review
   ) => {
     const updateReview = await Review.update(
       { reviewComment: reviewComment, reviewImg: reviewImg },

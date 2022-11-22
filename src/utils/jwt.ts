@@ -13,23 +13,17 @@ export default {
     //유저정보 확인
     const user = await UserRepo.findUser({email});
     //유저확인
-    if (!user) {
-      throw new Error.ValidationErrors(
-        '유저가 없거나 비밀번호가 일치하지 않습니다.'
-      );
-    }
+    if (!user) throw new Error.ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
+
     //비밀 번호 확인
     const encryptedPassword = bcrypt.compareSync(password!, user!.password);
-    if (encryptedPassword === false) {
-      throw new Error.ValidationErrors(
-        '유저가 없거나 비밀번호가 일치하지 않습니다.'
-      );
-    }
+    if (encryptedPassword === false) throw new Error.ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
+
     //리프레쉬 발급
     const RefreshToken = jwt.sign(
       { userId: user.userId },
       process.env.JWT_KEY!,
-      { expiresIn: '30s' }
+      { expiresIn: '3h' }
     ); // Refresh Token이 7일 뒤에 만료되도록 설정합니다.
     //에세스 토큰 발급
     const AccessToken = jwt.sign(
