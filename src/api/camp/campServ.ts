@@ -15,8 +15,8 @@ export default {
     // return TopicCamp;
   },
 
-  myTripSave: async({userId, date, campId}:trip)=>{
-    return await campRepo.myTripSave({userId, date, campId});
+  myTripSave: async({userId, date, address, campId}:trip)=>{
+    return await campRepo.myTripSave({userId, date, address, campId});
   },
 
   myTripRemove: async({userId, tripId}:trip)=>{

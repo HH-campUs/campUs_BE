@@ -39,6 +39,10 @@ Trip.init(
       allowNull: false,
       type: DataTypes.MEDIUMINT.UNSIGNED,
     },
+    address: {
+      allowNull: false,
+      type: DataTypes.STRING(255),
+    },
     date: {
       allowNull: false,
       type: DataTypes.STRING(10),

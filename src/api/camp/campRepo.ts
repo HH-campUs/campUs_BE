@@ -13,10 +13,10 @@ export default {
     });
   },
 
-  myTripSave: async({userId, date, campId}:trip)=>{
+  myTripSave: async({userId, date, address, campId}:trip)=>{
     console.log(typeof campId)
     return await Trip.create({
-      userId, campId, date
+      userId, campId, date, address
     })
   },
 

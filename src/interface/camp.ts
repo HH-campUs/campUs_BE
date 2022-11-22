@@ -7,5 +7,6 @@ export interface trip {
     tripId? : number;
     userId? : number;
     campId? : number;
+    address? : string;
     date?: number;
 }
