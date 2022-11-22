@@ -7,8 +7,6 @@ export const signSchema = Joi.object({
     .pattern(/^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+[.]?\w{2,3}/)
     .required(),
   password: Joi.string()
-    .pattern(
-      /^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
-    )
+    .pattern(/^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/)
     .required(),
 });

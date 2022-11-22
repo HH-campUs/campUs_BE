@@ -59,51 +59,51 @@ Weather.init(
     },
     day: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     min: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     max: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     night: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     eve: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     morn: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     wind_speed: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     clouds: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     uvi: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     pop: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     rain: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
     snow: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
+      type: DataTypes.FLOAT,
     },
   },
   {

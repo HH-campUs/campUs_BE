@@ -125,7 +125,7 @@ async function createweather() {
           };
         })
         await Weather.bulkCreate(weathers);
-        console.log(weathers.length)
+        // console.log(weathers)
       });
   }
 }
