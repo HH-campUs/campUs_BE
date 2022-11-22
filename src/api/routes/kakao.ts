@@ -2,6 +2,10 @@ import { Router } from 'express';
 import passport from 'passport';
 import dotenv from 'dotenv'
 import kakaoCallback from '../../utils/kakaojwt'
+import passportCogfig from '../../passport/index';
+
+//패스포트 임포트 해줘야 가능하다.
+passportCogfig();
 dotenv.config()
 const router = Router();
 

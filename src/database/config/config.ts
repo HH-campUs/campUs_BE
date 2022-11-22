@@ -1,4 +1,3 @@
-import { bool } from 'aws-sdk/clients/signer';
 import dotenv from 'dotenv';
 dotenv.config();
 type Config = {

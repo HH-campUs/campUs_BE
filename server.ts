@@ -18,6 +18,17 @@ const Domain = process.env.DOMAIN
 
 app.set('port', prod ? process.env.PORT : 3000);
 
+app.use(helmet())
+app.use(
+  cors({
+    // origin: ['https://fantastic-narwhal-f05420.netlify.app/','http://localhost:3000/','https://campus99.shop/'],
+    origin: '*',
+    // methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+  );
+ 
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -28,13 +39,6 @@ app.use(error.errorLogger);
 app.use(error.errorHandler);
 
 if (prod) {
-  app.use(helmet());
-  app.use(
-    cors({
-      origin: '*',
-      credentials: true,
-    })
-  );
   try {
     const options = {
       ca: fs.readFileSync(`/etc/letsencrypt/live/${Domain}/fullchain.pem`),
