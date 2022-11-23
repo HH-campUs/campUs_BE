@@ -5,10 +5,11 @@ import dotenv from 'dotenv';
 import helmet from 'helmet'; //악성 스크립트 보호
 import HTTPS from 'https';
 import fs from 'fs';
-import { sequelize } from './src/database/models/sequlize';
 import indexRouter from './src/api/routes/index';
 import createData from './src/database/data';
 import error from './src/middlewares/errorhandler';
+
+import { sequelize } from './src/database/models/sequlize';
 
 dotenv.config();
 const app = express();

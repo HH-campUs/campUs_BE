@@ -11,7 +11,6 @@ class InvalidParamsError extends Error {
     super(message); //상속 받은것은 꼭 써야함 .
     this.status = status || 409; //파람스 에러 409
     this.name = 'InvalidParamsError';
-    // if (!message) this.message = '요청한 데이터 형식이 올바르지 않습니다.';
   }
 }
 //유효성 검사 에러

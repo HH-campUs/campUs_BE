@@ -10,7 +10,6 @@ dotenv.config();
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-  console.log(req.headers)
   const { authorization , refreshtoken }:token = req.headers
   if(!authorization) throw new error.Unauthorized("인가 요청 정보가 잘 못 되었습니다.")
   const tokenType = authorization?.split(" ")[0]

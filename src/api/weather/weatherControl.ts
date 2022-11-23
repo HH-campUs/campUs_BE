@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { weathers } from '../../interface/weather';
 import weatherServ from './weatherServ';
 import errer from '../../utils/exceptions'
+
 export default {
   getweather: async (req: Request, res: Response, next: NextFunction) => {
     try {
