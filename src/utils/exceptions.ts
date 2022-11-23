@@ -27,7 +27,7 @@ class Unauthorized extends Error {
   constructor(message: string, status?: number) {
     super(message);
     this.status = status || 401;
-    this.name = 'ValidationError';
+    this.name = 'Unauthorized';
   }
 }
 
