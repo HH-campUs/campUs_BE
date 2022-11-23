@@ -15,7 +15,7 @@ export default () => {
         clientID: process.env.KAKAO_ID!,
         callbackURL: process.env.KAKAO_URL!,
       },
-      async (accessToken: string, refreshToken: string, profile : profile, done: any) => {
+      async (accessToken: string, refreshToken: string, profile:profile, done: any) => {
         try {
           const profileImg = profile._json.properties.profile_image;
           const kakaoId = profile._json.id;
