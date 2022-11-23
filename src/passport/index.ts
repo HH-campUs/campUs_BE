@@ -17,6 +17,5 @@ export default () => {
   //      .then(user => done(null, user))
   //      .catch(err => done(err));
   // });
-  // console.log("패스포트 인덱스ㅡㅡ")
   kakao(); //카카오 실행
 };

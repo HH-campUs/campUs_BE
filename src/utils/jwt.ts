@@ -58,7 +58,7 @@ export default {
   //에세스 토큰 재발급
   createAccessTokenRe: async (userId: number): Promise<string> => {
     return jwt.sign({ userId: userId }, process.env.JWT_KEY!, {
-      expiresIn: '30s',
+      expiresIn: '3h',
     }); // JWT에서 Payload를 가져옵니다.
   },
 };

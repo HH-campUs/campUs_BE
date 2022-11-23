@@ -1,10 +1,11 @@
 //서비스로 불러와서 바로 사용가능 서비스도 인스턴스로 내보내기
-import { Request, Response, NextFunction } from 'express';
+import {Request,Response, NextFunction } from 'express';
 import { Users } from '../../interface/user';
-import userServ from './userServ';
 import { signSchema } from '../../utils/validation';
+import userServ from './userServ';
 import Token from '../../utils/jwt';
 import errer from '../../utils/exceptions'
+
 
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
@@ -28,17 +29,18 @@ export default {
       const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).json(Tokens);
+      res.status(200).json({"message":"로그인을 성공하였습니다!!",Tokens});
     } catch (err) {
       next(err);
     }
   },
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const { location } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
       const { userId }: Users = res.locals.user;
-      const { nickname, profileImg }: Users = req.body;
-      const updateUser = { nickname, profileImg, userId };
-      await userServ.updateUser(updateUser);
+      const { nickname }: Users = req.body;
+      const profileImg = location
+      await userServ.updateUser({nickname, profileImg, userId });
       res.status(201).send({ message: '수정 완료' });
     } catch (err) {
       next(err);
@@ -48,7 +50,6 @@ export default {
     try {
       const { userId }: Users = res.locals.user;
       const myPage = await userServ.getmyPage({userId});
-      console.log(userId);
       res.status(200).json(myPage);
     } catch (err) {
       next(err);

@@ -46,7 +46,7 @@ async function createcamp() {
       });
       for (let i = 0; i < camps.length; i += 100) {
         await Camp.bulkCreate(camps.slice(i, i + 100));
-        console.log(i, i + 100);//스케쥴 종료
+        console.log(i, i + 100);
       }
     });
 }
