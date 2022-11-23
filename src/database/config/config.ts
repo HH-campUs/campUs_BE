@@ -5,12 +5,12 @@ type Config = {
   password: string;
   database: string;
   host: string;
-  [key: string]: string; //객체에 키와 벨류가 있으면키도 문자 밸류도 문자
+  [key: string]: string | boolean; //객체에 키와 벨류가 있으면키도 문자 밸류도 문자
 };
 interface IConfigGroup {
   development: Config;
   test: Config;
-  production: Config;
+  production: Config
 }
 
 const config: IConfigGroup = {
@@ -20,6 +20,7 @@ const config: IConfigGroup = {
     database: process.env.DB_NAME!,
     host: process.env.DB_HOST!,
     dialect: 'mysql',
+    logging: false
   },
   test: {
     username: 'root',
@@ -27,6 +28,7 @@ const config: IConfigGroup = {
     database: 'campus',
     host: '127.0.0.1',
     dialect: 'mysql',
+    logging:false
   },
   production: {
     username: 'root',
@@ -34,6 +36,7 @@ const config: IConfigGroup = {
     database: 'campus',
     host: '127.0.0.1',
     dialect: 'mysql',
+    logging:false
   },
 };
 

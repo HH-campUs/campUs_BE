@@ -1,15 +1,18 @@
 import Weather from '../models/weather'; //방금 만들어준 Weather
 import Camp from '../models/camp';
+import Topic from '../models/topic';
+import LookUp from '../models/lookUp';
 import User from '../models/user';
 import Pick from '../models/pick';
 import Review from '../models/review';
 import Trip from '../models/trip';
+import sequelize from '../models/sequlize';
 
 /*table 리스트르르 받아서 배열로 저장
  referenced by a foreign key constrain 에러로 인한 drop create 테이블 리스트분리
 */
-const dropTable = [Review, Trip, Pick, Camp, User, Weather];
-const createTable = [Camp, User, Review, Trip, Pick, Weather];
+const dropTable = [Review, Trip, Pick, LookUp, Topic, Camp, User, Weather];
+const createTable = [Camp, Topic, LookUp, User, Review, Trip, Pick, Weather];
 console.log(`======Drop & Create Table======`);
 //배열을 반복문을 돌려서 넣어줌
 async function migrate() {
@@ -23,6 +26,7 @@ async function migrate() {
         console.log(`❗️Error in drop ${dropTable[i]} Table : `, err);
       });
   }
+
   for (let i = 0; i < createTable.length; i++) {
     await createTable[i]
       //sync <=데이터베이스 연동와 자동 연동하기
@@ -34,8 +38,10 @@ async function migrate() {
         console.log(`❗️Error in Create ${createTable[i]} Table : `, err);
       });
   }
+  sequelize.sync();
 }
 
 (async () => {
+  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`)
   await migrate();
 })();

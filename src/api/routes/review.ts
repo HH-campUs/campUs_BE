@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import reviewController from '../review/reviewControl';
+import authmiddleware from '../../middlewares/authmiddleware';
+
 
 const reviewrouter = Router();
 
@@ -12,16 +14,15 @@ reviewrouter.get('/', reviewController.search);
 reviewrouter.get('/:campId/review', reviewController.getReview);
 
 //리뷰작성
-reviewrouter.post('/:campId/review', reviewController.createReview);
+reviewrouter.post('/:campId/review', authmiddleware, reviewController.createReview);
 
 //리뷰수정
-reviewrouter.put('/:campId/:reviewId', reviewController.updateReview);
+reviewrouter.put('/:campId/:reviewId', authmiddleware, reviewController.updateReview);
 
 //리뷰삭제
-reviewrouter.delete('/:campId/:reviewId', reviewController.deleteReview);
+reviewrouter.delete('/:campId/:reviewId', authmiddleware, reviewController.deleteReview);
 
 //내가쓴리뷰조회
-// reviewrouter.get('/review', reviewController.getMyReview);
-
+reviewrouter.get('/review', authmiddleware,reviewController.getMyReview);
 
 export default reviewrouter;

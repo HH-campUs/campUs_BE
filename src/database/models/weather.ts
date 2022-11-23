@@ -5,6 +5,7 @@ export class Weather extends Model {
   //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
   public readonly id?: number;
   public dt!: string;
+  public date!: string;
   public pardo!: string;
   public sunrise!: string;
   public sunset!: string;
@@ -30,13 +31,17 @@ Weather.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     pardo: {
       allowNull: false,
       type: DataTypes.STRING(50),
     },
     dt: {
+      allowNull: false,
+      type: DataTypes.STRING(50),
+    },
+    date: {
       allowNull: false,
       type: DataTypes.STRING(50),
     },
@@ -54,55 +59,57 @@ Weather.init(
     },
     day: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     min: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     max: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     night: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     eve: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     morn: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     wind_speed: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     clouds: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     uvi: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     pop: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     rain: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
     snow: {
       allowNull: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.FLOAT,
     },
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
+    charset: "utf8", // 한국어 설정
+    collate: "utf8_general_ci", // 한국어 설정
     modelName: 'Weather',
     tableName: 'weather',
     freezeTableName: true,

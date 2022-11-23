@@ -7,6 +7,8 @@ import Pick from './pick';
 export class User extends Model {
   //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
   public readonly userId!: number;
+  public kakaoId!: string;
+  public provider!: string;
   public profileImg!: string;
   public email!: string;
   public nickname!: string;
@@ -25,7 +27,15 @@ User.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
+    },
+    kakaoId: {
+      allowNull: true,
+      type: DataTypes.STRING(20),
+    },
+    provider: {
+      allowNull: true,
+      type: DataTypes.STRING(20),
     },
     profileImg: {
       allowNull: true,
@@ -34,7 +44,7 @@ User.init(
       type: DataTypes.STRING(255),
     },
     email: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING(100),
     },
     nickname: {
@@ -42,7 +52,7 @@ User.init(
       type: DataTypes.STRING(100),
     },
     password: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING(100),
     },
     refreshToken: {
@@ -52,6 +62,8 @@ User.init(
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
+    charset: "utf8", // 한국어 설정
+    collate: "utf8_general_ci", // 한국어 설정
     modelName: 'User',
     tableName: 'user',
     freezeTableName: true,

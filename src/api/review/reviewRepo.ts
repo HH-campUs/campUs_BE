@@ -2,7 +2,8 @@ import { number } from 'joi';
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
 import User from '../../database/models/user';
-import { Op }  from"sequelize"
+import { Op } from 'sequelize';
+import { review } from '../../interface/review';
 
 export default {
   //캠핑장 리뷰조회
@@ -12,10 +13,10 @@ export default {
 
   //리뷰작성
   createReview: async (
-    userId: number,
-    campId: number,
-    reviewImg: string,
-    reviewComment: string
+{    userId,
+    campId,
+    reviewImg,
+    reviewComment}:review
   ) => {
     await Review.create({
       userId,
@@ -25,12 +26,19 @@ export default {
     });
     return;
   },
+
+  //리뷰작성자찾기
+  findReviewAuthor: async (reviewId: number) => {;
+    return await Review.findByPk(reviewId);
+  },
+
+
   //리뷰수정
   updateReview: async (
-    reviewId: number,
-    reviewImg: string,
-    reviewComment: string,
-    userId: number
+{    reviewId,
+    reviewImg,
+    reviewComment,
+    userId}:review
   ) => {
     const updateReview = await Review.update(
       { reviewComment: reviewComment, reviewImg: reviewImg },
@@ -53,23 +61,26 @@ export default {
     return deleteReview;
   },
 
-  // //내가쓴리뷰조회
-  // getMyReview: async (campId: number) => {
-  //   return await Review.findAll({ where: { campId } });
+  //내가쓴리뷰조회
+  getMyReview: async (userId: number) => {
+    return await Review.findAll({ where: { userId } });
+  },
+  // //유저찾기
+  // findUser: async (userId:number, reviewId:number) => {
+  //   return await User.findOne({
+  //      where: { reviewId: reviewId, userId:userId },
+  //     include:[{model:User}] });
   // },
 
-  //검색하기
-  search: async (userId:number, keyword:string) => {
+  //캠핑장이름검색
+  search: async (keyword: string) => {
     const searchResult = await Camp.findAll({
       where: {
         campName: {
-          [Op.like]: "%" + keyword + "%",
+          [Op.like]: '%' + keyword + '%',
         },
       },
-      include: [
-        {model: User, attributes:['nickname',"userImg"]}
-      ]
-    })
-    return searchResult
+    });
+    return searchResult;
   },
 };

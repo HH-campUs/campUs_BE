@@ -35,7 +35,7 @@ Camp.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     campName: {
       allowNull: true,
@@ -116,7 +116,7 @@ Camp.init(
     lookUp: {
       allowNull: false,
       defaultValue: 0,
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
     eqpmnLendCl: {
       allowNull: true,
@@ -126,9 +126,19 @@ Camp.init(
       allowNull: false,
       type: DataTypes.DATE,
     },
+    featureNm: {
+      allowNull: true,
+      type: DataTypes.TEXT,
+    },
+    clturEvent: {
+      allowNull: true,
+      type: DataTypes.TEXT,
+    },
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
+    charset: "utf8", // 한국어 설정
+    collate: "utf8_general_ci", // 한국어 설정
     modelName: 'Camp',
     tableName: 'camp',
     freezeTableName: true,

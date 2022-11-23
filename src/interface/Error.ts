@@ -1,8 +1,6 @@
 //에러 타입 추가
 export interface Error {
   name: string;
-  message: string;
-  stack?: string;
   status?: number;
 }
 //에러 생성자

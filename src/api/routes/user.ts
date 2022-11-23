@@ -1,10 +1,16 @@
 import { Router } from 'express';
+import authmiddleware from '../../middlewares/authmiddleware';
+import multer from '../../utils/multer';
 import User from '../user/userControl';
 
 const router = Router();
-
+//회원가입
 router.post('/signup', User.signup);
-router.post('/login', User.login)
-router.get('/logout',User.logout )
-router.put('/myPage',User.updateUser)
+//로그인
+router.post('/login', User.login);
+//유저정보 수정
+router.put('/myPage', authmiddleware, multer.upload.single('profileImg') ,User.updateUser);
+//마이페이지 조회
+router.get('/myPage', authmiddleware, User.getmyPage);
+
 export default router;

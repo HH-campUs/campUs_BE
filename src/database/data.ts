@@ -4,21 +4,19 @@ import { Camps, Weathers, Date } from '../interface/openApi';
 import { Weather } from './models/weather';
 import { Camp } from './models/camp';
 import dotenv from 'dotenv';
-import { captureRejectionSymbol } from 'events';
 
 dotenv.config();
 
-function sleep(ms: any) {
-  return new Promise((r) => setTimeout(r, ms));
-}
 
 async function createcamp() {
+
   axios
     .get(
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
     .then(async (res) => {
-      const camp = res.data.response.body.items.item;
+
+      const camp = res.data.response.body.items.item
       const camps = camp.map((x: Camps) => {
         return {
           campName: x.facltNm,
@@ -42,6 +40,8 @@ async function createcamp() {
           themaEnvrnCl: x.themaEnvrnCl,
           createdtime: x.createdtime,
           eqpmnLendCl: x.eqpmnLendCl,
+          featureNm : x.featureNm,
+          clturEvent: x.clturEvent
         };
       });
       for (let i = 0; i < camps.length; i += 100) {
@@ -52,9 +52,6 @@ async function createcamp() {
 }
 
 async function createweather() {
-  await Weather.destroy({ where: {} });
-  await sleep(3000);
-  console.log('삭제 완료');
 
   const pardoXY = [
     [37.5635, 126.98, '서울'],
@@ -107,6 +104,9 @@ async function createweather() {
           return {
             pardo: XY[2],
             dt: Unix_timestamp(x.dt).slice(0, 10).split('-').join(''),
+            date: ['일', '월', '화', '수', '목', '금', '토'][
+              new Date(`${Unix_timestamp(x.dt).slice(0, 10)}`).getDay()
+            ],
             sunrise: Unix_timestamp(x.sunrise),
             sunset: Unix_timestamp(x.sunset),
             day: x.temp.day,
@@ -123,21 +123,33 @@ async function createweather() {
             rain: x.rain,
             snow: x.snow,
           };
-        });
+        })
         await Weather.bulkCreate(weathers);
+        // console.log(weathers)
       });
   }
 }
 
-export default (async () => {
+function sleep(ms: any) {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
-  // await createcamp();
+const rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(0, 6)];
+rule.hour = 5;    //5시
+rule.minute = 0;  //정각
+rule.tz = "Asia/Seoul";  //한국시간
+
+export default async () => {
+  // createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  schedule.scheduleJob({ hour : 5 }, async () => {
-    await createweather();
-    await sleep(3000);
-    console.log('날씨 저장완료');
+  schedule.scheduleJob(rule , async () => {
+  await Weather.destroy({ where: {} });
+  await sleep(3000);
+  console.log('삭제 완료');
+  createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
   });
-
-})();
+}
