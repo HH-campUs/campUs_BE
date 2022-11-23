@@ -4,7 +4,6 @@ import weatherRepo from './weatherRepo';
 export default {
   getweather: async ({ pardo, dt }: weathers) => {
     const findDate = await weatherRepo.findDate({dt})
-    console.log(findDate)
     if(!findDate) throw new Error('요청 하신 날짜가 없습니다.')
     const findWeather = await weatherRepo.getweather({pardo});
     //날씨 가공 함수
