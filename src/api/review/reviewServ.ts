@@ -7,23 +7,28 @@ import { review } from '../../interface/review';
 
 export default {
   //캠핑장 리뷰조회
-  getReview: async (campId: number) => {
-    return await reviewRepo.getReview(campId);
+  getReview: async ({ campId }: review) => {
+    return await reviewRepo.getReview({ campId });
   },
 
   //리뷰작성
-  createReview: async ({ userId, campId, reviewImg, reviewComment }:review) => {
-    return await reviewRepo.createReview(
-{      userId,
+  createReview: async ({
+    userId,
+    campId,
+    reviewImg,
+    reviewComment,
+  }: review) => {
+    return await reviewRepo.createReview({
+      userId,
       campId,
       reviewImg,
-      reviewComment}
-    );
+      reviewComment,
+    });
   },
 
   //리뷰작성자찾기
-  findReviewAuthor: async (reviewId: number) => {
-    return await reviewRepo.findReviewAuthor(reviewId);
+  findReviewAuthor: async ({reviewId}:review) => {
+    return await reviewRepo.findReviewAuthor({reviewId});
   },
 
   //리뷰수정
@@ -33,7 +38,7 @@ export default {
     reviewComment,
     userId,
   }: review) => {
-    const findByauthor = await reviewRepo.findReviewAuthor(reviewId!);
+    const findByauthor = await reviewRepo.findReviewAuthor({reviewId});
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 수정할 수 있습니다');
@@ -50,13 +55,13 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async (reviewId: number, userId: number) => {
-    const findByauthor = await reviewRepo.findReviewAuthor(reviewId);
+  deleteReview: async ({reviewId, userId}: review) => {
+    const findByauthor = await reviewRepo.findReviewAuthor({reviewId});
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 삭제할 수 있습니다');
 
-    const deleteReview = await reviewRepo.deleteReview(reviewId);
+    const deleteReview = await reviewRepo.deleteReview({reviewId});
     return {
       reviewId: deleteReview,
     };

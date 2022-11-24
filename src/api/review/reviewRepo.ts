@@ -47,13 +47,13 @@ export default {
   },
 
   //리뷰찾기
-  findOneReview: async (reviewId: number) => {
+  findOneReview: async ({reviewId}: review) => {
     const reviews = await Review.findOne({ where: { reviewId } });
     return reviews;
   },
 
   //리뷰삭제
-  deleteReview: async (reviewId: number) => {
+  deleteReview: async ({reviewId}: review) => {
     const deleteReview = await Review.destroy({
       where: { reviewId },
     });

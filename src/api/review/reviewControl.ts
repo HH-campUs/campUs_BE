@@ -64,13 +64,13 @@ export default {
   deleteReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
-      const { userId } = res.locals.user;
-      const findreview = await reviewService.findReviewAuthor(reviewId!);
+      const { userId }: review = res.locals.user;
+      const findreview = await reviewService.findReviewAuthor({reviewId});
 
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
       }
-      await reviewService.deleteReview(reviewId!, userId);
+      await reviewService.deleteReview({reviewId, userId});
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {
       next(error);
