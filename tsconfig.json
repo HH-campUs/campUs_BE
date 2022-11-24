@@ -7,7 +7,7 @@
     //엄격한지
     "strict": true,
     //무슨 문법?
-    "lib": ["ES6", "ES2022"],
+    "lib": ["ES6","ES2015","ES2022"],
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "build", // build한 것들 모여지는 폴더
