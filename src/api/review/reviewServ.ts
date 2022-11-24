@@ -85,8 +85,8 @@ export default {
   },
 
   //캠핑장이름검색
-  search: async (keyword: string) => {
-    const getCampName = await reviewRepo.search(keyword);
+  search: async ({keyword}: review) => {
+    const getCampName = await reviewRepo.search({keyword});
 
     const campName = getCampName.map((camp) => {
       return {

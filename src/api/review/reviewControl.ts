@@ -92,8 +92,8 @@ export default {
   //캠핑장이름검색
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { keyword } = req.body;
-      const result = await reviewService.search(keyword);
+      const { keyword }: review = req.body;
+      const result = await reviewService.search({keyword});
 
       return res.status(200).json({ data: result });
     } catch (error) {

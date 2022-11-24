@@ -72,7 +72,7 @@ export default {
   // },
 
   //캠핑장이름검색
-  search: async (keyword: string) => {
+  search: async ({keyword}: review) => {
     const searchResult = await Camp.findAll({
       where: {
         campName: {
