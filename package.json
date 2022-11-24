@@ -10,7 +10,8 @@
     "create_db": "ts-node ./src/database/config/create_db.ts",
     "migrate": "ts-node ./src/database/config/migrate.ts",
     "data": "ts-node ./src/database/data.ts",
-    "init": "ts-node ./src/database/init.ts"
+    "init": "ts-node ./src/database/init.ts",
+    "dev" : "node build/server.js"
   },
   "keywords": [],
   "author": "",

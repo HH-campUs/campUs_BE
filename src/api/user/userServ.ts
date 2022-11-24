@@ -42,7 +42,7 @@ export default {
     // }catch(err){
     //   console.log(err ,"서비스에서 잡았어요")
     // }
-  },
+  }, 
   //유저 정보 수정
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     const findUser = await userRepo.findByPk({userId});
