@@ -4,14 +4,20 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "nodemon --exec ts-node app.ts",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "dev": "nodemon --exec ts-node app.ts",
     "prettify": "prettier --write *.ts **/*.ts",
     "create_db": "ts-node ./src/database/config/create_db.ts",
     "migrate": "ts-node ./src/database/config/migrate.ts",
     "data": "ts-node ./src/database/data.ts",
     "init": "ts-node ./src/database/init.ts",
-    "dev" : "node build/server.js"
+    "start" : "nodemon build/server.js",
+    "createJs" : "node ./build/src/database/config/create_db.js",
+    "migrateJs" : "node ./build/src/database/config/migrate.js",
+    "dataJs": "node ./build/src/database/data.js",
+    "initJs": "node ./build/src/database/init.js"
+
   },
   "keywords": [],
   "author": "",

@@ -8,7 +8,6 @@ import fs from 'fs';
 import indexRouter from './src/api/routes/index';
 import createData from './src/database/data';
 import error from './src/middlewares/errorhandler';
-
 import { sequelize } from './src/database/models/sequlize';
 
 dotenv.config();
