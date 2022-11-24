@@ -68,8 +68,8 @@ export default {
   },
 
   //내가쓴리뷰조회
-  getMyReview: async (userId: number) => {
-    const myreivew = await reviewRepo.getMyReview(userId);
+  getMyReview: async ({userId}: review) => {
+    const myreivew = await reviewRepo.getMyReview({userId});
 
     return myreivew.map((x) => {
       return {

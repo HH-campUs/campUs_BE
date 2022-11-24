@@ -80,8 +80,8 @@ export default {
   //내가쓴리뷰조회
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = res.locals.user;
-      const myreview = await reviewService.getMyReview(userId);
+      const { userId }: review = res.locals.user;
+      const myreview = await reviewService.getMyReview({userId});
 
       res.status(200).json({ data: myreview });
     } catch (error) {
