@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { number } from 'joi';
 import { review } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
+import aws from "aws-sdk";
+import dotenv from 'dotenv';
+
 
 export default {
   //캠핑장 리뷰조회
@@ -16,6 +18,7 @@ export default {
       next(error);
     }
   },
+  
   //리뷰작성
   createReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -33,6 +36,7 @@ export default {
       next(error);
     }
   },
+
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
