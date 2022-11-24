@@ -25,6 +25,7 @@ export default {
       const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
+      if (!reviewComment.trim()) throw new Error("코멘트를 입력해주세요");      
       await reviewService.createReview({
         userId,
         campId,
@@ -41,7 +42,7 @@ export default {
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
-      const { reviewImg, reviewComment } = req.body;
+      const { reviewImg, reviewComment }: review = req.body;
       const { userId }: review = res.locals.user;
       const findreview = await reviewService.findReviewAuthor({reviewId});
 

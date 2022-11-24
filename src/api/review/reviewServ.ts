@@ -27,8 +27,8 @@ export default {
   },
 
   //리뷰작성자찾기
-  findReviewAuthor: async ({reviewId}:review) => {
-    return await reviewRepo.findReviewAuthor({reviewId});
+  findReviewAuthor: async ({ reviewId }: review) => {
+    return await reviewRepo.findReviewAuthor({ reviewId });
   },
 
   //리뷰수정
@@ -38,7 +38,7 @@ export default {
     reviewComment,
     userId,
   }: review) => {
-    const findByauthor = await reviewRepo.findReviewAuthor({reviewId});
+    const findByauthor = await reviewRepo.findReviewAuthor({ reviewId });
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 수정할 수 있습니다');
@@ -55,21 +55,21 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async ({reviewId, userId}: review) => {
-    const findByauthor = await reviewRepo.findReviewAuthor({reviewId});
+  deleteReview: async ({ reviewId, userId }: review) => {
+    const findByauthor = await reviewRepo.findReviewAuthor({ reviewId });
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 삭제할 수 있습니다');
 
-    const deleteReview = await reviewRepo.deleteReview({reviewId});
+    const deleteReview = await reviewRepo.deleteReview({ reviewId });
     return {
       reviewId: deleteReview,
     };
   },
 
   //내가쓴리뷰조회
-  getMyReview: async ({userId}: review) => {
-    const myreivew = await reviewRepo.getMyReview({userId});
+  getMyReview: async ({ userId }: review) => {
+    const myreivew = await reviewRepo.getMyReview({ userId });
 
     return myreivew.map((x) => {
       return {
@@ -85,8 +85,8 @@ export default {
   },
 
   //캠핑장이름검색
-  search: async ({keyword}: review) => {
-    const getCampName = await reviewRepo.search({keyword});
+  search: async ({ keyword }: review) => {
+    const getCampName = await reviewRepo.search({ keyword });
 
     const campName = getCampName.map((camp) => {
       return {
