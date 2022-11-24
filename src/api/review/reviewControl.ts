@@ -46,6 +46,7 @@ export default {
       const { userId }: review = res.locals.user;
       const findreview = await reviewService.findReviewAuthor({reviewId});
 
+      if(!findreview) throw new Error("잘못된요청입니다");      
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
       }
@@ -67,7 +68,8 @@ export default {
       const { reviewId }: review = req.params;
       const { userId }: review = res.locals.user;
       const findreview = await reviewService.findReviewAuthor({reviewId});
-
+      
+      if(!findreview) throw new Error("잘못된요청입니다");   
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
       }
