@@ -10,7 +10,7 @@ export default {
   getReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { campId }: review = req.params;
-      const data = await reviewService.getReview(Number(campId));
+      const data = await reviewService.getReview({campId});
       res.status(200).json({
         data,
       });
@@ -18,7 +18,7 @@ export default {
       next(error);
     }
   },
-  
+
   //리뷰작성
   createReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -43,7 +43,7 @@ export default {
       const { reviewId }: review = req.params;
       const { reviewImg, reviewComment } = req.body;
       const { userId }: review = res.locals.user;
-      const findreview = await reviewService.findReviewAuthor(reviewId!);
+      const findreview = await reviewService.findReviewAuthor({reviewId});
 
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });

@@ -7,17 +7,17 @@ import { review } from '../../interface/review';
 
 export default {
   //캠핑장 리뷰조회
-  getReview: async (campId: number) => {
+  getReview: async ({ campId }: review) => {
     return await Review.findAll({ where: { campId } });
   },
 
   //리뷰작성
-  createReview: async (
-{    userId,
+  createReview: async ({
+    userId,
     campId,
     reviewImg,
-    reviewComment}:review
-  ) => {
+    reviewComment,
+  }: review) => {
     await Review.create({
       userId,
       campId,
@@ -28,18 +28,17 @@ export default {
   },
 
   //리뷰작성자찾기
-  findReviewAuthor: async (reviewId: number) => {;
+  findReviewAuthor: async ({reviewId}:review) => {
     return await Review.findByPk(reviewId);
   },
 
-
   //리뷰수정
-  updateReview: async (
-{    reviewId,
+  updateReview: async ({
+    reviewId,
     reviewImg,
     reviewComment,
-    userId}:review
-  ) => {
+    userId,
+  }: review) => {
     const updateReview = await Review.update(
       { reviewComment: reviewComment, reviewImg: reviewImg },
       { where: { reviewId: reviewId, userId: userId } }
