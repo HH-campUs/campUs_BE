@@ -1,8 +1,10 @@
 import { weathers } from '../../interface/weather';
 import weatherRepo from './weatherRepo';
-
+// import error from '../../utils/exceptions'
 export default {
   getweather: async ({ pardo, dt }: weathers) => {
+    const findDate = await weatherRepo.findDate({dt})
+    if(!findDate) throw new Error('요청 하신 날짜가 없습니다.')
     const findWeather = await weatherRepo.getweather({pardo});
     //날씨 가공 함수
     const fomatReturnData = (data: weathers) => {
@@ -36,7 +38,6 @@ export default {
         return weather;
       }
     });
-    return weather.filter((element) => element !== undefined && element !== null
-    );
+    return weather.filter((element) => element !== undefined && element !== null);
   },
 };
