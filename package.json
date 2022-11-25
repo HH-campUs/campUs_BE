@@ -11,6 +11,7 @@
     "migrate": "ts-node ./src/database/config/migrate.ts",
     "data": "ts-node ./src/database/data.ts",
     "init": "ts-node ./src/database/init.ts",
+    "mapping": "ts-node ./src/database/mapping.ts"
     "dev" : "node build/server.js"
   },
   "keywords": [],
