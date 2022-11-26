@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import Error from '../utils/exceptions';
+import {ValidationErrors} from '../utils/exceptions';
 import { Users } from '../interface/user';
 import UserRepo from '../api/user/userRepo';
 
@@ -13,11 +13,11 @@ export default {
     //유저정보 확인
     const user = await UserRepo.findUser({email});
     //유저확인
-    if (!user) throw new Error.ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
+    if (!user) throw new ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
 
     //비밀 번호 확인
     const encryptedPassword = bcrypt.compareSync(password!, user!.password);
-    if (encryptedPassword === false) throw new Error.ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
+    if (encryptedPassword === false) throw new ValidationErrors('유저가 없거나 비밀번호가 일치하지 않습니다.');
 
     //리프레쉬 발급
     const RefreshToken = jwt.sign(
