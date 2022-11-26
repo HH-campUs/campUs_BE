@@ -84,37 +84,59 @@ export default {
     });
   },
 
-  //캠핑장이름검색
+  //캠핑장검색
   search: async ({ keyword }: review) => {
-    const getCampName = await reviewRepo.search({ keyword });
+    const campName = await reviewRepo.CampSearch({ keyword });
+    const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword });
+    const doNm = await reviewRepo.doNmSearch({ keyword });
+    const sbrsCl = await reviewRepo.sbrsClSearch({ keyword });
+    const operPdCl = await reviewRepo.operPdClSearch({ keyword });
+    const operDeCl = await reviewRepo.operDeClSearch({ keyword });
+    const address = await reviewRepo.addressSearch({ keyword });
+    const induty = await reviewRepo.indutySearch({ keyword });
+    const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword });
 
-    const campName = getCampName.map((camp) => {
-      return {
-        campId: camp.campId,
-        campName: camp.campName,
-        induty: camp.induty,
-        doNm: camp.doNm,
-        sigunguNm: camp.sigunguNm,
-        address: camp.address,
-        X: camp.X,
-        Y: camp.Y,
-        operPdCl: camp.operPdCl,
-        operDeCl: camp.operDeCl,
-        animal: camp.animal,
-        ImageUrl: camp.ImageUrl,
-        homePage: camp.homePage,
-        sbrsCl: camp.sbrsCl,
-        posblFcltyCl: camp.posblFcltyCl,
-        wtrplCo: camp.wtrplCo,
-        swrmCo: camp.swrmCo,
-        toiletCo: camp.toiletCo,
-        manageSttus: camp.manageSttus,
-        themaEnvrnCl: camp.themaEnvrnCl,
-        lookUp: camp.lookUp,
-        eqpmnLendCl: camp.eqpmnLendCl,
-        createdtime: camp.createdtime,
-      };
-    });
-    return { camp: campName };
+    return {
+      campName,
+      sigunguNm,
+      doNm,
+      sbrsCl,
+      operPdCl,
+      operDeCl,
+      address,
+      induty,
+      themaEnvrnCl,
+    };
   },
 };
+
+// return getCampName
+
+// const getCampName = await reviewRepo.CampSearch({ keyword });
+// const campName = getCampName.map((camp) => {
+//   return {
+//     campId: camp.campId,
+//     campName: camp.campName,
+//     induty: camp.induty,
+//     doNm: camp.doNm,
+//     sigunguNm: camp.sigunguNm,
+//     address: camp.address,
+//     X: camp.X,
+//     Y: camp.Y,
+//     operPdCl: camp.operPdCl,
+//     operDeCl: camp.operDeCl,
+//     animal: camp.animal,
+//     ImageUrl: camp.ImageUrl,
+//     homePage: camp.homePage,
+//     sbrsCl: camp.sbrsCl,
+//     posblFcltyCl: camp.posblFcltyCl,
+//     wtrplCo: camp.wtrplCo,
+//     swrmCo: camp.swrmCo,
+//     toiletCo: camp.toiletCo,
+//     manageSttus: camp.manageSttus,
+//     themaEnvrnCl: camp.themaEnvrnCl,
+//     lookUp: camp.lookUp,
+//     eqpmnLendCl: camp.eqpmnLendCl,
+//     createdtime: camp.createdtime,
+//   };
+// });

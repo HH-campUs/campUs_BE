@@ -28,7 +28,7 @@ export default {
   },
 
   //리뷰작성자찾기
-  findReviewAuthor: async ({reviewId}:review) => {
+  findReviewAuthor: async ({ reviewId }: review) => {
     return await Review.findByPk(reviewId);
   },
 
@@ -47,13 +47,13 @@ export default {
   },
 
   //리뷰찾기
-  findOneReview: async ({reviewId}: review) => {
+  findOneReview: async ({ reviewId }: review) => {
     const reviews = await Review.findOne({ where: { reviewId } });
     return reviews;
   },
 
   //리뷰삭제
-  deleteReview: async ({reviewId}: review) => {
+  deleteReview: async ({ reviewId }: review) => {
     const deleteReview = await Review.destroy({
       where: { reviewId },
     });
@@ -61,7 +61,7 @@ export default {
   },
 
   //내가쓴리뷰조회
-  getMyReview: async ({userId}: review) => {
+  getMyReview: async ({ userId }: review) => {
     return await Review.findAll({ where: { userId } });
   },
   // //유저찾기
@@ -72,10 +72,98 @@ export default {
   // },
 
   //캠핑장이름검색
-  search: async ({keyword}: review) => {
+  CampSearch: async ({ keyword }: review) => {
     const searchResult = await Camp.findAll({
       where: {
         campName: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //시군구이름검색
+  sigunguNmSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        sigunguNm: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //도이름검색
+  doNmSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        doNm: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //편의시설이름검색
+  sbrsClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        sbrsCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //운영계절검색
+  operPdClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        operPdCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //운영요일검색
+  operDeClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        operDeCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //캠핑장주소검색
+  addressSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        address: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //야영장종류검색
+  indutySearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        induty: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //테마검색
+  themaEnvrnClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        themaEnvrnCl: {
           [Op.like]: '%' + keyword + '%',
         },
       },
