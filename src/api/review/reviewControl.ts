@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
-import aws from 'aws-sdk';
-import dotenv from 'dotenv';
 
 export default {
   //캠핑장 리뷰조회
@@ -25,8 +23,13 @@ export default {
     try {
       const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
-      const { reviewImg, reviewComment } = req.body;
+      const { reviewComment } = req.body;
+      const files = req.files as Express.MulterS3.File[] //파일을 배열로 받음
       if (!reviewComment.trim()) throw new Error('코멘트를 입력해주세요');
+      const reviewImgs = files.map((x)=>{
+        return x.location
+     })
+     const reviewImg = reviewImgs.join(",")
       await reviewService.createReview({
         userId,
         campId,
@@ -38,15 +41,18 @@ export default {
       next(error);
     }
   },
-
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
-      const { reviewImg, reviewComment }: review = req.body;
+      const { reviewComment }: review = req.body;
       const { userId }: review = res.locals.user;
+      const files = req.files as Express.MulterS3.File[] //파일을 배열로 받음
+      const reviewImgs = files.map((x)=>{
+        return x.location
+     })
+     const reviewImg = reviewImgs.join(",")
       const findreview = await reviewService.findReviewAuthor({ reviewId });
-
       if (!findreview) throw new Error('잘못된요청입니다');
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });

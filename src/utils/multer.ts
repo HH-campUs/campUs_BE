@@ -7,6 +7,7 @@ import path from 'path'
 import AWS from 'aws-sdk'
 
 dotenv.config()
+
 export const upload = (
   multer({
     storage : multerS3({
@@ -21,7 +22,9 @@ export const upload = (
       acl: "public-read", //권한
       contentType: multerS3.AUTO_CONTENT_TYPE,
       key(req, file, cb) {
-        cb(null, `user/${Date.now()}_${path.basename(file.originalname)}`) // original 폴더안에다 파일을 저장
+        console.log(file,"<=")
+          const random = Math.floor(Math.random()*10001)
+        cb(null, `user/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장
       },
     }),
     limits: { fileSize: 5 * 1024 * 1024 },
@@ -42,7 +45,8 @@ export const uploads = (
       acl: "public-read", //권한
       contentType: multerS3.AUTO_CONTENT_TYPE,
       key(req, file, cb) {
-        cb(null, `review/${Date.now()}_${path.basename(file.originalname)}`) // original 폴더안에다 파일을 저장
+        const random = Math.floor(Math.random()*10001)
+        cb(null, `review/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장
       },
     }),
     limits: { fileSize: 5 * 1024 * 1024 },
@@ -51,7 +55,6 @@ export const uploads = (
 
 export const deleteFile = (fileDir:string, fileName:string) => {
   try {
-    console.log(fileDir.concat('/', fileName),"<= 키값")
     const s3 = new AWS.S3({
       accessKeyId: process.env.S3_ACCESS_KEY!, //방급받은 ACCESSKEY
       secretAccessKey: process.env.S3_SECRET_KEY!,//방급받은 SECRETKEY

@@ -24,7 +24,7 @@ export default {
     try {
       const { address, numOfRows, pageNo } = req.query;
       const regionCamp = await campServ.getByRegionCamp({address, numOfRows, pageNo});
-      res.status(200).json(regionCamp);
+      res.status(200).json({regionCamp});
     } catch (err) {
       next(err);
     }

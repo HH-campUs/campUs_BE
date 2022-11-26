@@ -1,9 +1,9 @@
 import axios from 'axios';
 import schedule from 'node-schedule';
+import dotenv from 'dotenv';
 import { Camps, Weathers, Date } from '../interface/openApi';
 import { Weather } from './models/weather';
 import { Camp } from './models/camp';
-import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -130,7 +130,7 @@ async function createweather() {
   }
 }
 
-function sleep(ms: any) {
+function sleep(ms:number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
