@@ -37,7 +37,7 @@ LookUp.init(
     },
     time: {
       allowNull: false,
-      type: DataTypes.MEDIUMINT.UNSIGNED
+      type: DataTypes.BIGINT.UNSIGNED
     },
   },
   {
@@ -50,9 +50,9 @@ LookUp.init(
   }
 );
 Camp.hasMany(LookUp, {
-    foreignKey: 'campId',
-    sourceKey: 'campId',
-    as: 'LookUp'
+  foreignKey: 'campId',
+  sourceKey: 'campId',
+  as: 'LookUp'
 });
 LookUp.belongsTo(Camp, {
   foreignKey: 'campId',

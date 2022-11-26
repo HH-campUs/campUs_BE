@@ -3,7 +3,7 @@ import { sequelize } from './models/sequlize';
 async function initialize() {
     const mappingTopicCamp = `
       INSERT INTO topic (topicName)
-      VALUES ('일몰'), ('겨울눈꽃'), ('반려동물'), ('장비대여');
+      VALUES ('일몰'), ('낚시'), ('반려동물'), ('장비대여');
     `
     await sequelize.query(mappingTopicCamp);
   
