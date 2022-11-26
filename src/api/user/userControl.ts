@@ -8,6 +8,7 @@ import Token from '../../utils/jwt';
 import User from '../../database/models/user';
 
 
+
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
 
@@ -73,9 +74,14 @@ export default {
   ////이미지 여러장 확인용
   updatesUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.files as Express.MulterS3.File[] )
-      const { ...location } = req.files as Express.MulterS3.File[] //멀터의 타입을 사용함
-      console.log(location)
+      // console.log(req.files as Express.MulterS3.File[] )
+      const location  = req.files as Express.MulterS3.File[] //멀터의 타입을 사용함
+      const reviewImage = location.map((x)=>{
+        return {
+          reviewImage : x.location
+        }
+      })
+      console.log(reviewImage)
       const { userId }: Users = res.locals.user;
       const { nickname }: Users = req.body;
       // const profileImg = location
