@@ -44,7 +44,7 @@ export default {
     }
     const findImage = await userRepo.findImage({userId})
     //fileName 인코딩해서 보내주기 때문에 디코딩 후 삭제 로직 구현
-    const fileName = decodeURI(findImage?.profileImg.slice(53)!)
+    const fileName = findImage?.profileImg.slice(53)
     const fileDir = findImage?.profileImg.slice(48,52)
     const url = findImage?.profileImg.slice(0,47)
     if(process.env.S3_URL! === url){

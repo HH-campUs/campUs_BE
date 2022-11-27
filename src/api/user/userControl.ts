@@ -39,7 +39,6 @@ export default {
   //유저정보 수정
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log(req.file as Express.MulterS3.File )
       const { location } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
       const { userId }: Users = res.locals.user;
       const { nickname }: Users = req.body;
@@ -69,25 +68,6 @@ export default {
       res.status(200).send({"message":"사용가능한 이메일 입니다."})
     }catch(err){
       next(err)
-    }
-  },
-  ////이미지 여러장 확인용
-  updatesUser: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      // console.log(req.files as Express.MulterS3.File[] )
-      const location  = req.files as Express.MulterS3.File[] //멀터의 타입을 사용함
-      const reviewImage = location.map((x)=>{
-        return {
-          reviewImage : x.location
-        }
-      })
-      console.log(reviewImage)
-      const { userId }: Users = res.locals.user;
-      const { nickname }: Users = req.body;
-      // const profileImg = location
-      res.status(201).send({ message: '수정 완료' });
-    } catch (err) {
-      next(err);
     }
   },
 };
