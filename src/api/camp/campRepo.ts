@@ -4,6 +4,7 @@ import { Pick } from '../../database/models/pick';
 import { LookUp } from '../../database/models/lookUp';
 import { getCamp, trip, ip, mostCamp } from '../../interface/camp'
 import { sequelize } from '../../database/models/sequlize'
+import { Sequelize, QueryTypes } from 'sequelize'
 import { Op } from 'sequelize'
 
 export default {
@@ -17,21 +18,12 @@ export default {
       ORDER BY Camp.createdtime ASC
       LIMIT ${numOfRows} OFFSET ${pageNo};
     `
-    return sequelize.query(getCamp);
+    return sequelize.query(getCamp, {type: QueryTypes.SELECT});
   },
 
   getByRegionCamp: async ({address, numOfRows, pageNo}:getCamp) => {
-    const ee =  await Camp.findAll({
-      where: {
-        address:{
-          [Op.like]: `%${address}%`
-        }
-      },
-          limit: numOfRows,
-          offset: pageNo
-    })
-    console.log(ee)
-    return ee
+    const regionCamp = `SELECT * FROM camp AS Camp WHERE camp.address LIKE '%${address}%' LIMIT ${numOfRows} OFFSET ${pageNo};`
+    return sequelize.query(regionCamp, {type: QueryTypes.SELECT})
   },
 
   getIpCamp: async ({ip, campId}:ip) => {
