@@ -2,6 +2,17 @@ import { sequelize } from './models/sequlize';
 import { Camp } from '../database/models/camp'
 import { Op } from 'sequelize'
 
+async function initialize() {
+    const mappingTopicCamp = `
+      INSERT INTO topic (topicName)
+      VALUES ('일몰'), ('낚시'), ('반려동물'), ('장비대여');
+    `
+    await sequelize.query(mappingTopicCamp);
+  
+    // 시퀄라이즈는 닫아주지 않으면 default로 계속 열려있어서?
+    sequelize.close();
+}
+
 async function mappingTopicCamp(){
     // 일몰 완료
     const sunset = await Camp.findAll({
@@ -58,7 +69,14 @@ async function mappingTopicCamp(){
     // 시퀄라이즈는 닫아주지 않으면 default로 계속 열려있어서?
     sequelize.close();
 }
+
+function sleep(ms: any) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
 (async()=>{
+    await initialize();
+    await sleep(2000);
     await mappingTopicCamp();
     console.log('topicmapping init')
 })();
