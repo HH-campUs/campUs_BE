@@ -11,11 +11,9 @@
     "create_db": "ts-node ./src/database/config/create_db.ts",
     "migrate": "ts-node ./src/database/config/migrate.ts",
     "data": "ts-node ./src/database/data.ts",
-    "init": "ts-node ./src/database/init.ts",
     "createJs": "node ./build/src/database/config/create_db.js",
     "migrateJs": "node ./build/src/database/config/migrate.js",
     "dataJs": "node ./build/src/database/data.js",
-    "initJs": "node ./build/src/database/init.js",
     "mapping": "ts-node ./src/database/mapping.ts",
     "dev" : "node build/server.js"
   },
