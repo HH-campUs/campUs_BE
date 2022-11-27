@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import reviewController from '../review/reviewControl';
 import authmiddleware from '../../middlewares/authmiddleware';
+import { uploads } from '../../utils/multer';
 
 
 const reviewrouter = Router();
@@ -14,10 +15,10 @@ reviewrouter.get('/', reviewController.search);
 reviewrouter.get('/:campId/review', reviewController.getReview);
 
 //리뷰작성
-reviewrouter.post('/:campId/review', authmiddleware, reviewController.createReview);
+reviewrouter.post('/:campId/review', authmiddleware, uploads.array('reviewImg',4),reviewController.createReview);
 
 //리뷰수정
-reviewrouter.put('/:campId/:reviewId', authmiddleware, reviewController.updateReview);
+reviewrouter.put('/:campId/:reviewId', authmiddleware, uploads.array('reviewImg',4),reviewController.updateReview);
 
 //리뷰삭제
 reviewrouter.delete('/:campId/:reviewId', authmiddleware, reviewController.deleteReview);
