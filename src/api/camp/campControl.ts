@@ -20,6 +20,7 @@ export default {
     }
   },
 
+  // 지역별 캠핑장 조회
   getByRegionCamp: async (req: Request<{},{},{},getCamp>, res: Response, next: NextFunction) => {
     try {
       const { address, numOfRows, pageNo } = req.query;
