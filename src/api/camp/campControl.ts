@@ -8,12 +8,6 @@ export default {
     try {
       const {numOfRows, pageNo} = req.query;
       const {topicId} = req.params;
-      // const topic = getCamp.topic
-      // const numOfRows = getCamp.numOfRows
-      // const pageNo = getCamp.pageNo
-      // console.log(topic.valueOf, '값');
-      // console.log(topic, '컨트롤러');
-      // const topicCamp = 
       res.status(200).json(await campServ.getTopicCamp({topicId, numOfRows, pageNo}));
     } catch (err) {
       next(err);
@@ -23,9 +17,8 @@ export default {
   // 지역별 캠핑장 조회
   getByRegionCamp: async (req: Request<{},{},{},getCamp>, res: Response, next: NextFunction) => {
     try {
-      const { address, numOfRows, pageNo } = req.query;
-      const regionCamp = await campServ.getByRegionCamp({address, numOfRows, pageNo});
-      res.status(200).json({regionCamp});
+      const { doNm, numOfRows, pageNo } = req.query;
+      res.status(200).json(await campServ.getByRegionCamp({doNm, numOfRows, pageNo}));
     } catch (err) {
       next(err);
     }
@@ -42,8 +35,8 @@ export default {
   
   getMostCamp: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await campServ.getMostCamp()
-      res.status(200).json()
+      const mostList = await campServ.getMostCamp()
+      res.status(200).json({ MostList : mostList })
     } catch (err) {
       next(err);
     }
