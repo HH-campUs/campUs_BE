@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
-// import aws from 'aws-sdk';
-// import dotenv from 'dotenv';
 
 export default {
   //캠핑장 리뷰조회
@@ -82,6 +80,10 @@ export default {
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
       }
+
+
+
+
       await reviewService.deleteReview({ reviewId, userId });
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {

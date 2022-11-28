@@ -1,7 +1,3 @@
-import { captureRejectionSymbol } from 'events';
-import { number } from 'joi';
-import { rescheduleJob } from 'node-schedule';
-import Review from '../../database/models/review';
 import reviewRepo from './reviewRepo';
 import { review } from '../../interface/review';
 

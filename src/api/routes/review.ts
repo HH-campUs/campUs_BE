@@ -6,8 +6,6 @@ import { uploads } from '../../utils/multer';
 
 const reviewrouter = Router();
 
-reviewrouter.route('/');
-
 //검색하기
 reviewrouter.get('/', reviewController.search);
 

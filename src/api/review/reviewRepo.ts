@@ -1,7 +1,5 @@
-import { number } from 'joi';
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
-import User from '../../database/models/user';
 import { Op } from 'sequelize';
 import { review } from '../../interface/review';
 
