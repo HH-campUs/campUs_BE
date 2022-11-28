@@ -10,18 +10,16 @@ export default {
   },
 
   //리뷰작성
-  createReview: async ({
-    userId,
-    campId,
-    reviewImg,
-    reviewComment,
-  }: review) => {
+  createReview: async ({userId,campId,reviewImg,reviewComment,}: review) => {
+    console.time("리뷰 레포입니다")
     await Review.create({
       userId,
       campId,
       reviewImg,
       reviewComment,
     });
+    await Camp.increment({reviewCount : 1},{where:{campId}})
+    console.timeEnd("리뷰 레포입니다")
     return;
   },
 
@@ -51,11 +49,12 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async ({ reviewId }: review) => {
-    const deleteReview = await Review.destroy({
+  deleteReview: async ({ campId, reviewId }: review) => {
+    await Review.destroy({
       where: { reviewId },
     });
-    return deleteReview;
+    await Camp.decrement({reviewCount : 1},{where:{campId}})
+    return;
   },
 
   //내가쓴리뷰조회

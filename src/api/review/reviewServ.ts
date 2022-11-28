@@ -57,7 +57,7 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async ({ reviewId, userId }: review) => {
+  deleteReview: async ({ campId, reviewId, userId }: review) => {
     const findByauthor = await reviewRepo.findReviewAuthor({ reviewId });
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
@@ -69,7 +69,7 @@ export default {
         const fileDir = element.slice(48,54)
         deleteFile(fileDir,fileName)
       });
-    const deleteReview = await reviewRepo.deleteReview({ reviewId });
+    const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
     return {
       reviewId: deleteReview,
     };
