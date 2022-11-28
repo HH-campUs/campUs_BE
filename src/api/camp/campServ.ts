@@ -5,23 +5,23 @@ import { Request } from 'express';
 export default {
   getTopicCamp: async ({topicId, numOfRows, pageNo}: getCamp) => {
     try{
-      // let start = 0;
+      console.time("서비스")
       // 0 이하의 페이지를 요청하면 pageNo 를 1로
-      // 미완성 고쳐야 됨
-      // pageNo<=0 ? pageNo= 1 : start = (pageNo -1) * numOfRows!;
-      return await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
+      pageNo<=0 ? pageNo= 1 : pageNo = (pageNo -1) * numOfRows!;
+      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
+      console.timeEnd("서비스")
+      return [{topicCamp : topicCamp, total : topicCamp.length}]
     }catch(err){
       console.log('캠핑장 정보 불러오기 실패', err)
       throw err;
     }
   },
 
-  getByRegionCamp: async ({address, numOfRows, pageNo}:getCamp) => {
-    // let start = 0;
+  getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
-    // 개똥같이 짰다 고쳐라
-    // pageNo<=0 ? pageNo= 1 : start = (pageNo -1) * numOfRows!;
-    return await campRepo.getByRegionCamp({address, numOfRows, pageNo})
+    pageNo<=0 ? pageNo= 1 : pageNo = (pageNo -1) * numOfRows!;
+    const regionCamp = await campRepo.getByRegionCamp({doNm, numOfRows, pageNo})
+    return [{regionCamp : regionCamp, total : regionCamp.length}]
   },
 
   getDetailCamp: async (req:Request<ip>) => {
@@ -40,8 +40,12 @@ export default {
     if(dayInterval) return await campRepo.updateLookUp({ip, campId, time})
   },
   
+  // ...가 가장 많은 캠프
   getMostCamp: async () => {
-    
+    const mostLook = {look : await campRepo.getMostLook()}
+    const mostReview = {review : await campRepo.getMostReview()}
+    const mostPick = {pick : await campRepo.getMostPick()}
+    return [ mostLook, mostReview, mostPick ]
   },
 
   myTripSave: async({userId, date, address, campId}:trip)=>{
