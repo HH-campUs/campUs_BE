@@ -13,6 +13,8 @@
     "outDir": "build", // build한 것들 모여지는 폴더
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "typeRoots": []
+    "typeRoots": [],
+    "experimentalDecorators": true, /* Enables experimental support for ES7 decorators. */
+    "emitDecoratorMetadata": true,  /* Enables experimental support for emitting type metadata for decorator*/
   }
 }
