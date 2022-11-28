@@ -16,12 +16,12 @@ export default {
     }
   },
 
-  getByRegionCamp: async ({address, numOfRows, pageNo}:getCamp) => {
+  getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
     // let start = 0;
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
     // 개똥같이 짰다 고쳐라
     // pageNo<=0 ? pageNo= 1 : start = (pageNo -1) * numOfRows!;
-    return await campRepo.getByRegionCamp({address, numOfRows, pageNo})
+    return await campRepo.getByRegionCamp({doNm, numOfRows, pageNo})
   },
 
   getDetailCamp: async (req:Request<ip>) => {

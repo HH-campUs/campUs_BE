@@ -21,8 +21,8 @@ export default {
     return sequelize.query(getCamp, {type: QueryTypes.SELECT});
   },
 
-  getByRegionCamp: async ({address, numOfRows, pageNo}:getCamp) => {
-    const regionCamp = `SELECT * FROM camp AS Camp WHERE camp.address LIKE '%${address}%' LIMIT ${numOfRows} OFFSET ${pageNo};`
+  getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
+    const regionCamp = `SELECT * FROM camp AS Camp WHERE doNm LIKE '%${doNm}%' LIMIT ${numOfRows} OFFSET ${pageNo};`
     return sequelize.query(regionCamp, {type: QueryTypes.SELECT})
   },
 
