@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
-import aws from 'aws-sdk';
-import dotenv from 'dotenv';
+// import aws from 'aws-sdk';
+// import dotenv from 'dotenv';
 
 export default {
   //캠핑장 리뷰조회
@@ -25,8 +25,16 @@ export default {
     try {
       const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
-      const { reviewImg, reviewComment } = req.body;
+      const { reviewComment } = req.body;
       if (!reviewComment.trim()) throw new Error('코멘트를 입력해주세요');
+      const imageFileName = req.file as Express.MulterS3.File
+      const imageName = imageFileName ?  imageFileName?.key : null;
+
+    // imageFileName에 파일명이 들어 갔으면 s3 url주소를 추가
+      const reviewImg = imageName
+      ? process.env.S3_URL + imageName
+      : undefined;
+
       await reviewService.createReview({
         userId,
         campId,
@@ -84,6 +92,9 @@ export default {
   //내가쓴리뷰조회
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // 만약에 다른사람 리뷰 볼수 있을 때
+      // const { userId }: review = req.params;
+
       const { userId }: review = res.locals.user;
       const myreview = await reviewService.getMyReview({ userId });
 

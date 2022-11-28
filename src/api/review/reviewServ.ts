@@ -69,19 +69,19 @@ export default {
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
-    const myreivew = await reviewRepo.getMyReview({ userId });
-
-    return myreivew.map((x) => {
-      return {
-        reviewId: x.userId,
-        userId: x.userId,
-        campId: x.campId,
-        reviewImg: x.reviewImg,
-        reviewComment: x.reviewComment,
-        createdAt: x.createdAt,
-        updatedAt: x.updatedAt,
-      };
-    });
+    return await reviewRepo.getMyReview({ userId });
+    // const myreview = await reviewRepo.getMyReview({ userId });
+    // return myreview.map((x) => {
+    //   return {
+    //     reviewId: x.userId,
+    //     userId: x.userId,
+    //     campId: x.campId,
+    //     reviewImg: x.reviewImg,
+    //     reviewComment: x.reviewComment,
+    //     createdAt: x.createdAt,
+    //     updatedAt: x.updatedAt,
+    //   };
+    // });
   },
 
   //캠핑장검색
