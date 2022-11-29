@@ -15,34 +15,34 @@ async function createcamp() {
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
     .then(async (res) => {
-      const allCamp = res.data.response.body.items.item
-     const camps =  allCamp.filter((element:Camps) => element.firstImageUrl !== '')
-      const Camps = camps.map((x: Camps) => {
+      const camp = res.data.response.body.items.item
+      const CAMP = camp.filter((item:Camps)=>item.firstImageUrl !== "")
+      const camps = CAMP.map((x: Camps) => {
         return {
-          campName: x.facltNm,
-          induty: x.induty,
-          doNm: x.doNm,
-          sigunguNm: x.sigunguNm,
-          address: x.addr1,
-          X: x.mapX,
-          Y: x.mapY,
-          operPdCl: x.operPdCl,
-          operDeCl: x.operDeCl,
-          animal: x.animalCmgCl,
-          ImageUrl: x.firstImageUrl,
-          homePage: x.homepage,
-          sbrsCl: x.sbrsCl,
-          posblFcltyCl: x.posblFcltyCl,
-          wtrplCo: x.wtrplCo,
-          swrmCo: x.swrmCo,
-          toiletCo: x.toiletCo,
-          manageSttus: x.manageSttus,
-          themaEnvrnCl: x.themaEnvrnCl,
-          createdtime: x.createdtime,
-          eqpmnLendCl: x.eqpmnLendCl,
-          featureNm : x.featureNm,
-          clturEvent: x.clturEvent
-        };
+            campName: x.facltNm,
+            induty: x.induty,
+            doNm: x.doNm,
+            sigunguNm: x.sigunguNm,
+            address: x.addr1,
+            X: x.mapX,
+            Y: x.mapY,
+            operPdCl: x.operPdCl,
+            operDeCl: x.operDeCl,
+            animal: x.animalCmgCl,
+            ImageUrl: x.firstImageUrl,
+            homePage: x.homepage,
+            sbrsCl: x.sbrsCl,
+            posblFcltyCl: x.posblFcltyCl,
+            wtrplCo: x.wtrplCo,
+            swrmCo: x.swrmCo,
+            toiletCo: x.toiletCo,
+            manageSttus: x.manageSttus,
+            themaEnvrnCl: x.themaEnvrnCl,
+            createdtime: x.createdtime,
+            eqpmnLendCl: x.eqpmnLendCl,
+            featureNm : x.featureNm,
+            clturEvent: x.clturEvent
+        }
       });
       for (let i = 0; i < Camps.length; i += 100) {
         await Camp.bulkCreate(Camps.slice(i, i + 100));

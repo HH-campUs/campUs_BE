@@ -3,7 +3,7 @@ export interface getCamp {
     doNm?: string;
     numOfRows?: number;
     start?: number;
-    pageNo: number;
+    pageNo?: number;
 }
 
 export interface trip {
