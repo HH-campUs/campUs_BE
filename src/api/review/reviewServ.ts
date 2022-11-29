@@ -1,10 +1,6 @@
-import { captureRejectionSymbol } from 'events';
-import { number } from 'joi';
-import { rescheduleJob } from 'node-schedule';
-import Review from '../../database/models/review';
 import reviewRepo from './reviewRepo';
 import { review } from '../../interface/review';
-
+import { deleteFile } from '../../utils/multer'
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
@@ -42,7 +38,13 @@ export default {
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 수정할 수 있습니다');
-
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+    findImage!.forEach(element => {
+      const fileName = element.slice(55)
+      const fileDir = element.slice(48,54)
+      deleteFile(fileDir,fileName)
+    });
     const updateReview = await reviewRepo.updateReview({
       reviewId,
       userId,
@@ -55,18 +57,24 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async ({ reviewId, userId }: review) => {
+  deleteReview: async ({ campId, reviewId, userId }: review) => {
     const findByauthor = await reviewRepo.findReviewAuthor({ reviewId });
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 삭제할 수 있습니다');
-
-    const deleteReview = await reviewRepo.deleteReview({ reviewId });
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+      findImage!.forEach(element => {
+        const fileName = element.slice(55)
+        const fileDir = element.slice(48,54)
+        deleteFile(fileDir,fileName)
+      });
+    const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
     return {
       reviewId: deleteReview,
     };
   },
-
+  
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
     return await reviewRepo.getMyReview({ userId });

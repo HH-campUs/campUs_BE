@@ -1,9 +1,9 @@
 export interface getCamp {
     topicId?: number;
-    address?: string;
+    doNm?: string;
     numOfRows?: number;
     start?: number;
-    pageNo: number;
+    pageNo?: number;
 }
 
 export interface trip {

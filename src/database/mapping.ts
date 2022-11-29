@@ -2,7 +2,15 @@ import { sequelize } from './models/sequlize';
 import { Camp } from '../database/models/camp'
 import { Op } from 'sequelize'
 
-async function mappingTopicCamp(){
+async function initialize() {
+    const mappingTopicCamp = `
+      INSERT INTO topic (topicName)
+      VALUES ('일몰'), ('낚시'), ('반려동물'), ('장비대여');
+    `
+    await sequelize.query(mappingTopicCamp);
+}
+
+async function mappingTopicCamps(){
     // 일몰 완료
     const sunset = await Camp.findAll({
         attributes:['campId'],
@@ -54,11 +62,15 @@ async function mappingTopicCamp(){
         `
         await sequelize.query(mappingTopicCamp);
     });
-  
-    // 시퀄라이즈는 닫아주지 않으면 default로 계속 열려있어서?
-    sequelize.close();
 }
+
+function sleep(ms: any) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
 (async()=>{
-    await mappingTopicCamp();
+    await initialize();
+    await sleep(2000);
+    await mappingTopicCamps();
     console.log('topicmapping init')
 })();
