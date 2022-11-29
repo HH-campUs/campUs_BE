@@ -1,13 +1,13 @@
 import axios from 'axios';
 import schedule from 'node-schedule';
+import dotenv from 'dotenv';
 import { Camps, Weathers, Date } from '../interface/openApi';
 import { Weather } from './models/weather';
 import { Camp } from './models/camp';
-import dotenv from 'dotenv';
 
 dotenv.config();
 
-
+console.log(process.env.GoCamp)
 async function createcamp() {
 
   axios
@@ -15,34 +15,34 @@ async function createcamp() {
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
     .then(async (res) => {
-
       const camp = res.data.response.body.items.item
-      const camps = camp.map((x: Camps) => {
+      const CAMP = camp.filter((item:Camps)=>item.firstImageUrl !== "")
+      const camps = CAMP.map((x: Camps) => {
         return {
-          campName: x.facltNm,
-          induty: x.induty,
-          doNm: x.doNm,
-          sigunguNm: x.sigunguNm,
-          address: x.addr1,
-          X: x.mapX,
-          Y: x.mapY,
-          operPdCl: x.operPdCl,
-          operDeCl: x.operDeCl,
-          animal: x.animalCmgCl,
-          ImageUrl: x.firstImageUrl,
-          homePage: x.homepage,
-          sbrsCl: x.sbrsCl,
-          posblFcltyCl: x.posblFcltyCl,
-          wtrplCo: x.wtrplCo,
-          swrmCo: x.swrmCo,
-          toiletCo: x.toiletCo,
-          manageSttus: x.manageSttus,
-          themaEnvrnCl: x.themaEnvrnCl,
-          createdtime: x.createdtime,
-          eqpmnLendCl: x.eqpmnLendCl,
-          featureNm : x.featureNm,
-          clturEvent: x.clturEvent
-        };
+            campName: x.facltNm,
+            induty: x.induty,
+            doNm: x.doNm,
+            sigunguNm: x.sigunguNm,
+            address: x.addr1,
+            X: x.mapX,
+            Y: x.mapY,
+            operPdCl: x.operPdCl,
+            operDeCl: x.operDeCl,
+            animal: x.animalCmgCl,
+            ImageUrl: x.firstImageUrl,
+            homePage: x.homepage,
+            sbrsCl: x.sbrsCl,
+            posblFcltyCl: x.posblFcltyCl,
+            wtrplCo: x.wtrplCo,
+            swrmCo: x.swrmCo,
+            toiletCo: x.toiletCo,
+            manageSttus: x.manageSttus,
+            themaEnvrnCl: x.themaEnvrnCl,
+            createdtime: x.createdtime,
+            eqpmnLendCl: x.eqpmnLendCl,
+            featureNm : x.featureNm,
+            clturEvent: x.clturEvent
+        }
       });
       for (let i = 0; i < camps.length; i += 100) {
         await Camp.bulkCreate(camps.slice(i, i + 100));
@@ -130,7 +130,7 @@ async function createweather() {
   }
 }
 
-function sleep(ms: any) {
+function sleep(ms:number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
@@ -144,12 +144,12 @@ export default async () => {
   // createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  schedule.scheduleJob(rule , async () => {
-  await Weather.destroy({ where: {} });
-  await sleep(3000);
-  console.log('삭제 완료');
-  createweather();
-  await sleep(3000);
-  console.log('날씨 저장완료');
-  });
+  // schedule.scheduleJob(rule , async () => {
+  // await Weather.destroy({ where: {} });
+  // await sleep(3000);
+  // console.log('삭제 완료');
+  // createweather();
+  // await sleep(3000);
+  // console.log('날씨 저장완료');
+  // });
 }

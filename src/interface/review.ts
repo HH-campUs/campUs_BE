@@ -4,4 +4,5 @@ export interface review {
   userId?: number;
   reviewImg?: string;
   reviewComment?: string;
+  keyword?: string;
 }

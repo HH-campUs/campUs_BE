@@ -1,6 +1,9 @@
-export interface topic {
-    topic: string;
-    // lookUp: number;
+export interface getCamp {
+    topicId?: number;
+    doNm?: string;
+    numOfRows?: number;
+    start?: number;
+    pageNo?: number;
 }
 
 export interface trip {
@@ -9,4 +12,14 @@ export interface trip {
     campId? : number;
     address? : string;
     date?: number;
+}
+
+export interface ip {
+    ip?: string;
+    campId?: number;
+    time?: number;
+}
+
+export interface mostCamp {
+    lookUp: number;
 }

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import User from '../database/models/user';
 import jwt from '../utils/jwt';
-import error from '../utils/exceptions'
+import {Unauthorized} from '../utils/exceptions'
 import { token } from '../interface/user';
 
 dotenv.config();
@@ -11,23 +11,23 @@ dotenv.config();
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
   const { authorization , refreshtoken }:token = req.headers
-  if(!authorization) throw new error.Unauthorized("인가 요청 정보가 잘 못 되었습니다.")
+  if(!authorization) throw new Unauthorized("인가 요청 정보가 잘 못 되었습니다.")
   const tokenType = authorization?.split(" ")[0]
   const accesstoken = authorization?.split(" ")[1]
   const refreshToken = refreshtoken?.split(" ")[0]
-    if(tokenType !== "Bearer") throw new error.Unauthorized('토큰 타입이 다릅니다.')
+    if(tokenType !== "Bearer") throw new Unauthorized('토큰 타입이 다릅니다.')
     //토큰이 없다면~
-    if (!accesstoken) throw new error.Unauthorized('AccessToken이 존재하지 않습니다.' );
+    if (!accesstoken) throw new Unauthorized('AccessToken이 존재하지 않습니다.' );
     //에쎄스 토큰 검증하기
     const decodeAccessToken = await jwt.validateAccessToken(accesstoken);
     //인증된 에쎄스 토큰이 없을시
     if (decodeAccessToken === null) {
       //리프레쉬 토큰 없을시
-      if (!refreshToken) throw new error.Unauthorized('RefreshToken이 존재하지 않습니다.');
+      if (!refreshToken) throw new Unauthorized('RefreshToken이 존재하지 않습니다.');
       //리프레쉬 토큰 검증
       const decodeRefreshToken = await jwt.validateRefreshToken(refreshToken);
       //리프레쉬 토큰 만료시
-      if (decodeRefreshToken == false) throw new error.Unauthorized('RefreshToken이 일치하지 않거나 만료 되었습니다.');
+      if (decodeRefreshToken == false) throw new Unauthorized('RefreshToken이 일치하지 않거나 만료 되었습니다.');
       let userId = decodeRefreshToken.userId;
       //리프레쉬 토큰이 있을때 유저정보로 찾아오기
       const findUser = await User.findByPk(userId);
@@ -37,7 +37,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         refreshToken,
         findRefreshToken
       );
-      if (campareRefreshToken == false) throw new error.Unauthorized('RefreshToken이 일치하지 않거나 만료 되었습니다.');
+      if (campareRefreshToken == false) throw new Unauthorized('RefreshToken이 일치하지 않거나 만료 되었습니다.');
       // 리프레쉬 정상에 AccessToken 만료시 재발급
       const AccessToken = await jwt.createAccessTokenRe(userId);
       //쿠키로 보내줌

@@ -113,11 +113,6 @@ Camp.init(
       allowNull: true,
       type: DataTypes.STRING(255),
     },
-    lookUp: {
-      allowNull: false,
-      defaultValue: 0,
-      type: DataTypes.MEDIUMINT.UNSIGNED,
-    },
     eqpmnLendCl: {
       allowNull: true,
       type: DataTypes.STRING(255),
@@ -133,6 +128,21 @@ Camp.init(
     clturEvent: {
       allowNull: true,
       type: DataTypes.TEXT,
+    },
+    reviewCount: {
+      allowNull: true,
+      defaultValue: 0,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
+    },
+    pickCount: {
+      allowNull: true,
+      defaultValue: 0,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
+    },
+    lookUp: {
+      allowNull: false,
+      defaultValue: 0,
+      type: DataTypes.MEDIUMINT.UNSIGNED,
     },
   },
   {
