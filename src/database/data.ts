@@ -44,8 +44,8 @@ async function createcamp() {
             clturEvent: x.clturEvent
         }
       });
-      for (let i = 0; i < Camps.length; i += 100) {
-        await Camp.bulkCreate(Camps.slice(i, i + 100));
+      for (let i = 0; i < camps.length; i += 100) {
+        await Camp.bulkCreate(camps.slice(i, i + 100));
         console.log(i, i + 100);
       }
     });
