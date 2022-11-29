@@ -1,7 +1,6 @@
 //서비스로 불러와서 바로 사용가능 서비스도 인스턴스로 내보내기
 import {Request,Response, NextFunction } from 'express';
 import { Users } from '../../interface/user';
-import { emailSchema, signSchema } from '../../utils/validation';
 import {InvalidParamsError} from '../../utils/exceptions'
 import userServ from './userServ';
 import Token from '../../utils/jwt';
@@ -15,7 +14,7 @@ import User from '../../database/models/user';
 export default {
   signup: async (req: Request , res: Response, next: NextFunction) => {
     try {
-      const { email, password }: Users = await signSchema.validateAsync(req.body);
+      const { email, password }: Users = req.body
       if(!email && !password) throw new InvalidParamsError("이메일과 패스워드는 필수값입니다.")
       await userServ.signup({ email, password });
       res.status(201).send({ message: '회원가입 성공' });
@@ -62,7 +61,8 @@ export default {
   //이메일 중복 체크
   signupcheck: async(req:Request,res:Response,next:NextFunction)=>{
     try{
-      const { email }:Users = await emailSchema.validateAsync(req.body)
+      const { email }:Users = req.body
+      console.log(email)
       const findEmail = await User.findOne({where:{email}})
       if(findEmail)  return res.status(400).send({"message":"이미 존재하는 이메일 입니다."})
       res.status(200).send({"message":"사용가능한 이메일 입니다."})

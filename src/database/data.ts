@@ -7,7 +7,7 @@ import { Camp } from './models/camp';
 
 dotenv.config();
 
-
+console.log(process.env.GoCamp)
 async function createcamp() {
 
   axios
@@ -15,9 +15,9 @@ async function createcamp() {
       `http://apis.data.go.kr/B551011/GoCamping/basedList?numOfRows=3300&pageNo=1&MobileOS=ETC&MobileApp=ZZ&serviceKey=${process.env.GoCamp}&_type=json`
     )
     .then(async (res) => {
-
-      const camp = res.data.response.body.items.item
-      const camps = camp.map((x: Camps) => {
+      const allCamp = res.data.response.body.items.item
+     const camps =  allCamp.filter((element:Camps) => element.firstImageUrl !== '')
+      const Camps = camps.map((x: Camps) => {
         return {
           campName: x.facltNm,
           induty: x.induty,
@@ -44,8 +44,8 @@ async function createcamp() {
           clturEvent: x.clturEvent
         };
       });
-      for (let i = 0; i < camps.length; i += 100) {
-        await Camp.bulkCreate(camps.slice(i, i + 100));
+      for (let i = 0; i < Camps.length; i += 100) {
+        await Camp.bulkCreate(Camps.slice(i, i + 100));
         console.log(i, i + 100);
       }
     });
@@ -141,9 +141,9 @@ rule.minute = 0;  //정각
 rule.tz = "Asia/Seoul";  //한국시간
 
 export default async () => {
-  createcamp();
-  await sleep(3000);
-  console.log('캠핑 저장완료');
+  // createcamp();
+  // await sleep(3000);
+  // console.log('캠핑 저장완료');
   schedule.scheduleJob(rule , async () => {
   await Weather.destroy({ where: {} });
   await sleep(3000);
