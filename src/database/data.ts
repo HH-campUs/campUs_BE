@@ -17,32 +17,33 @@ async function createcamp() {
     .then(async (res) => {
 
       const camp = res.data.response.body.items.item
-      const camps = camp.map((x: Camps) => {
+      const CAMP = camp.filter((item:Camps)=>item.firstImageUrl !== "")
+      const camps = CAMP.map((x: Camps) => {
         return {
-          campName: x.facltNm,
-          induty: x.induty,
-          doNm: x.doNm,
-          sigunguNm: x.sigunguNm,
-          address: x.addr1,
-          X: x.mapX,
-          Y: x.mapY,
-          operPdCl: x.operPdCl,
-          operDeCl: x.operDeCl,
-          animal: x.animalCmgCl,
-          ImageUrl: x.firstImageUrl,
-          homePage: x.homepage,
-          sbrsCl: x.sbrsCl,
-          posblFcltyCl: x.posblFcltyCl,
-          wtrplCo: x.wtrplCo,
-          swrmCo: x.swrmCo,
-          toiletCo: x.toiletCo,
-          manageSttus: x.manageSttus,
-          themaEnvrnCl: x.themaEnvrnCl,
-          createdtime: x.createdtime,
-          eqpmnLendCl: x.eqpmnLendCl,
-          featureNm : x.featureNm,
-          clturEvent: x.clturEvent
-        };
+            campName: x.facltNm,
+            induty: x.induty,
+            doNm: x.doNm,
+            sigunguNm: x.sigunguNm,
+            address: x.addr1,
+            X: x.mapX,
+            Y: x.mapY,
+            operPdCl: x.operPdCl,
+            operDeCl: x.operDeCl,
+            animal: x.animalCmgCl,
+            ImageUrl: x.firstImageUrl,
+            homePage: x.homepage,
+            sbrsCl: x.sbrsCl,
+            posblFcltyCl: x.posblFcltyCl,
+            wtrplCo: x.wtrplCo,
+            swrmCo: x.swrmCo,
+            toiletCo: x.toiletCo,
+            manageSttus: x.manageSttus,
+            themaEnvrnCl: x.themaEnvrnCl,
+            createdtime: x.createdtime,
+            eqpmnLendCl: x.eqpmnLendCl,
+            featureNm : x.featureNm,
+            clturEvent: x.clturEvent
+        }
       });
       for (let i = 0; i < camps.length; i += 100) {
         await Camp.bulkCreate(camps.slice(i, i + 100));

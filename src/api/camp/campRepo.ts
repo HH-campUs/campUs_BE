@@ -21,8 +21,19 @@ export default {
   },
 
   getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
-    const regionCamp = `SELECT * FROM camp AS Camp WHERE doNm LIKE '%${doNm}%' LIMIT ${numOfRows} OFFSET ${pageNo};`
-    return sequelize.query(regionCamp, {type: QueryTypes.SELECT})
+    console.time("regionTime")
+    const regionCamp = `SELECT * FROM camp AS Camp WHERE doNm LIKE '%${doNm}%'`
+    const regionLim = `LIMIT ${numOfRows} OFFSET ${pageNo};`
+    const camp = await sequelize.query(regionCamp+regionLim, {type: QueryTypes.SELECT})
+    const total = await sequelize.query(regionCamp, {type: QueryTypes.SELECT})
+    console.timeEnd("regionTime")
+    return {regionCamp : camp, total : total.length}
+  },
+
+  regionTotal: async ({doNm}:getCamp) => {
+    const regionCamp = `SELECT COUNT(doNm) as total FROM camp AS Camp WHERE doNm LIKE '%${doNm}%';`
+    const total = sequelize.query(regionCamp, {type: QueryTypes.SELECT})
+    return total
   },
 
   getIpCamp: async ({ip, campId}:ip) => {

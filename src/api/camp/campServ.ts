@@ -7,7 +7,7 @@ export default {
     try{
       console.time("서비스")
       // 0 이하의 페이지를 요청하면 pageNo 를 1로
-      pageNo<=0 ? pageNo= 1 : pageNo = (pageNo -1) * numOfRows!;
+      pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
       const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
       console.timeEnd("서비스")
       return [{topicCamp : topicCamp, total : topicCamp.length}]
@@ -19,9 +19,10 @@ export default {
 
   getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
-    pageNo<=0 ? pageNo= 1 : pageNo = (pageNo -1) * numOfRows!;
+    pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
     const regionCamp = await campRepo.getByRegionCamp({doNm, numOfRows, pageNo})
-    return [{regionCamp : regionCamp, total : regionCamp.length}]
+    const total = await campRepo.regionTotal({doNm})
+    return regionCamp
   },
 
   getDetailCamp: async (req:Request<ip>) => {
