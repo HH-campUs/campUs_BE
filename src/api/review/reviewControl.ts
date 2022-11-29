@@ -24,6 +24,7 @@ export default {
       const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
       const { reviewComment } = req.body;
+
       const files = req.files as Express.MulterS3.File[] //파일을 배열로 받음
       if (!reviewComment.trim()) throw new Error('코멘트를 입력해주세요');
       const reviewImgs = files.map((x)=>{
@@ -90,6 +91,9 @@ export default {
   //내가쓴리뷰조회
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // 만약에 다른사람 리뷰 볼수 있을 때
+      // const { userId }: review = req.params;
+
       const { userId }: review = res.locals.user;
       const myreview = await reviewService.getMyReview({ userId });
 

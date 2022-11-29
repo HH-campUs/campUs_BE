@@ -12,8 +12,7 @@ router.use('/users', userRouter);
 router.use('/kakao',kakao)
 router.use('/', campRouter);
 router.use('/weathers', Weather);
-router.use('/camps', reviewRouter);
-router.use('/users', reviewRouter);
+router.use('/reviews', reviewRouter);
 router.use('/search', reviewRouter);
 
 export default router;

@@ -59,6 +59,7 @@ export default {
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
+
     return await Review.findAll({ where: { userId } });
   },
   // //유저찾기
