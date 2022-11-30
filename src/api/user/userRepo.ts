@@ -29,10 +29,6 @@ export default {
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     await User.update({ nickname, profileImg }, { where: { userId } });
   },
-  //아마존 이미지 삭제 
-  findImage: async ({userId}:Users)=>{
-    return User.findOne({where:{userId}})
-  },
   //마이 페이지 조회
   getmyPage: async ({userId}:Users) => {
     return await User.findAll({

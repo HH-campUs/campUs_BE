@@ -66,7 +66,6 @@ export default {
       if(findEmail)  return res.status(400).send({"message":"이미 존재하는 이메일 입니다."})
       res.status(200).send({"message":"사용가능한 이메일 입니다."})
     }catch(err){
-      console.log("안지나감ㅋ")
       next(err)
     }
   },
