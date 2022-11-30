@@ -47,7 +47,7 @@ export default {
         {
           model: Pick,
           as: 'Pick',
-          attributes: ['pickId'],
+          attributes: ['userId'],
           include: [
             {
               model: Camp,
