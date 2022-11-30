@@ -7,7 +7,7 @@ import { Camp } from './models/camp';
 
 dotenv.config();
 
-console.log(process.env.GoCamp)
+
 async function createcamp() {
 
   axios
@@ -144,12 +144,12 @@ export default async () => {
   // createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  // schedule.scheduleJob(rule , async () => {
-  // await Weather.destroy({ where: {} });
-  // await sleep(3000);
-  // console.log('삭제 완료');
-  // createweather();
-  // await sleep(3000);
-  // console.log('날씨 저장완료');
-  // });
+  schedule.scheduleJob(rule , async () => {
+  await Weather.destroy({ where: {} });
+  await sleep(3000);
+  console.log('삭제 완료');
+  createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
+  });
 }

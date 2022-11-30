@@ -22,31 +22,12 @@ export const upload = (
       acl: "public-read", //권한
       contentType: multerS3.AUTO_CONTENT_TYPE,
       key(req, file, cb) {
-        console.log(file,"<=")
-          const random = Math.floor(Math.random()*10001)
-        cb(null, `user/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장
-      },
-    }),
-    limits: { fileSize: 5 * 1024 * 1024 },
-  })
-)
-
-export const uploads = (
-  multer({
-    storage : multerS3({
-      s3: new S3Client({
-        credentials:{
-          accessKeyId: process.env.S3_ACCESS_KEY!, //방급받은 ACCESSKEY
-          secretAccessKey: process.env.S3_SECRET_KEY!//방급받은 SECRETKEY
-        },
-        region:process.env.S3_KEY_REGION!,//지역
-      }),
-      bucket: process.env.S3_bUCKET!, //버켓이름
-      acl: "public-read", //권한
-      contentType: multerS3.AUTO_CONTENT_TYPE,
-      key(req, file, cb) {
         const random = Math.floor(Math.random()*10001)
-        cb(null, `review/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장
+        if(file.fieldname == 'profileImg'){
+          cb(null, `user/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장
+        }else{
+          cb(null, `review/${Date.now()}${random}${path.extname(file.originalname)}`) // original 폴더안에다 파일을 저장 
+        }
       },
     }),
     limits: { fileSize: 5 * 1024 * 1024 },
