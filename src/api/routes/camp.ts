@@ -14,12 +14,12 @@ router.get('/camps/', Camp.getByRegionCamp);
 router.get('/camps/detail/:campId', Camp.getDetailCamp);
 
 // 내 여행 일정 등록
-router.post('/users/:campId', authmiddleware, Camp.myTripSave)
+router.post('/camps/:campId', authmiddleware, Camp.myTripSave)
 
 // 내 여행 일정 삭제
-router.delete('/users/:tripId', authmiddleware, Camp.myTripRemove)
+router.delete('/camps/:tripId', authmiddleware, Camp.myTripRemove)
 
 // 켐핑장 찜하기
-router.put('/users/:campId/pick', authmiddleware, Camp.campPick)
+router.put('/camps/:campId/pick', authmiddleware, Camp.campPick)
 
 export default router;
