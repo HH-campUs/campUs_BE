@@ -49,8 +49,8 @@ export default {
     return [ mostLook, mostReview, mostPick ]
   },
 
-  myTripSave: async({userId, date, address, campId}:trip)=>{
-    return await campRepo.myTripSave({userId, date, address, campId});
+  myTripSave: async({userId, date, campId}:trip)=>{
+    return await campRepo.myTripSave({userId, date, campId});
   },
 
   myTripRemove: async({userId, tripId}:trip)=>{

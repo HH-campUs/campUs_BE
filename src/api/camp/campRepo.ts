@@ -83,10 +83,11 @@ export default {
     })
   },
 
-  myTripSave: async({userId, date, address, campId}:trip)=>{
+  myTripSave: async({userId, date, campId}:trip)=>{
     console.log(typeof campId)
+    const Address = await Camp.findOne({where:{campId}})
     return await Trip.create({
-      userId, campId, date, address
+      userId, campId, date, address:Address?.address
     });
   },
 
