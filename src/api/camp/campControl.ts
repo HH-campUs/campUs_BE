@@ -46,11 +46,10 @@ export default {
     try{
       const { userId } = await res.locals.user;
       const { campId } = req.params; // await 불필요
-      const { address, date } = await req.body;
+      const { date } = await req.body;
       const ids: trip ={
         userId,
         campId:Number(campId),
-        address,
         date
       };
       await campServ.myTripSave(ids);
