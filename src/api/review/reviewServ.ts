@@ -40,9 +40,9 @@ export default {
       throw new Error('본인만 수정할 수 있습니다');
       //이미지 삭제 로직
     const findImage = findByauthor.reviewImg?.split(",")
-    findImage!.forEach(element => {
-      const fileName = element.slice(55)
-      const fileDir = element.slice(48,54)
+    findImage!.forEach(ImageUrl => {
+      const fileName = ImageUrl.slice(55)
+      const fileDir = ImageUrl.slice(48,54)
       deleteFile(fileDir,fileName)
     });
     const updateReview = await reviewRepo.updateReview({
@@ -64,9 +64,9 @@ export default {
       throw new Error('본인만 삭제할 수 있습니다');
       //이미지 삭제 로직
     const findImage = findByauthor.reviewImg?.split(",")
-      findImage!.forEach(element => {
-        const fileName = element.slice(55)
-        const fileDir = element.slice(48,54)
+      findImage!.forEach(ImageUrl => {
+        const fileName = ImageUrl.slice(55)
+        const fileDir = ImageUrl.slice(48,54)
         deleteFile(fileDir,fileName)
       });
     const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
