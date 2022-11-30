@@ -7,7 +7,6 @@ import Token from '../../utils/jwt';
 import User from '../../database/models/user';
 
 
-
 //바로 사용가능 하다 인스턴스 시킬수 없음
 //모듈 이름 옆에 async 사용해야함
 
@@ -53,7 +52,7 @@ export default {
     try {
       const { userId }: Users = res.locals.user;
       const myPage = await userServ.getmyPage({userId});
-      res.status(200).json(myPage);
+      res.status(200).json(...myPage);
     } catch (err) {
       next(err);
     }
@@ -67,6 +66,7 @@ export default {
       if(findEmail)  return res.status(400).send({"message":"이미 존재하는 이메일 입니다."})
       res.status(200).send({"message":"사용가능한 이메일 입니다."})
     }catch(err){
+      console.log("안지나감ㅋ")
       next(err)
     }
   },
