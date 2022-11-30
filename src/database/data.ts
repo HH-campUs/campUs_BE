@@ -136,7 +136,7 @@ function sleep(ms:number) {
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-rule.hour = 5;    //5시
+rule.hour = 0;    //5시
 rule.minute = 0;  //정각
 rule.tz = "Asia/Seoul";  //한국시간
 
