@@ -8,7 +8,7 @@ export default {
     try {
       const {numOfRows, pageNo} = req.query;
       const {topicId} = req.params;
-      res.status(200).json(...await campServ.getTopicCamp({topicId, numOfRows, pageNo}));
+      res.status(200).json(await campServ.getTopicCamp({topicId, numOfRows, pageNo}));
     } catch (err) {
       next(err);
     }
