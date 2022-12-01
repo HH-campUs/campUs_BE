@@ -24,15 +24,16 @@ export default {
     }
   },
 
+  // 캠핑장 상세 정보 조회
   getDetailCamp: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await campServ.getDetailCamp(req);
-      res.status(200).send({'message':"캠핑장 상세 정보 조회"})
+      res.status(200).json({detailCamp : await campServ.getDetailCamp(req)})
     } catch (err) {
       next(err);
     }
   },
   
+  // most 캠핑장 조회
   getMostCamp: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const mostList = await campServ.getMostCamp()
@@ -42,6 +43,7 @@ export default {
     }
   },
 
+  // 내 여행 일정 등록
   myTripSave: async(req:Request, res:Response, next:NextFunction)=>{
     try{
       const { userId } = await res.locals.user;
@@ -59,6 +61,7 @@ export default {
     }
   },
 
+  // 내 여행 일정 삭제
   myTripRemove: async(req:Request, res:Response, next:NextFunction)=>{
     try{
       const { userId } = res.locals.user;
@@ -74,6 +77,7 @@ export default {
     }
   },
 
+  // 캠핑장 찜하기
   campPick: async(req:Request, res:Response, next:NextFunction)=>{
     try{
       const { userId } = res.locals.user;
