@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import {ValidationErrors} from '../../utils/exceptions';
 import {deleteFile} from '../../utils/multer'
+import console from 'console';
 dotenv.config();
 
 //바로 사용가능 하다 인스턴스 시킬수 없음

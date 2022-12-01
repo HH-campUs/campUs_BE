@@ -35,7 +35,7 @@ export default {
   getMyPick: async({userId}:Users)=>{
   return await User.findAll({
     where:{userId},
-    attributes:[],
+    attributes:['nickname', 'profileImg'],
     include:[
       {
         model:Pick,
@@ -45,7 +45,7 @@ export default {
           {
             model:Camp,
             as : 'Camp',
-           attributes:['campId', 'campName', 'address', 'ImageUrl']
+           attributes:['campId', 'campName', 'address', 'ImageUrl','induty']
           }
         ]
       }
@@ -72,7 +72,7 @@ export default {
             {
               model: Camp,
               as: 'Camp',
-              attributes: ['campId', 'campName', 'address', 'ImageUrl'],
+              attributes: ['campId', 'campName', 'address', 'ImageUrl','induty'],
             },
           ],
         },
