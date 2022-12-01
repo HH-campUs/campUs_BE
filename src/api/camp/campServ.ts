@@ -24,16 +24,20 @@ export default {
   },
 
   // 캠핑장 상세 조회
-  getDetailCamp: async (req:Request<ip>) => {
-    const { campId } = req.params;
-    // 캠핑장 상세 조회 로직
+  getDetailCamp: async ({campId}:getCamp) => {
     const detailCamp = await campRepo.getDetailCamp({campId})
     if(!detailCamp){ throw new Error("캠핑장이 존재하지 않음") }
+    return detailCamp;    
+  },
 
-    // 조회수 로직
+  // 조회수
+  lookUp: async(req:Request<ip>)=>{
+    const { campId } = req.params;
     let ip = req.connection.remoteAddress?.split(':').pop();
-    const ipValidator = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     const time = Date.now();
+
+    // ip 유효성 검사 정규식
+    const ipValidator = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     console.log(`${typeof ip}${ip}는 ip다 ${typeof campId}${campId}는 campId다 ${typeof time}${time}은 지금 이순간 마법처럼`)
 
     // 유효한 ip인지
@@ -50,10 +54,8 @@ export default {
 
     // 지났으면 조회수 요청 및 시간 업데이트 요청
     if(dayInterval) return await campRepo.updateLookUp({ip, campId, time})
-
-    return detailCamp;
   },
-  
+
   // most 캠핑장 조회
   getMostCamp: async () => {
     const mostLook = {look : await campRepo.getMostLook()}
@@ -76,7 +78,11 @@ export default {
 
   // 캠핑장 찜하기
   campPick: async(userId:number, campId:number)=>{
-    const campPickFind = await campRepo.campPickFind(userId, campId);
+    const pickBool = [];
+    
+    await campRepo.pickCamps(campId);
+
+    const campPickFind = await campRepo.myPickFind(userId, campId);
     if(!campPickFind){
       await campRepo.campPick(userId, campId)
       return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }

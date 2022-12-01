@@ -25,9 +25,11 @@ export default {
   },
 
   // 캠핑장 상세 정보 조회
-  getDetailCamp: async (req: Request, res: Response, next: NextFunction) => {
+  getDetailCamp: async (req: Request<getCamp>, res: Response, next: NextFunction) => {
     try {
-      res.status(200).json({detailCamp : await campServ.getDetailCamp(req)})
+      const { campId } = req.params;
+      await campServ.lookUp(req)
+      res.status(200).json({detailCamp : await campServ.getDetailCamp({campId})})
     } catch (err) {
       next(err);
     }
