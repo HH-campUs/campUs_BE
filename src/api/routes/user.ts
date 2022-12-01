@@ -15,5 +15,6 @@ router.post('/login', userDto,User.login);
 router.put('/myPage', authmiddleware, upload.single('profileImg') , User.updateUser);
 //마이페이지 조회
 router.get('/myPage', authmiddleware, User.getmyPage);
-
+//내가 찜한 캠핑장 조회
+router.get('/myPage/myPick',authmiddleware, User.getMyPick)
 export default router;
