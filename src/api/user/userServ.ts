@@ -62,4 +62,12 @@ export default {
     }
     return await userRepo.getmyPage({userId});
   },
+  //찜 목록 요청
+  getMyPick: async ({userId}:Users) => {
+    const findUser = await userRepo.findByPk({userId});
+    if (findUser?.userId !== userId) {
+      throw new ValidationErrors('유저가 일치 하지 않습니다');
+    }
+    return await userRepo.getMyPick({userId});
+  },
 };

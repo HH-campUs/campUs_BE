@@ -11,6 +11,7 @@ import User from '../../database/models/user';
 //모듈 이름 옆에 async 사용해야함
 
 export default {
+  //회원가입
   signup: async (req: Request , res: Response, next: NextFunction) => {
     try {
       const { email, password }: Users = req.body
@@ -53,6 +54,16 @@ export default {
       const { userId }: Users = res.locals.user;
       const myPage = await userServ.getmyPage({userId});
       res.status(200).json(...myPage);
+    } catch (err) {
+      next(err);
+    }
+  },
+  //내가 찜한 목록 조회
+  getMyPick: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId }: Users = res.locals.user;
+      const myPick = await userServ.getMyPick({userId});
+      res.status(200).json(...myPick);
     } catch (err) {
       next(err);
     }
