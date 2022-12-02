@@ -1,5 +1,6 @@
 import { requestValueList } from 'aws-sdk/clients/customerprofiles';
 import { Request, Response, NextFunction } from 'express';
+import { number } from 'joi';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
@@ -28,12 +29,10 @@ export default {
       const { reviewComment,likeStatus } = req.body;
 
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
-      if (!reviewComment.trim()) throw new Error('코멘트를 입력해주세요');
       const reviewImgs = files.map((x) => {
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
-      if(likeStatus<=0 || likeStatus>3)throw new Error("셋중하나만입력해주세요");
       
       await reviewService.createReview({
         userId,
@@ -74,11 +73,8 @@ export default {
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
-      const findreview = await reviewService.findReviewAuthor({ reviewId });
-      if (!findreview) throw new Error('잘못된요청입니다');
-      if (userId !== findreview?.userId) {
-        return res.status(400).json({ errorMessage: '권한이 없습니다.' });
-      }
+      await reviewService.findReviewAuthor({ reviewId });
+
       await reviewService.updateReview({
         reviewId,
         reviewImg,

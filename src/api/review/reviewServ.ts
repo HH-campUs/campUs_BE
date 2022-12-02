@@ -17,6 +17,9 @@ export default {
     reviewComment,
     likeStatus,
   }: review) => {
+    if (!reviewComment!.trim()) throw new Error('코멘트를 입력해주세요');
+    const likestring = String(likeStatus)[0];
+    if(likeStatus!<=0 || likeStatus!>3 || Number(likestring)<=0)throw new Error("셋중하나만선택해주세요");
     return await reviewRepo.createReview({
       userId,
       campId,
@@ -82,6 +85,12 @@ export default {
       const fileDir = element.slice(48, 54);
       deleteFile(fileDir, fileName);
     });
+    //예외처리
+    if (!findByauthor) throw new Error('잘못된요청입니다');
+    if (userId !== findByauthor?.userId) throw new Error("권한이없습니다");
+    
+    const likestring = String(likeStatus)[0];
+    if(likeStatus!<=0 || likeStatus!>3 || Number(likestring)<=0)throw new Error("셋중하나만선택해주세요");
     const updateReview = await reviewRepo.updateReview({
       reviewId,
       userId,
