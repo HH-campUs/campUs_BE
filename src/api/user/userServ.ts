@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import {ValidationErrors} from '../../utils/exceptions';
 import {deleteFile} from '../../utils/multer'
-import console from 'console';
 dotenv.config();
 
 //바로 사용가능 하다 인스턴스 시킬수 없음
@@ -23,19 +22,6 @@ export default {
     };
     await userRepo.signup(signUser);
   },
-  //로그인
-  login: async ({ email, password }: Users) => {
-    const findUser = await userRepo.findUser({email});
-    if (email === findUser?.email) {
-      throw new ValidationErrors('중복된 이메일 입니다.');
-    }
-    const signUser = {
-      email: email,
-      nickname: email!.split('@')[0],
-      password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
-    };
-    await userRepo.login(signUser);
-  }, 
   //유저 정보 수정
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     try{

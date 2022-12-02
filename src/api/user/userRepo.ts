@@ -4,8 +4,7 @@ import Review from '../../database/models/review';
 import Pick from '../../database/models/pick';
 import Trip from '../../database/models/trip';
 import Camp from '../../database/models/camp';
-import { Exclude } from 'class-transformer';
-import { create } from 'domain';
+
 
 export default {
   //회원가입
@@ -19,10 +18,6 @@ export default {
   findByPk: async ({userId}:Users) => {
     return await User.findByPk(userId);
   },
-  //로그인
-  login: async ({ email, nickname, password }: Users) => {
-    await User.create({ email, nickname, password });
-  },
   //토큰 업데이트
   updaterefreshToken: async ({ email, refreshToken }: Users) => {
     await User.update({ refreshToken }, { where: { email } });
@@ -35,7 +30,7 @@ export default {
   getMyPick: async({userId}:Users)=>{
   return await User.findAll({
     where:{userId},
-    attributes:['nickname', 'profileImg'],
+    attributes:['nickname', 'profileImg','email'],
     include:[
       {
         model:Pick,
@@ -57,7 +52,7 @@ export default {
   getmyPage: async ({userId}:Users) => {
     return await User.findAll({
       where: { userId },
-      attributes: ['nickname', 'profileImg'],
+      attributes: ['nickname', 'profileImg','email'],
       include: [
         {
           model: Review,

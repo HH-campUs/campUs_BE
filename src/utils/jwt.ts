@@ -23,20 +23,20 @@ export default {
     const RefreshToken = jwt.sign(
       { userId: user.userId },
       process.env.JWT_KEY!,
-      { expiresIn: '3h' }
+      { expiresIn: '7d' }
     ); // Refresh Token이 7일 뒤에 만료되도록 설정합니다.
     //에세스 토큰 발급
     const AccessToken = jwt.sign(
       { userId: user.userId },
       process.env.JWT_KEY!,
-      { expiresIn: '7d' }
+      { expiresIn: '3h' }
     );
     //리프레쉬 암호화
     const salt = bcrypt.genSaltSync(Number(process.env.SALT_ROUND!));
     const refreshToken = bcrypt.hashSync(RefreshToken, salt);
     //리프레쉬 저장
     await UserRepo.updaterefreshToken({ email, refreshToken });
-    return { RefreshToken, AccessToken };
+    return { RefreshToken, AccessToken, userId:user.userId };
   },
   //에세스 토큰 검증
   validateAccessToken: async (accesstoken: string): Promise<any> => {
