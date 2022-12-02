@@ -137,15 +137,15 @@ export default {
       next(error);
     }
   },
-  //캠핑장Fulltext검색
-  querysearch: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { keyword, numOfRows, pageNo }: search = req.query;
-      res
-        .status(200)
-        .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
-    } catch (error) {
-      next(error);
-    }
-  },
+  // //캠핑장Fulltext검색
+  // querysearch: async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const { keyword, numOfRows, pageNo }: search = req.query;
+  //     res
+  //       .status(200)
+  //       .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 };

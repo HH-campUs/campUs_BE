@@ -15,14 +15,14 @@ export default {
     campId,
     reviewImg,
     reviewComment,
-    likeStatus
+    likeStatus,
   }: review) => {
     return await reviewRepo.createReview({
       userId,
       campId,
       reviewImg,
       reviewComment,
-      likeStatus
+      likeStatus,
     });
   },
   // //리뷰작성시 캠핑장 좋아요
@@ -46,7 +46,7 @@ export default {
   //     await reviewRepo.decrement({ userId, reviewId });
   //     return { Message: '좋았어요!취소' };
   //   };
-    
+
   //   if (findlike === 3) {
   //     await reviewRepo.createlike({ userId, reviewId });
   //     await reviewRepo.increment({ userId, reviewId });
@@ -87,7 +87,7 @@ export default {
       userId,
       reviewImg,
       reviewComment,
-      likeStatus
+      likeStatus,
     });
     return {
       updateReview,
@@ -172,7 +172,11 @@ export default {
     pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
     // const campName = await reviewRepo.CampSearch({ keyword , numOfRows, pageNo});
     // const induty = await reviewRepo.indutySearch({ keyword, numOfRows, pageNo });
-   const doNm = await reviewRepo.doNmSearchquery({ keyword, numOfRows, pageNo });
+    const doNm = await reviewRepo.doNmSearchquery({
+      keyword,
+      numOfRows,
+      pageNo,
+    });
     // const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword , numOfRows, pageNo});
     // const address = await reviewRepo.addressSearch({ keyword, numOfRows, pageNo });
     // const operPdCl = await reviewRepo.operPdClSearch({ keyword , numOfRows, pageNo});

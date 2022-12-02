@@ -18,7 +18,7 @@ export default {
     campId,
     reviewImg,
     reviewComment,
-    likeStatus
+    likeStatus,
   }: review) => {
     console.time('리뷰 레포입니다');
     await Review.create({
@@ -26,7 +26,7 @@ export default {
       campId,
       reviewImg,
       reviewComment,
-      likeStatus
+      likeStatus,
     });
     await Camp.increment({ reviewCount: 1 }, { where: { campId } });
     console.timeEnd('리뷰 레포입니다');
@@ -64,7 +64,11 @@ export default {
     userId,
   }: review) => {
     const updateReview = await Review.update(
-      { reviewComment: reviewComment, reviewImg: reviewImg, likeStatus:likeStatus },
+      {
+        reviewComment: reviewComment,
+        reviewImg: reviewImg,
+        likeStatus: likeStatus,
+      },
       { where: { reviewId: reviewId, userId: userId } }
     );
     return updateReview;
