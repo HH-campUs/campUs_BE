@@ -2,6 +2,9 @@ import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
 import { Op } from 'sequelize';
 import { review } from '../../interface/review';
+import { search } from '../../interface/review';
+import { sequelize } from '../../database/models/sequlize';
+import { QueryTypes } from 'sequelize';
 
 export default {
   //캠핑장 리뷰조회
@@ -15,15 +18,37 @@ export default {
     campId,
     reviewImg,
     reviewComment,
+    likeStatus
   }: review) => {
+    console.time('리뷰 레포입니다');
     await Review.create({
       userId,
       campId,
       reviewImg,
       reviewComment,
+      likeStatus
     });
+    await Camp.increment({ reviewCount: 1 }, { where: { campId } });
+    console.timeEnd('리뷰 레포입니다');
     return;
   },
+  // //리뷰작성시 캠핑장 좋아요
+  // findLike: async ({ userId, reviewId }: review) => {
+  //   const likefind = await Like.findOne({ where: { userId, reviewId } });
+  //   return likefind;
+  // },
+  // createlike: async ({ userId, reviewId }: review) => {
+  //   await Like.create({ userId, reviewId });
+  // },
+  // destroyLike: async ({ userId, reviewId }: review) => {
+  //   await Like.destroy({ where: { userId, reviewId } });
+  // },
+  // increment: async ({ reviewId }: review) => {
+  //   await Review.increment({ likeCount: 1 }, { where: { reviewId } });
+  // },
+  // decrement: async ({ reviewId }: review) => {
+  //   await Review.increment({ likeCount: 1 }, { where: { reviewId } });
+  // },
 
   //리뷰작성자찾기
   findReviewAuthor: async ({ reviewId }: review) => {
@@ -35,10 +60,11 @@ export default {
     reviewId,
     reviewImg,
     reviewComment,
+    likeStatus,
     userId,
   }: review) => {
     const updateReview = await Review.update(
-      { reviewComment: reviewComment, reviewImg: reviewImg },
+      { reviewComment: reviewComment, reviewImg: reviewImg, likeStatus:likeStatus },
       { where: { reviewId: reviewId, userId: userId } }
     );
     return updateReview;
@@ -51,16 +77,16 @@ export default {
   },
 
   //리뷰삭제
-  deleteReview: async ({ reviewId }: review) => {
-    const deleteReview = await Review.destroy({
+  deleteReview: async ({ campId, reviewId }: review) => {
+    await Review.destroy({
       where: { reviewId },
     });
-    return deleteReview;
+    await Camp.decrement({ reviewCount: 1 }, { where: { campId } });
+    return;
   },
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
-
     return await Review.findAll({ where: { userId } });
   },
   // //유저찾기
@@ -81,11 +107,11 @@ export default {
     });
     return searchResult;
   },
-  //시군구이름검색
-  sigunguNmSearch: async ({ keyword }: review) => {
+  //야영장종류검색
+  indutySearch: async ({ keyword }: review) => {
     const searchResult = await Camp.findAll({
       where: {
-        sigunguNm: {
+        induty: {
           [Op.like]: '%' + keyword + '%',
         },
       },
@@ -103,11 +129,52 @@ export default {
     });
     return searchResult;
   },
-  //편의시설이름검색
-  sbrsClSearch: async ({ keyword }: review) => {
+  //도이름검색쿼리
+  doNmSearchquery: async ({ keyword, numOfRows, pageNo }: search) => {
     const searchResult = await Camp.findAll({
       where: {
-        sbrsCl: {
+        doNm: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    //limit페이지크기,offset시작위치
+    const Lim = `LIMIT ${numOfRows} OFFSET ${pageNo};`;
+    const camp = await sequelize.query(searchResult + Lim, {
+      type: QueryTypes.SELECT,
+    });
+    // const total = await sequelize.query(searchResult, {
+    //   type: QueryTypes.SELECT,
+    // });
+    // return { searchResult: camp, total: total.length };
+  },
+  querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
+    const regionCamp = `SELECT * FROM camp AS Camp WHERE doNm LIKE '%${keyword}%'`;
+    const Lim = `LIMIT ${numOfRows} OFFSET ${pageNo};`;
+    const camp = await sequelize.query(regionCamp + Lim, {
+      type: QueryTypes.SELECT,
+    });
+    const total = await sequelize.query(regionCamp, {
+      type: QueryTypes.SELECT,
+    });
+    return { regionCamp: camp, total: total.length };
+  },
+  //시군구이름검색
+  sigunguNmSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        sigunguNm: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //캠핑장주소검색
+  addressSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        address: {
           [Op.like]: '%' + keyword + '%',
         },
       },
@@ -136,22 +203,44 @@ export default {
     });
     return searchResult;
   },
-  //캠핑장주소검색
-  addressSearch: async ({ keyword }: review) => {
+  //반려동물 동반가능여부
+  animalSearch: async ({ keyword }: review) => {
     const searchResult = await Camp.findAll({
       where: {
-        address: {
+        animal: {
           [Op.like]: '%' + keyword + '%',
         },
       },
     });
     return searchResult;
   },
-  //야영장종류검색
-  indutySearch: async ({ keyword }: review) => {
+  //편의시설이름검색
+  sbrsClSearch: async ({ keyword }: review) => {
     const searchResult = await Camp.findAll({
       where: {
-        induty: {
+        sbrsCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //주변이용가능시설검색
+  posblFcltyClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        posblFcltyCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //운영상태검색
+  manageSttusSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        manageSttus: {
           [Op.like]: '%' + keyword + '%',
         },
       },
@@ -163,6 +252,39 @@ export default {
     const searchResult = await Camp.findAll({
       where: {
         themaEnvrnCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //캠핑장비 대여검색
+  eqpmnLendClSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        eqpmnLendCl: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //간단소개글검색
+  featureNmSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        featureNm: {
+          [Op.like]: '%' + keyword + '%',
+        },
+      },
+    });
+    return searchResult;
+  },
+  //자체문화행사검색
+  clturEventSearch: async ({ keyword }: review) => {
+    const searchResult = await Camp.findAll({
+      where: {
+        clturEvent: {
           [Op.like]: '%' + keyword + '%',
         },
       },

@@ -48,6 +48,10 @@ Review.init(
       allowNull: false,
       type: DataTypes.TEXT,
     },
+    likeStatus: {
+      allowNull: false,
+      type: DataTypes.TINYINT.UNSIGNED,
+    },
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱

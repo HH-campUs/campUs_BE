@@ -1,4 +1,7 @@
+
+
 export interface Camps {
+  body: JSON;
   facltNm: string;
   induty: string;
   doNm: string;

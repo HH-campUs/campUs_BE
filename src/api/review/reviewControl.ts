@@ -1,5 +1,7 @@
+import { requestValueList } from 'aws-sdk/clients/customerprofiles';
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
+import { search } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
 
 export default {
@@ -23,36 +25,56 @@ export default {
     try {
       const { userId }: review = res.locals.user;
       const { campId }: review = req.params;
-      const { reviewComment } = req.body;
+      const { reviewComment,likeStatus } = req.body;
+
+      const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       if (!reviewComment.trim()) throw new Error('코멘트를 입력해주세요');
-      const imageFileName = req.file as Express.MulterS3.File
-      const imageName = imageFileName ?  imageFileName?.key : null;
-
-    // imageFileName에 파일명이 들어 갔으면 s3 url주소를 추가
-      const reviewImg = imageName
-      ? process.env.S3_URL + imageName
-      : undefined;
-
+      const reviewImgs = files.map((x) => {
+        return x.location;
+      });
+      const reviewImg = reviewImgs.join(',');
+      if(likeStatus<=0 || likeStatus>3)throw new Error("셋중하나만입력해주세요");
+      
       await reviewService.createReview({
         userId,
         campId,
         reviewImg,
         reviewComment,
+        likeStatus
       });
       res.status(201).json({ ok: true, massage: '리뷰작성완료' });
     } catch (error) {
       next(error);
     }
   },
+  // //리뷰작성시 캠핑장 좋아요
+  // updateCampLike: async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const { userId }: review = res.locals.user;
+  //     const { reviewId }: review = req.params;
+
+  //     const camplike = await reviewService.updateCampLike({
+  //       userId,
+  //       reviewId,
+  //     });
+  //     res.status(201).json(camplike);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { reviewId }: review = req.params;
-      const { reviewImg, reviewComment }: review = req.body;
+      const { reviewComment,likeStatus }: review = req.body;
       const { userId }: review = res.locals.user;
+      const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
+      const reviewImgs = files.map((x) => {
+        return x.location;
+      });
+      const reviewImg = reviewImgs.join(',');
       const findreview = await reviewService.findReviewAuthor({ reviewId });
-
       if (!findreview) throw new Error('잘못된요청입니다');
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
@@ -61,6 +83,7 @@ export default {
         reviewId,
         reviewImg,
         reviewComment,
+        likeStatus,
         userId,
       });
       res.status(200).json({ massage: '리뷰수정완료' });
@@ -72,7 +95,7 @@ export default {
   //리뷰삭제
   deleteReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { reviewId }: review = req.params;
+      const { campId, reviewId }: review = req.params;
       const { userId }: review = res.locals.user;
       const findreview = await reviewService.findReviewAuthor({ reviewId });
 
@@ -80,11 +103,7 @@ export default {
       if (userId !== findreview?.userId) {
         return res.status(400).json({ errorMessage: '권한이 없습니다.' });
       }
-
-
-
-
-      await reviewService.deleteReview({ reviewId, userId });
+      await reviewService.deleteReview({ campId, reviewId, userId });
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {
       next(error);
@@ -118,16 +137,15 @@ export default {
       next(error);
     }
   },
-    // //캠핑장검색
-    // aniamlsearch: async (req: Request, res: Response, next: NextFunction) => {
-    //   try {
-    //     const { keyword }: review = req.body;
-    //     const result = await reviewService.search({ keyword });
-    //     if (!keyword) throw new Error('키워드를 입력해주세요');
-  
-    //     return res.status(200).json({ data: result });
-    //   } catch (error) {
-    //     next(error);
-    //   }
-    // },
+  //캠핑장Fulltext검색
+  querysearch: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { keyword, numOfRows, pageNo }: search = req.query;
+      res
+        .status(200)
+        .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
+    } catch (error) {
+      next(error);
+    }
+  },
 };
