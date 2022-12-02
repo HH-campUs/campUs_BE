@@ -6,7 +6,9 @@ import { search } from '../../interface/review';
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
-    return await reviewRepo.getReview({ campId });
+    const data = await reviewRepo.getReview({ campId });
+    if (!campId || !data) throw new Error('잘못된요청입니다');
+    return data
   },
 
   //리뷰작성
@@ -116,6 +118,9 @@ export default {
       const fileDir = element.slice(48, 54);
       deleteFile(fileDir, fileName);
     });
+    if (!findByauthor) throw new Error('잘못된요청입니다');
+    if (userId !== findByauthor?.userId) throw new Error("권한이없습니다");
+    
     const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
     return {
       reviewId: deleteReview,
