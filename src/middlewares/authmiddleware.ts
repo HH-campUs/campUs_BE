@@ -28,7 +28,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       const decodeRefreshToken = await jwt.validateRefreshToken(refreshToken);
       //리프레쉬 토큰 만료시
       if (decodeRefreshToken == false) throw new Unauthorized('RefreshToken이 일치하지 않거나 만료 되었습니다.');
-      let userId = decodeRefreshToken.userId;
+      const userId = decodeRefreshToken.userId;
       //리프레쉬 토큰이 있을때 유저정보로 찾아오기
       const findUser = await User.findByPk(userId);
       const findRefreshToken = findUser!.refreshToken;
@@ -44,14 +44,14 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       res.cookie('accessToken', AccessToken);
       //프론트에서 로컬 스토리지에 저장하기 위해 res에 보내줌
       User.findByPk(userId).then((user) => {
-        console.log('재발급하고 지나갔네요');
+        console.log('재발급');
         res.locals.user = user; //res.locals.user데이터를 담는다 가상공간에
         next();
       });
     } else {
-      let userId = decodeAccessToken.userId;
+      const userId = decodeAccessToken.userId;
       User.findByPk(userId).then((user) => {
-        console.log('정상일때 지나갔네요 ');
+        console.log('정상');
         res.locals.user = user; //res.locals.user데이터를 담는다 가상공간에
         next();
       });

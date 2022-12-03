@@ -1,4 +1,5 @@
 export interface getCamp {
+    campId?: number;
     topicId?: number;
     doNm?: string;
     numOfRows?: number;
