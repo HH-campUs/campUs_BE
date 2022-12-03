@@ -6,10 +6,10 @@ import { uploads } from '../../utils/multer';
 
 const reviewrouter = Router();
 
-//검색하기
-reviewrouter.get('/search', reviewController.search);
+// //검색하기
+// reviewrouter.get('/search', reviewController.search);
 //쿼리검색하기
-// reviewrouter.get('/querysearch', reviewController.querysearch);
+reviewrouter.get('/querysearch', reviewController.querysearch);
 
 //내가쓴리뷰조회
 reviewrouter.get('/users', authmiddleware,reviewController.getMyReview);

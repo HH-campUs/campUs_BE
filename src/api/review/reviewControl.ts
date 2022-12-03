@@ -1,6 +1,4 @@
-import { requestValueList } from 'aws-sdk/clients/customerprofiles';
 import { Request, Response, NextFunction } from 'express';
-import { number } from 'joi';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import reviewService from './reviewServ'; //받아온다
@@ -114,27 +112,27 @@ export default {
     }
   },
 
-  //캠핑장검색
-  search: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { keyword }: review = req.body;
-      const result = await reviewService.search({ keyword });
-      if (!keyword) throw new Error('키워드를 입력해주세요');
-
-      return res.status(200).json({ data: result });
-    } catch (error) {
-      next(error);
-    }
-  },
-  // //캠핑장Fulltext검색
-  // querysearch: async (req: Request, res: Response, next: NextFunction) => {
+  // //캠핑장검색
+  // search: async (req: Request, res: Response, next: NextFunction) => {
   //   try {
-  //     const { keyword, numOfRows, pageNo }: search = req.query;
-  //     res
-  //       .status(200)
-  //       .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
+  //     const { keyword }: review = req.body;
+  //     const result = await reviewService.search({ keyword });
+  //     if (!keyword) throw new Error('키워드를 입력해주세요');
+
+  //     return res.status(200).json({ data: result });
   //   } catch (error) {
   //     next(error);
   //   }
   // },
+  //캠핑장Fulltext검색
+  querysearch: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { keyword, numOfRows, pageNo }: search = req.query;
+      res
+        .status(200)
+        .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
+    } catch (error) {
+      next(error);
+    }
+  },
 };

@@ -144,23 +144,61 @@ export default {
     // });
   },
 
+  // //캠핑장검색
+  // search: async ({ keyword }: review) => {
+  //   const campName = await reviewRepo.CampSearch({ keyword });
+  //   const induty = await reviewRepo.indutySearch({ keyword });
+  //   const doNm = await reviewRepo.doNmSearch({ keyword });
+  //   const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword });
+  //   const address = await reviewRepo.addressSearch({ keyword });
+  //   const operPdCl = await reviewRepo.operPdClSearch({ keyword });
+  //   const operDeCl = await reviewRepo.operDeClSearch({ keyword });
+  //   const animal = await reviewRepo.animalSearch({ keyword });
+  //   const sbrsCl = await reviewRepo.sbrsClSearch({ keyword });
+  //   const posblFcltyCl = await reviewRepo.posblFcltyClSearch({ keyword });
+  //   const manageSttus = await reviewRepo.manageSttusSearch({ keyword });
+  //   const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword });
+  //   const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword });
+  //   const featureNm = await reviewRepo.featureNmSearch({ keyword });
+  //   const clturEvent = await reviewRepo.clturEventSearch({ keyword });
+
+  //   return {
+  //     campName,
+  //     sigunguNm,
+  //     doNm,
+  //     sbrsCl,
+  //     operPdCl,
+  //     operDeCl,
+  //     address,
+  //     induty,
+  //     themaEnvrnCl,
+  //     eqpmnLendCl,
+  //     manageSttus,
+  //     posblFcltyCl,
+  //     animal,
+  //     featureNm,
+  //     clturEvent,
+  //   };
+  // },
   //캠핑장검색
-  search: async ({ keyword }: review) => {
-    const campName = await reviewRepo.CampSearch({ keyword });
-    const induty = await reviewRepo.indutySearch({ keyword });
-    const doNm = await reviewRepo.doNmSearch({ keyword });
-    const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword });
-    const address = await reviewRepo.addressSearch({ keyword });
-    const operPdCl = await reviewRepo.operPdClSearch({ keyword });
-    const operDeCl = await reviewRepo.operDeClSearch({ keyword });
-    const animal = await reviewRepo.animalSearch({ keyword });
-    const sbrsCl = await reviewRepo.sbrsClSearch({ keyword });
-    const posblFcltyCl = await reviewRepo.posblFcltyClSearch({ keyword });
-    const manageSttus = await reviewRepo.manageSttusSearch({ keyword });
-    const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword });
-    const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword });
-    const featureNm = await reviewRepo.featureNmSearch({ keyword });
-    const clturEvent = await reviewRepo.clturEventSearch({ keyword });
+  querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
+    // 0 이하의 페이지를 요청하면 pageNo 를 1로
+    pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
+    const campName = await reviewRepo.CampSearch({ keyword , numOfRows, pageNo});
+    const induty = await reviewRepo.indutySearch({ keyword, numOfRows, pageNo });
+    const doNm = await reviewRepo.doNmSearch({keyword,numOfRows,pageNo,});
+    const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword , numOfRows, pageNo});
+    const address = await reviewRepo.addressSearch({ keyword, numOfRows, pageNo });
+    const operPdCl = await reviewRepo.operPdClSearch({ keyword , numOfRows, pageNo});
+    const operDeCl = await reviewRepo.operDeClSearch({ keyword, numOfRows, pageNo });
+    const animal = await reviewRepo.animalSearch({ keyword, numOfRows, pageNo });
+    const sbrsCl = await reviewRepo.sbrsClSearch({ keyword, numOfRows, pageNo });
+    const posblFcltyCl = await reviewRepo.posblFcltyClSearch({ keyword, numOfRows, pageNo });
+    const manageSttus = await reviewRepo.manageSttusSearch({ keyword, numOfRows, pageNo });
+    const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword, numOfRows, pageNo });
+    const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword, numOfRows, pageNo });
+    const featureNm = await reviewRepo.featureNmSearch({ keyword , numOfRows, pageNo});
+    const clturEvent = await reviewRepo.clturEventSearch({ keyword, numOfRows, pageNo });
 
     return {
       campName,
@@ -178,48 +216,6 @@ export default {
       animal,
       featureNm,
       clturEvent,
-    };
-  },
-  //캠핑장검색
-  querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
-    // 0 이하의 페이지를 요청하면 pageNo 를 1로
-    pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
-    // const campName = await reviewRepo.CampSearch({ keyword , numOfRows, pageNo});
-    // const induty = await reviewRepo.indutySearch({ keyword, numOfRows, pageNo });
-    const doNm = await reviewRepo.doNmSearchquery({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    // const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword , numOfRows, pageNo});
-    // const address = await reviewRepo.addressSearch({ keyword, numOfRows, pageNo });
-    // const operPdCl = await reviewRepo.operPdClSearch({ keyword , numOfRows, pageNo});
-    // const operDeCl = await reviewRepo.operDeClSearch({ keyword, numOfRows, pageNo });
-    // const animal = await reviewRepo.animalSearch({ keyword, numOfRows, pageNo });
-    // const sbrsCl = await reviewRepo.sbrsClSearch({ keyword, numOfRows, pageNo });
-    // const posblFcltyCl = await reviewRepo.posblFcltyClSearch({ keyword, numOfRows, pageNo });
-    // const manageSttus = await reviewRepo.manageSttusSearch({ keyword, numOfRows, pageNo });
-    // const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword, numOfRows, pageNo });
-    // const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword, numOfRows, pageNo });
-    // const featureNm = await reviewRepo.featureNmSearch({ keyword , numOfRows, pageNo});
-    // const clturEvent = await reviewRepo.clturEventSearch({ keyword, numOfRows, pageNo });
-
-    return {
-      // campName,
-      // sigunguNm,
-      doNm,
-      // sbrsCl,
-      // operPdCl,
-      // operDeCl,
-      // address,
-      // induty,
-      // themaEnvrnCl,
-      // eqpmnLendCl,
-      // manageSttus,
-      // posblFcltyCl,
-      // animal,
-      // featureNm,
-      // clturEvent,
     };
   },
 };
