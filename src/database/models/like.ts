@@ -1,38 +1,40 @@
 import { Association, DataTypes, Model } from 'sequelize';
-import Camp from './camp';
-
+import Review from './review';
 import sequelize from './sequlize';
 import User from './user';
+import Camp from './camp'
 
-export class Review extends Model {
-  //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
-  public readonly reviewId!: number;
-  public campId!: number;
+export class Like extends Model {
+  // declare LikeId: CreationOptional<number>; 이렇게 사용가능
+  //'CreationOptional'은 필드를 선택 사항으로 표시하는 특수 유형입니다.
+  public readonly likeId!: number;
+  public reviewId!: number;
   public userId!: number;
-  public reviewImg?: string;
-  public reviewComment!: string;
   public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-  //관계 설정 타입
+  //관계 설정
   public User!: User;
+  public Review!: Review;
   public Camp!: Camp;
   //관계 설정
+
   public static associations: {
-    Camp: Association<Camp>;
-    Review: Association<Review>;
+    Reveiw: Association<Review>;
+    Like: Association<Like>;
     User: Association<User>;
+    Camp: Association<Camp>
   };
 }
-//? 모델 생성
-Review.init(
+
+// 모델 생성
+Like.init(
   {
-    reviewId: {
+    likeId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.MEDIUMINT.UNSIGNED,
     },
-    campId: {
+    reviewId: {
       allowNull: false,
       type: DataTypes.MEDIUMINT.UNSIGNED,
     },
@@ -40,28 +42,19 @@ Review.init(
       allowNull: false,
       type: DataTypes.MEDIUMINT.UNSIGNED,
     },
-    reviewImg: {
-      allowNull: true,
-      type: DataTypes.STRING(255),
-    },
-    reviewComment: {
-      allowNull: false,
-      type: DataTypes.TEXT,
-    },
-    likeStatus: {
-      allowNull: false,
-      type: DataTypes.TINYINT.UNSIGNED,
-    },
   },
   {
     sequelize, //? 생성한 Sequelize 객체 패싱
     charset: "utf8", // 한국어 설정
     collate: "utf8_general_ci", // 한국어 설정
-    modelName: 'Review',
-    tableName: 'review',
+    modelName: 'Like',
+    tableName: 'like',
     freezeTableName: true,
+    updatedAt: false,
   }
 );
+//두모델에서 사용한걸 하위모델에서 작성함
+
 Camp.hasMany(Review, {
   sourceKey: 'campId',
   foreignKey: 'campId',
@@ -81,4 +74,24 @@ Review.belongsTo(User, {
   as: 'User',
 });
 
-export default Review;
+Review.hasMany(Like, {
+  sourceKey: 'reviewId',
+  foreignKey: 'reviewId',
+  as: 'like',
+});
+User.hasMany(Like, {
+  sourceKey: 'userId',
+  foreignKey: 'userId',
+  as: 'like',
+});
+Like.belongsTo(Review, {
+  foreignKey: 'reviewId',
+  as: 'Review',
+});
+Like.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'User',
+});
+
+
+export default Like;
