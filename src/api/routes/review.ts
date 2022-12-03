@@ -19,10 +19,10 @@ reviewrouter.get('/users', authmiddleware,reviewController.getMyReview);
 reviewrouter.get('/:campId', reviewController.getReview);
 
 //리뷰작성
-reviewrouter.post('/:campId', authmiddleware, uploads.array('reviewImg',4),reviewController.createReview);
+reviewrouter.post('/:campId', authmiddleware, upload.array('reviewImg',4),reviewController.createReview);
 
 //리뷰수정
-reviewrouter.put('/:reviewId', authmiddleware, uploads.array('reviewImg',4),reviewController.updateReview);
+reviewrouter.put('/:reviewId', authmiddleware, upload.array('reviewImg',4),reviewController.updateReview);
 
 //리뷰삭제
 reviewrouter.delete('/:campId/:reviewId', authmiddleware, reviewController.deleteReview);
