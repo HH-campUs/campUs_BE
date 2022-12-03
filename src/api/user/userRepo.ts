@@ -4,6 +4,8 @@ import Review from '../../database/models/review';
 import Pick from '../../database/models/pick';
 import Trip from '../../database/models/trip';
 import Camp from '../../database/models/camp';
+import { Exclude } from 'class-transformer';
+import { create } from 'domain';
 
 export default {
   //회원가입
@@ -29,9 +31,27 @@ export default {
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     await User.update({ nickname, profileImg }, { where: { userId } });
   },
-  //아마존 이미지 삭제 
-  findImage: async ({userId}:Users)=>{
-    return User.findOne({where:{userId}})
+  //찜 목록 조회
+  getMyPick: async({userId}:Users)=>{
+  return await User.findAll({
+    where:{userId},
+    attributes:[],
+    include:[
+      {
+        model:Pick,
+        as: 'Pick',
+        attributes:['userId'],
+        include:[
+          {
+            model:Camp,
+            as : 'Camp',
+           attributes:['campId', 'campName', 'address', 'ImageUrl']
+          }
+        ]
+      }
+    ],
+    order : [[Pick, 'createdAt', 'DESC']],
+  })
   },
   //마이 페이지 조회
   getmyPage: async ({userId}:Users) => {
@@ -47,7 +67,7 @@ export default {
         {
           model: Pick,
           as: 'Pick',
-          attributes: ['pickId'],
+          attributes: ['userId'],
           include: [
             {
               model: Camp,

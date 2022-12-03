@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import reviewController from '../review/reviewControl';
 import authmiddleware from '../../middlewares/authmiddleware';
-import { uploads } from '../../utils/multer';
+import { upload } from '../../utils/multer';
 
 
 const reviewrouter = Router();
 
 // //검색하기
 // reviewrouter.get('/search', reviewController.search);
+
 //쿼리검색하기
 reviewrouter.get('/querysearch', reviewController.querysearch);
 

@@ -80,12 +80,12 @@ export default {
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 수정할 수 있습니다');
-    //이미지 삭제 로직
-    const findImage = findByauthor.reviewImg?.split(',');
-    findImage!.forEach((element) => {
-      const fileName = element.slice(55);
-      const fileDir = element.slice(48, 54);
-      deleteFile(fileDir, fileName);
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+    findImage!.forEach(ImageUrl => {
+      const fileName = ImageUrl.slice(55)
+      const fileDir = ImageUrl.slice(48,54)
+      deleteFile(fileDir,fileName)
     });
     //예외처리
     if (!findByauthor) throw new Error('잘못된요청입니다');
@@ -111,16 +111,13 @@ export default {
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 삭제할 수 있습니다');
-    //이미지 삭제 로직
-    const findImage = findByauthor.reviewImg?.split(',');
-    findImage!.forEach((element) => {
-      const fileName = element.slice(55);
-      const fileDir = element.slice(48, 54);
-      deleteFile(fileDir, fileName);
-    });
-    if (!findByauthor) throw new Error('잘못된요청입니다');
-    if (userId !== findByauthor?.userId) throw new Error("권한이없습니다");
-    
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+      findImage!.forEach(ImageUrl => {
+        const fileName = ImageUrl.slice(55)
+        const fileDir = ImageUrl.slice(48,54)
+        deleteFile(fileDir,fileName)
+      });
     const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
     return {
       reviewId: deleteReview,

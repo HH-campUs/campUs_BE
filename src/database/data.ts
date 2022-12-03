@@ -7,7 +7,7 @@ import { Camp } from './models/camp';
 
 dotenv.config();
 
-console.log(process.env.GoCamp)
+
 async function createcamp() {
 
   axios
@@ -136,7 +136,7 @@ function sleep(ms:number) {
 
 const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-rule.hour = 5;    //5시
+rule.hour = 0;    //5시
 rule.minute = 0;  //정각
 rule.tz = "Asia/Seoul";  //한국시간
 
@@ -144,12 +144,12 @@ export default async () => {
   // createcamp();
   // await sleep(3000);
   // console.log('캠핑 저장완료');
-  // schedule.scheduleJob(rule , async () => {
-  // await Weather.destroy({ where: {} });
-  // await sleep(3000);
-  // console.log('삭제 완료');
-  // createweather();
-  // await sleep(3000);
-  // console.log('날씨 저장완료');
-  // });
+  schedule.scheduleJob(rule , async () => {
+  await Weather.destroy({ where: {} });
+  await sleep(3000);
+  console.log('삭제 완료');
+  createweather();
+  await sleep(3000);
+  console.log('날씨 저장완료');
+  });
 }
