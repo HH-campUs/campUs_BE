@@ -25,12 +25,11 @@ export default {
 //로그인 하기
   login: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const { email, password }: Users = await signSchema.validateAsync(req.body);
       const {email, password}:Users = req.body
       const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).json({"message":"로그인을 성공하였s습니다!!",Tokens});
+      res.status(200).json({"message":"로그인을 성공하였습니다!!",Tokens});
     } catch (err) {
       next(err);
     }

@@ -5,12 +5,12 @@ import { Request } from 'express';
 export default {
   // 주제별 캠핑장 조회
   getTopicCamp: async ({topicId, numOfRows, pageNo}: getCamp) => {
-      console.time("서비스")
-      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
-      if(!topicCamp.topicCamp) throw new Error("주제에 맞는 캠핑장이 존재하지 않음")
-      // 0 이하의 페이지를 요청하면 pageNo 를 1로
-      pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
-      console.timeEnd("서비스")
+    console.time("서비스")
+       // 0 이하의 페이지를 요청하면 pageNo 를 1로
+       pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
+       const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
+       if(!topicCamp.topicCamp) throw new Error("주제에 맞는 캠핑장이 존재하지 않음")
+       console.timeEnd("서비스")
       return topicCamp
   },
 
@@ -80,15 +80,15 @@ export default {
   campPick: async(userId:number, campId:number)=>{
     const pickBool = [];
     
-    await campRepo.pickCamps(campId);
+    // await campRepo.pickCamps(campId);
 
-    const campPickFind = await campRepo.myPickFind(userId, campId);
-    if(!campPickFind){
-      await campRepo.campPick(userId, campId)
-      return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }
-    }else{
-      await campRepo.campUnPick(userId, campId)
-      return { return : false, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
-    }
+    // const campPickFind = await campRepo.myPickFind(userId, campId);
+    // if(!campPickFind){
+    //   await campRepo.campPick(userId, campId)
+    //   return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }
+    // }else{
+    //   await campRepo.campUnPick(userId, campId)
+    //   return { return : false, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
+    // }
   }
 };
