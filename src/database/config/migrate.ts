@@ -42,6 +42,6 @@ async function migrate() {
 }
 
 (async () => {
-  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`)
+  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`);
   await migrate();
 })();
