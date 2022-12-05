@@ -34,6 +34,17 @@ export default {
       next(err);
     }
   },
+  //비밀번호 변경
+  changePW: async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+      const { email, changePassword }:Users = req.body
+      if(!email || !changePassword) throw new InvalidParamsError("입력 값이 없습니다.")
+      await userServ.changePW({email, changePassword})
+      res.status(201).send({"message" :"비밀번호 변경 완료!"})
+    }catch(err){
+      next(err)
+    }
+  },
   //유저정보 수정
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {

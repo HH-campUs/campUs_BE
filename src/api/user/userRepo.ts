@@ -19,12 +19,16 @@ export default {
     return await User.findByPk(userId);
   },
   //토큰 업데이트
-  updaterefreshToken: async ({ email, refreshToken }: Users) => {
-    await User.update({ refreshToken }, { where: { email } });
+  updaterefreshToken: async ({ email, newPassword }: Users) => {
+    await User.update({ password:newPassword }, { where: { email } });
   },
   //유저정보 수정
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     await User.update({ nickname, profileImg }, { where: { userId } });
+  },
+  //비밀번호 변경
+  changePW: async ({ email, newPassword }: Users) => {
+    await User.update({password:newPassword }, { where: { email } });
   },
   //찜 목록 조회
   getMyPick: async({userId}:Users)=>{

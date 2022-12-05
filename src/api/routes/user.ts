@@ -11,10 +11,13 @@ router.post('/signup/check',userDto,User.signupcheck)
 router.post('/signup', userDto,User.signup);
 //로그인
 router.post('/login', userDto,User.login);
+//비밀번호 재설정
+router.put('/changePW',userDto,User.changePW)
 //유저정보 수정
 router.put('/myPage', authmiddleware, upload.single('profileImg') , User.updateUser);
 //마이페이지 조회
 router.get('/myPage', authmiddleware, User.getmyPage);
 //내가 찜한 캠핑장 조회
 router.get('/myPage/myPick',authmiddleware, User.getMyPick)
+
 export default router;

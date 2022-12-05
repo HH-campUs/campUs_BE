@@ -80,15 +80,15 @@ export default {
   campPick: async(userId:number, campId:number)=>{
     const pickBool = [];
     
-    // await campRepo.pickCamps(campId);
+  //   await campRepo.pickCamps(campId);
 
-    // const campPickFind = await campRepo.myPickFind(userId, campId);
-    // if(!campPickFind){
-    //   await campRepo.campPick(userId, campId)
-    //   return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }
-    // }else{
-    //   await campRepo.campUnPick(userId, campId)
-    //   return { return : false, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
-    // }
+  //   const campPickFind = await campRepo.myPickFind(userId, campId);
+  //   if(!campPickFind){
+  //     await campRepo.campPick(userId, campId)
+  //     return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }
+  //   }else{
+  //     await campRepo.campUnPick(userId, campId)
+  //     return { return : false, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
+  //   }
   }
 };

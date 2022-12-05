@@ -18,9 +18,20 @@ export default {
     const signUser = {
       email: email,
       nickname: email!.split('@')[0],
-      password: await bcrypt.hash(password!, Number(process.env.SALT_ROUND)),
+      password: await bcrypt.hash(password!, parseInt(process.env.SALT_ROUND!)),
     };
     await userRepo.signup(signUser);
+  },
+   //비밀번호 변경
+   changePW: async ({ email ,changePassword}: Users) => {
+    console.log(email,changePassword)
+    const findUser = await userRepo.findUser({email});
+    if (email !== findUser?.email) {
+       throw new ValidationErrors('존재하지 않는 이메일 입니다.');
+     }
+     const newPassword = await bcrypt.hash(changePassword!,parseInt(process.env.SALT_ROUND!))
+     console.log(newPassword)
+     await userRepo.changePW({email,newPassword})
   },
   //유저 정보 수정
   updateUser: async ({ nickname, profileImg, userId }: Users) => {

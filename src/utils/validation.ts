@@ -19,6 +19,12 @@ export default async (req:Request,res:Response,next:NextFunction)=>{
       message : "비밀번호 형식이 틀렸습니다."
     })
     password?: string
+
+    @IsString()
+    @Matches(/^(?=.*[A-Z].*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/,{
+      message : "비밀번호 형식이 틀렸습니다."
+    })
+    changePassword?: string
   }
 
  /* 
