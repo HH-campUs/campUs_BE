@@ -13,6 +13,6 @@ router.use('/kakao',kakao)
 router.use('/', campRouter);
 router.use('/weathers', Weather);
 router.use('/reviews', reviewRouter);
-router.use('/search', reviewRouter);
+router.use('/', reviewRouter);
 
 export default router;

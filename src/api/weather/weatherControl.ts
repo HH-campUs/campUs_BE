@@ -15,4 +15,12 @@ export default {
       next(err);
     }
   },
+  getReCommend: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const recommend = await weatherServ.getReCommend();
+      res.status(200).json({recommend});
+    } catch (err) {
+      next(err);
+    }
+  },
 };

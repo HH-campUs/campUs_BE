@@ -11,6 +11,7 @@ import User from '../../database/models/user';
 //모듈 이름 옆에 async 사용해야함
 
 export default {
+  //회원가입
   signup: async (req: Request , res: Response, next: NextFunction) => {
     try {
       const { email, password }: Users = req.body
@@ -24,12 +25,11 @@ export default {
 //로그인 하기
   login: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const { email, password }: Users = await signSchema.validateAsync(req.body);
       const {email, password}:Users = req.body
       const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).json({"message":"로그인을 성공하였s습니다!!",Tokens});
+      res.status(200).json({"message":"로그인을 성공하였습니다!!",Tokens});
     } catch (err) {
       next(err);
     }
@@ -57,6 +57,16 @@ export default {
       next(err);
     }
   },
+  //내가 찜한 목록 조회
+  getMyPick: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId }: Users = res.locals.user;
+      const myPick = await userServ.getMyPick({userId});
+      res.status(200).json(...myPick);
+    } catch (err) {
+      next(err);
+    }
+  },
   //이메일 중복 체크
   signupcheck: async(req:Request,res:Response,next:NextFunction)=>{
     try{
@@ -66,7 +76,6 @@ export default {
       if(findEmail)  return res.status(400).send({"message":"이미 존재하는 이메일 입니다."})
       res.status(200).send({"message":"사용가능한 이메일 입니다."})
     }catch(err){
-      console.log("안지나감ㅋ")
       next(err)
     }
   },
