@@ -5,6 +5,7 @@ import Pick from '../../database/models/pick';
 import Trip from '../../database/models/trip';
 import Camp from '../../database/models/camp';
 
+
 export default {
   //회원가입
   signup: async ({ email, nickname, password }: Users) => {
@@ -17,10 +18,6 @@ export default {
   findByPk: async ({userId}:Users) => {
     return await User.findByPk(userId);
   },
-  //로그인
-  login: async ({ email, nickname, password }: Users) => {
-    await User.create({ email, nickname, password });
-  },
   //토큰 업데이트
   updaterefreshToken: async ({ email, refreshToken }: Users) => {
     await User.update({ refreshToken }, { where: { email } });
@@ -29,15 +26,33 @@ export default {
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
     await User.update({ nickname, profileImg }, { where: { userId } });
   },
-  //아마존 이미지 삭제 
-  findImage: async ({userId}:Users)=>{
-    return User.findOne({where:{userId}})
+  //찜 목록 조회
+  getMyPick: async({userId}:Users)=>{
+  return await User.findAll({
+    where:{userId},
+    attributes:['nickname', 'profileImg','email'],
+    include:[
+      {
+        model:Pick,
+        as: 'Pick',
+        attributes:['userId'],
+        include:[
+          {
+            model:Camp,
+            as : 'Camp',
+           attributes:['campId', 'campName', 'address', 'ImageUrl','induty']
+          }
+        ]
+      }
+    ],
+    order : [[Pick, 'createdAt', 'DESC']],
+  })
   },
   //마이 페이지 조회
   getmyPage: async ({userId}:Users) => {
     return await User.findAll({
       where: { userId },
-      attributes: ['nickname', 'profileImg'],
+      attributes: ['nickname', 'profileImg','email'],
       include: [
         {
           model: Review,
@@ -52,7 +67,7 @@ export default {
             {
               model: Camp,
               as: 'Camp',
-              attributes: ['campId', 'campName', 'address', 'ImageUrl'],
+              attributes: ['campId', 'campName', 'address', 'ImageUrl','induty'],
             },
           ],
         },

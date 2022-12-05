@@ -21,12 +21,14 @@ export default async (req:Request,res:Response,next:NextFunction)=>{
     password?: string
   }
 
-  // plainToClass <= plain object를 class object로 변환
-  console.log(req.body)
+ /* 
+    plainToClass <= plain object를 class object로 변환(DTO)
+    validateOrReject <= 반환값이 프로미스이며 유효성 검증 실패시 에러발생
+    skipMissingProperties <= true일시 누락된건 스킵하고 검사
+    DTO <=  로직을 가지지 않는 순수한 데이터 객체 
+ */
   const target = plainToClass(userDto, req.body)
-  console.log(target)
   try{ 
-    //skipMissingProperties <= true일시 누락된건 스킵하고 검사
   await validateOrReject(target,{ skipMissingProperties: true })
   next()
   }catch(err){
