@@ -1,4 +1,5 @@
 export interface weathers {
+  name?:string
   dt?: string;
   pardo?: string;
   date?: string;

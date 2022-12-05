@@ -8,7 +8,7 @@ import fs from 'fs';
 import hpp from 'hpp'
 import indexRouter from './src/api/routes/index';
 import createData from './src/database/data';
-import error from './src/middlewares/errorhandler';
+import {errorLogger, errorHandler} from './src/middlewares/errorhandler';
 import { sequelize } from './src/database/models/sequlize';
 
 dotenv.config();
@@ -35,9 +35,9 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 //에러발생시 logger로 넘어옴
-app.use(error.errorLogger);
+app.use(errorLogger);
 //에러발생시 Handler로 이동
-app.use(error.errorHandler);
+app.use(errorHandler);
 
 if (prod) {
   try {

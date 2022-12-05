@@ -1,4 +1,8 @@
 node_modules
-build
 .env
+build
+sinario.yaml
+data.csv
+test
 .gitignore
+
