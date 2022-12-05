@@ -1,17 +1,21 @@
 import campRepo from './campRepo';
 import { getCamp, trip, ip } from '../../interface/camp'
+import { Camps } from '../../interface/openApi'
 import { Request } from 'express';
 
 export default {
   // 주제별 캠핑장 조회
   getTopicCamp: async ({topicId, numOfRows, pageNo}: getCamp) => {
       console.time("서비스")
-      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
-      if(!topicCamp.topicCamp) throw new Error("주제에 맞는 캠핑장이 존재하지 않음")
-      // 0 이하의 페이지를 요청하면 pageNo 를 1로
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로  
+      // const total = topicCamp.total
       pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
+      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
+      const topicid = await campRepo.getTopic({topicId})
+      if(!topicid) throw new Error("존재하지 않는 주제입니다")
       console.timeEnd("서비스")
-      return topicCamp
+
+      return topicCamp;
   },
 
   // 지역별 캠핑장 조회
@@ -78,17 +82,28 @@ export default {
 
   // 캠핑장 찜하기
   campPick: async(userId:number, campId:number)=>{
-    const pickBool = [];
-    
-    await campRepo.pickCamps(campId);
-
     const campPickFind = await campRepo.myPickFind(userId, campId);
-    if(!campPickFind){
-      await campRepo.campPick(userId, campId)
-      return { return : true, message: '찜 목록에 캠핑장을 추가하였습니다' }
-    }else{
-      await campRepo.campUnPick(userId, campId)
-      return { return : false, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
-    }
+    const getPickCamp = await campRepo.pickCamp({campId})
+    
+      if(!campPickFind){
+        await campRepo.campPick(userId, campId)
+        const data = getPickCamp.map( (element) => {
+          return {
+            ...element.dataValues,
+            status : true
+          }
+      })
+      return { camp:data, message: '찜 목록에 캠핑장을 추가하였습니다' }
+      }else{
+        await campRepo.campUnPick(userId, campId)
+        const data = getPickCamp.map( (element) => {
+          return {
+            ...element.dataValues,
+            status : false
+          }
+      })
+        return { camp:data, message: "찜 목록에서 캠핑장을 삭제하였습니다" }
+      }
+    ;
   }
 };
