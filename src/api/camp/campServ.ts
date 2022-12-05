@@ -7,8 +7,7 @@ export default {
   // 주제별 캠핑장 조회
   getTopicCamp: async ({topicId, numOfRows, pageNo}: getCamp) => {
       console.time("서비스")
-      // 0 이하의 페이지를 요청하면 pageNo 를 1로  
-      // const total = topicCamp.total
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로
       pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
       const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
       const topicid = await campRepo.getTopic({topicId})
