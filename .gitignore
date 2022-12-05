@@ -4,3 +4,5 @@ build
 sinario.yaml
 data.csv
 test
+.gitignore
+

@@ -2,25 +2,30 @@ import { Camp } from '../../database/models/camp';
 import { Trip } from '../../database/models/trip';
 import { Pick } from '../../database/models/pick';
 import { LookUp } from '../../database/models/lookUp';
-import { getCamp, trip, ip } from '../../interface/camp'
-import { sequelize } from '../../database/models/sequlize'
-import { QueryTypes } from 'sequelize'
-import data from '../../database/data';
+import { getCamp, trip, ip } from '../../interface/camp';
+import { sequelize } from '../../database/models/sequlize';
+import { QueryTypes } from 'sequelize';
+import Topic from '../../database/models/topic';
 
 export default {
   // 주제별 캠핑장 조회
   getTopicCamp: async ({topicId, pageNo, numOfRows}:getCamp) => {
     const topicCamp = `
-      SELECT Camp.*
-      FROM topicMapping AS topicMapping INNER JOIN camp AS Camp
-      ON topicMapping.campId = Camp.campId
-      WHERE topicMapping.topicId= ${topicId}
-    `
-    const limitNorder = `ORDER BY Camp.createdtime ASC
-      LIMIT ${numOfRows} OFFSET ${pageNo};`
-    const camp = await sequelize.query(topicCamp+limitNorder, {type: QueryTypes.SELECT})
-    const total = await sequelize.query(topicCamp, {type: QueryTypes.SELECT})
-    return {topicCamp : camp, total : (total).values.length}
+    SELECT Camp.*
+    FROM topicMapping AS topicMapping INNER JOIN camp AS Camp
+    ON topicMapping.campId = Camp.campId
+    WHERE topicMapping.topicId= ${topicId}
+  `
+  const limitNorder = `ORDER BY Camp.createdtime ASC
+    LIMIT ${numOfRows} OFFSET ${pageNo};`
+  const camp = await sequelize.query(topicCamp+limitNorder, {type: QueryTypes.SELECT})
+  const total = await sequelize.query(topicCamp, {type: QueryTypes.SELECT})
+  return {topicCamp : camp, total : total.length}
+  },
+
+  // topicId
+  getTopic: async({topicId}:getCamp)=>{
+    return await Topic.findOne({where:{topicId}})
   },
 
   // 지역별 캠핑장 조회
@@ -109,11 +114,16 @@ export default {
     });
   },
 
-  // 찜한 캠핑장 조회
-  campPickFind: async(userId:number, campId:number)=>{
+  // 해당 유저가 찜한 캠핑장 조회
+  myPickFind: async(userId:number, campId:number)=>{
     return await Pick.findOne({
       where: {userId, campId}
     });
+  },
+
+  // 해당 캠핑장 정보
+  pickCamp: async({campId}:getCamp)=>{
+    return await Camp.findAll({where:{campId}})
   },
 
   // 캠핑장 찜하기
