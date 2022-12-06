@@ -36,7 +36,7 @@ export default {
     const refreshToken = bcrypt.hashSync(RefreshToken, salt);
     //리프레쉬 저장
     await UserRepo.updaterefreshToken({ email, refreshToken });
-    return { RefreshToken, AccessToken, userId:user.userId };
+    return { RefreshToken, AccessToken };
   },
   //에세스 토큰 검증
   validateAccessToken: async (accesstoken: string) => {
