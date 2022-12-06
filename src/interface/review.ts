@@ -26,6 +26,6 @@ export interface search {
   clturEvent?:string
   numOfRows?: number;
   pageNo?: number;
-  start?: number;
   keyword?: number;
+  sort?:string;
 }

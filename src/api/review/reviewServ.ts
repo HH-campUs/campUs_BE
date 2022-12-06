@@ -138,19 +138,19 @@ export default {
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
-    return await reviewRepo.getMyReview({ userId });
-    // const myreview = await reviewRepo.getMyReview({ userId });
-    // return myreview.map((x) => {
-    //   return {
-    //     reviewId: x.userId,
-    //     userId: x.userId,
-    //     campId: x.campId,
-    //     reviewImg: x.reviewImg,
-    //     reviewComment: x.reviewComment,
-    //     createdAt: x.createdAt,
-    //     updatedAt: x.updatedAt,
-    //   };
-    // });
+    const myreview = await reviewRepo.getMyReview({ userId });
+    return myreview.map((x) => {
+      return {
+        reviewId: x.userId,
+        userId: x.userId,
+        campId: x.campId,
+        campName:x.Camp.campName,
+        reviewImg: x.reviewImg,
+        reviewComment: x.reviewComment,
+        createdAt: x.createdAt,
+        updatedAt: x.updatedAt,
+      };
+    });
   },
 
   // //캠핑장검색
@@ -189,8 +189,9 @@ export default {
   //     clturEvent,
   //   };
   // },
-  //캠핑장검색
-  querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
+ 
+   //캠핑장쿼리검색+sort
+   querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
     pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
     const campName = await reviewRepo.CampSearch({ keyword , numOfRows, pageNo});
@@ -208,6 +209,11 @@ export default {
     const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword, numOfRows, pageNo });
     const featureNm = await reviewRepo.featureNmSearch({ keyword , numOfRows, pageNo});
     const clturEvent = await reviewRepo.clturEventSearch({ keyword, numOfRows, pageNo });
+
+
+    campName.sort((a,b) => {
+      return b.lookUp - a.lookUp
+    })
 
     return {
       campName,
