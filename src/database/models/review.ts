@@ -11,6 +11,7 @@ export class Review extends Model {
   public userId!: number;
   public reviewImg?: string;
   public reviewComment!: string;
+  public likeStatus?: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   //관계 설정 타입

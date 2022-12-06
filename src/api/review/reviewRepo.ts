@@ -5,11 +5,20 @@ import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import { sequelize } from '../../database/models/sequlize';
 import { QueryTypes } from 'sequelize';
+import  User from '../../database/models/user';
 
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
-    return await Review.findAll({ where: { campId } });
+    return await Review.findAll({ where: { campId },
+      attributes:{exclude:['userId']},
+      include: [
+        {
+          model:User,
+          as :'User',
+          attributes:['profileImg', 'nickname']
+        }
+      ]});
   },
 
   //리뷰작성
