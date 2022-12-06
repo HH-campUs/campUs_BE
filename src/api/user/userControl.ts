@@ -48,11 +48,10 @@ export default {
   //유저정보 수정
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const { location } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
+      const { location } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
       const { userId }: Users = res.locals.user;
       const { nickname }: Users = req.body;
-      // const profileImg = location
-      const profileImg = "ㅇㄴㅁㄹㅇㄴ"
+      const profileImg = location
       await userServ.updateUser({nickname, profileImg, userId });
       res.status(201).send({ message: '수정 완료' });
     } catch (err) {
