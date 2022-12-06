@@ -100,7 +100,14 @@ export default {
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
-    return await Review.findAll({ where: { userId } });
+    return await Review.findAll({ where: { userId },
+      include: [
+        {
+          model:Camp,
+          as :'Camp',
+          attributes:['campName']
+        }
+      ] });
   },
   // //유저찾기
   // findUser: async (userId:number, reviewId:number) => {
