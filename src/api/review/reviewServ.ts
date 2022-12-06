@@ -152,6 +152,10 @@ export default {
       };
     });
   },
+    //새로올라온 리뷰조회
+    getNewReview: async () => {
+      return await reviewRepo.getNewReview();
+    },
 
   // //캠핑장검색
   // search: async ({ keyword }: review) => {

@@ -1,11 +1,12 @@
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
+import  User from '../../database/models/user';
 import { Op } from 'sequelize';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import { sequelize } from '../../database/models/sequlize';
 import { QueryTypes } from 'sequelize';
-import  User from '../../database/models/user';
+
 
 export default {
   //캠핑장 리뷰조회
@@ -109,6 +110,11 @@ export default {
         }
       ] });
   },
+
+    //새로올라온 리뷰조회
+    getNewReview: async () => {
+      return await Review.findAll({order: [['createdAt','DESC']]});
+    },
   // //유저찾기
   // findUser: async (userId:number, reviewId:number) => {
   //   return await User.findOne({

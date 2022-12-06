@@ -112,6 +112,17 @@ export default {
     }
   },
 
+  //새로올라온 리뷰조회
+  getNewReview: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const allreview = await reviewService.getNewReview();
+
+      res.status(200).json({ data: allreview });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   // //캠핑장검색
   // search: async (req: Request, res: Response, next: NextFunction) => {
   //   try {
@@ -135,15 +146,17 @@ export default {
   //     next(error);
   //   }
   // },
-    //캠핑장쿼리검색+sort
-    querysearch: async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const { keyword, numOfRows, pageNo,sort }: search = req.query;
-        res
-          .status(200)
-          .json(await reviewService.querysearch({ keyword, numOfRows, pageNo,sort }));
-      } catch (error) {
-        next(error);
-      }
-    },
+  //캠핑장쿼리검색+sort
+  querysearch: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { keyword, numOfRows, pageNo, sort }: search = req.query;
+      res
+        .status(200)
+        .json(
+          await reviewService.querysearch({ keyword, numOfRows, pageNo, sort })
+        );
+    } catch (error) {
+      next(error);
+    }
+  },
 };
