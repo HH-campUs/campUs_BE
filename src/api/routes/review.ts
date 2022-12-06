@@ -12,6 +12,9 @@ const reviewrouter = Router();
 //쿼리검색하기
 reviewrouter.get('/querysearch', reviewController.querysearch);
 
+//새로올라온 리뷰조회
+reviewrouter.get('/', reviewController.getNewReview);
+
 //내가쓴리뷰조회
 reviewrouter.get('/users', authmiddleware,reviewController.getMyReview);
 
