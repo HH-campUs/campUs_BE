@@ -6,10 +6,6 @@ export interface review {
   reviewComment?: string;
   keyword?: string;
   likeStatus?:number
-  a?:number
-  b?:number
-  createdAt?:number
-  Sort?:string
 }
 
 export interface search {
