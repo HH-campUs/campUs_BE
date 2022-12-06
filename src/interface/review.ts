@@ -5,7 +5,7 @@ export interface review {
   reviewImg?: string;
   reviewComment?: string;
   keyword?: string;
-  likeStatus?:Number
+  likeStatus?:number
 }
 
 export interface search {
