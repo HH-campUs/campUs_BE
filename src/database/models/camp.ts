@@ -26,6 +26,8 @@ export class Camp extends Model {
   public lookUp!: number;
   public eqpmnLendCl?: string;
   public createdtime!: Date;
+  public pickCount!: number;
+  public reviewCount!: number;
 }
 
 //? 모델 생성

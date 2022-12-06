@@ -122,6 +122,107 @@ export default {
   //     include:[{model:User}] });
   // },
 
+   //캠핑장쿼리검색+sort
+   searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
+    const numofrows = Number(numOfRows);
+    const pageno = Number(pageNo);
+    const searchResult = await Camp.findAll({
+      where: {
+        [Op.or]:[
+          {
+            campName:{
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            induty: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            doNm: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            sigunguNm: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            address: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            operPdCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            operDeCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            animal: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            sbrsCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            posblFcltyCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            manageSttus: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            themaEnvrnCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            eqpmnLendCl: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            featureNm: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+          {
+            clturEvent: {
+              [Op.like]: '%' + keyword + '%',
+            },
+          },
+        ]
+      },
+      order:[[`${sort}`,'DESC']],
+      limit: numofrows,
+      offset: pageno,
+    });
+    return searchResult;
+  },
+
+
+
+
+
+
+
+
+
+
+
   //캠핑장이름검색
   CampSearch: async ({ keyword, numOfRows, pageNo }: search) => {
     const numofrows = Number(numOfRows);

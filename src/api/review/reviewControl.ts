@@ -135,25 +135,25 @@ export default {
   //     next(error);
   //   }
   // },
-  // //캠핑장쿼리검색
-  // querysearch: async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { keyword, numOfRows, pageNo }: search = req.query;
-  //     res
-  //       .status(200)
-  //       .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
-  //캠핑장쿼리검색+sort
+  //캠핑장쿼리검색
   querysearch: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { keyword, numOfRows, pageNo }: search = req.query;
+      res
+        .status(200)
+        .json(await reviewService.querysearch({ keyword, numOfRows, pageNo }));
+    } catch (error) {
+      next(error);
+    }
+  },
+  //캠핑장쿼리검색+sort
+  searchSort: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { keyword, numOfRows, pageNo, sort }: search = req.query;
       res
         .status(200)
         .json(
-          await reviewService.querysearch({ keyword, numOfRows, pageNo, sort })
+          await reviewService.searchSort({ keyword, numOfRows, pageNo, sort })
         );
     } catch (error) {
       next(error);
