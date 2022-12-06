@@ -62,6 +62,7 @@ export default {
           model: Review,
           as: 'Review',
           attributes: ['reviewImg', 'reviewComment'],
+          include:[{model: Camp, as: 'Camp',attributes:['campName']}]
         },
         {
           model: Pick,
