@@ -8,7 +8,19 @@ export default {
   getReview: async ({ campId }: review) => {
     const data = await reviewRepo.getReview({ campId });
     if (!campId || !data) throw new Error('잘못된요청입니다');
-    return data
+    return data.map((x)=>{
+      return {
+        reviewId:x.reviewId,
+        campId:x.campId,
+        profileImg:x.User.profileImg,
+        nickname:x.User.nickname,
+        reviewImg:x.reviewImg,
+        reviewComment:x.reviewComment,
+        likestatus:x.likeStatus,
+        createdAt:x.createdAt,
+        updatedAt:x.updatedAt,
+      }
+    })
   },
 
   //리뷰작성
