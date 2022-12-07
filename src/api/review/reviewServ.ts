@@ -16,7 +16,7 @@ export default {
         nickname:x.User.nickname,
         reviewImg:x.reviewImg,
         reviewComment:x.reviewComment,
-        likestatus:x.likeStatus,
+        likeStatus:x.likeStatus,
         createdAt:x.createdAt,
         updatedAt:x.updatedAt,
       }
@@ -164,7 +164,7 @@ export default {
           nickname:x.User.nickname,
           reviewImg:x.reviewImg,
           reviewComment:x.reviewComment,
-          likestatus:x.likeStatus,
+          likeStatus:x.likeStatus,
           createdAt:x.createdAt,
           updatedAt:x.updatedAt,
         }
