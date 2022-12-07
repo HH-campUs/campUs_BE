@@ -1,27 +1,124 @@
 import campRepo from './campRepo';
-import { getCamp, trip, ip } from '../../interface/camp'
+import { getCamp, trip, ip, pick } from '../../interface/camp'
 import { Camps } from '../../interface/openApi'
 import { Request } from 'express';
+import jwt from '../../utils/jwt';
 
 export default {
-  // 주제별 캠핑장 조회
-  getTopicCamp: async ({topicId, numOfRows, pageNo}: getCamp) => {
+  // 회원 주제별 캠핑장 조회
+  getTopicCamp: async ({topicId, numOfRows, pageNo, authorization, sort}: getCamp,) => {
       console.time("서비스")
-      // 0 이하의 페이지를 요청하면 pageNo 를 1로  
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로
       pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
-      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows});
+      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows, sort});
+      const TopicCamp:any[] = topicCamp.topicCamp
+      
       const topicid = await campRepo.getTopic({topicId})
       if(!topicid) throw new Error("존재하지 않는 주제입니다")
-      console.timeEnd("서비스")
 
+      // 조회하는 유저 정보에서 userId 구하기
+      const accesstoken = authorization?.split(" ")[1]
+      const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
+      const userId = decodeAccessToken.userId;
+
+      // 해당 유저가 찜한 캠프 정보 불러오기
+      const campPickFind = await campRepo.myPickAllFind(userId);
+
+      // 해당 유저가 찜한 campId 구하기
+      const myPick = campPickFind.map((e)=>{
+        return  e.dataValues.campId
+      })
+      console.log(myPick,'내가 찜한 campId')
+
+      // 조회되는 campId 구하기
+      const getCamps = TopicCamp.map((a:Camps)=>{
+        return a.campId
+      })
+      console.log(getCamps,'조회되는 campId')
+
+      // 조회되는 campId와 유저가 찜한 campId 중 일치하는 값 구하기
+      const sameId = getCamps.filter(x => myPick.includes(x))
+      console.log(sameId,'조회되는 campId와 내가 찜한 campId 중 일치하는 값')
+
+      // 일치하는 campId의 캠프 정보 구하기
+      const sameCamp = TopicCamp.filter((x:Camps) => sameId.includes(x.campId))
+      console.log('TopicCamp입니다',TopicCamp)
+      console.log('일치하는 값의 캠프 정보',sameCamp)
+
+      const pickCampidSet = new Set(campPickFind.map(x => x.campId));
+      const res1 = TopicCamp.map(o => ({ ...o, PickCamp:pickCampidSet.has(o.campId) ? { ...o, status: true}: { ...o, status: false} }));
+      const camp = res1.map((x)=>{
+      return x.PickCamp
+      })
+      console.timeEnd("서비스")
+      return {camp:camp,total:topicCamp.total}
+  },
+
+  // 비회원 주제별 캠핑장 조회
+  nonGetTopicCamp: async ({topicId, numOfRows, pageNo, sort}: getCamp) => {
+      console.time("서비스")
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로
+      pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
+      const topicCamp = await campRepo.getTopicCamp({topicId, pageNo, numOfRows, sort});
+      
+      const topicid = await campRepo.getTopic({topicId})
+      if(!topicid) throw new Error("존재하지 않는 주제입니다")
+
+      console.timeEnd("서비스")
       return topicCamp;
   },
 
   // 지역별 캠핑장 조회
-  getByRegionCamp: async ({doNm, numOfRows, pageNo}:getCamp) => {
+  getByRegionCamp: async ({doNm, numOfRows, pageNo, sort, authorization}:getCamp) => {
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
     pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
-    const regionCamp = await campRepo.getByRegionCamp({doNm, numOfRows, pageNo})
+    console.log(typeof doNm,'doNm다', typeof numOfRows,'numOfRows다', typeof pageNo,'pageNo다','서비스')
+    const regionCamp = await campRepo.getByRegionCamp({doNm, numOfRows, pageNo, sort})
+    const RegionCamp:any[] = regionCamp.regionCamp
+    if(!RegionCamp) throw new Error("지역에 맞는 캠핑장이 존재하지 않음")
+
+    // 조회하는 유저 정보에서 userId 구하기
+    const accesstoken = authorization?.split(" ")[1]
+    const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
+    const userId = decodeAccessToken.userId;
+
+    // 해당 유저가 찜한 캠프 정보 불러오기
+    const campPickFind = await campRepo.myPickAllFind(userId);
+
+    // 해당 유저가 찜한 campId 구하기
+    const myPick = campPickFind.map((e)=>{
+      return  e.dataValues.campId
+    })
+    console.log(myPick,'내가 찜한 campId')
+
+    // 조회되는 campId 구하기
+    const getCamps = RegionCamp.map((a:Camps)=>{
+      return a.campId
+    })
+    console.log(getCamps,'조회되는 campId')
+
+    // 조회되는 campId와 유저가 찜한 campId 중 일치하는 값 구하기
+    const sameId = getCamps.filter(x => myPick.includes(x))
+    console.log(sameId,'조회되는 campId와 내가 찜한 campId 중 일치하는 값')
+    // 일치하는 campId의 캠프 정보 구하기
+    const sameCamp = RegionCamp.filter((x:Camps) => sameId.includes(x.campId))
+    console.log('일치하는 값의 캠프 정보',sameCamp)
+
+    const pickCampidSet = new Set(campPickFind.map(x => x.campId));
+    const res1 = RegionCamp.map(o => ({ ...o, PickCamp:pickCampidSet.has(o.campId) ? { ...o, status: true}: { ...o, status: false} }));
+    const camp = res1.map((x)=>{
+    return x.PickCamp
+    })
+    console.timeEnd("서비스")
+    return {camp:camp,total:regionCamp.total}
+  },
+
+  // 비회원 지역별 캠핑장 조회
+  nonGetByRegionCamp: async ({doNm, numOfRows, pageNo, sort}:getCamp) => {
+    // 0 이하의 페이지를 요청하면 pageNo 를 1로
+    pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
+    console.log(typeof doNm,'doNm다', typeof numOfRows,'numOfRows다', typeof pageNo,'pageNo다','서비스')
+    const regionCamp = await campRepo.getByRegionCamp({doNm, numOfRows, pageNo, sort})
     if(!regionCamp.regionCamp) throw new Error("지역에 맞는 캠핑장이 존재하지 않음")
     return regionCamp
   },
@@ -68,8 +165,8 @@ export default {
   },
 
   // 내 여행 일정 등록
-  myTripSave: async({userId, date, campId}:trip)=>{
-    const aa = await campRepo.myTripSave({userId, date, campId});
+  myTripSave: async({userId, campId, memo, date}:trip)=>{
+    const aa = await campRepo.myTripSave({userId, campId, memo, date});
     if(!aa.campId) throw new Error("존재하지 않는 캠핑장")
     return aa
   },
@@ -80,12 +177,12 @@ export default {
   },
 
   // 캠핑장 찜하기
-  campPick: async(userId:number, campId:number)=>{
-    const campPickFind = await campRepo.myPickFind(userId, campId);
+  campPick: async({userId, campId}:pick)=>{
+    const campPickFind = await campRepo.myPickFind({userId, campId});
     const getPickCamp = await campRepo.pickCamp({campId})
     
       if(!campPickFind){
-        await campRepo.campPick(userId, campId)
+        await campRepo.campPick({userId, campId})
         const data = getPickCamp.map( (element) => {
           return {
             ...element.dataValues,
@@ -94,7 +191,7 @@ export default {
       })
       return { camp:data, message: '찜 목록에 캠핑장을 추가하였습니다' }
       }else{
-        await campRepo.campUnPick(userId, campId)
+        await campRepo.campUnPick({userId, campId})
         const data = getPickCamp.map( (element) => {
           return {
             ...element.dataValues,

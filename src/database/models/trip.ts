@@ -8,6 +8,7 @@ export class Trip extends Model {
   public readonly tripId!: number;
   public userId!: number;
   public campId!: number;
+  public memo?: string;
   public date!: string;
   public readonly createdAt!: Date;
 
@@ -42,6 +43,10 @@ Trip.init(
     address: {
       allowNull: false,
       type: DataTypes.STRING(255),
+    },
+    memo: {
+      allowNull: true,
+      type: DataTypes.STRING(50),
     },
     date: {
       allowNull: false,
