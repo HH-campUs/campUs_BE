@@ -19,7 +19,7 @@ export default {
       // 조회하는 유저 정보에서 userId 구하기
       const accesstoken = authorization?.split(" ")[1]
       const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
-      const userId = decodeAccessToken.userId;
+      const userId = decodeAccessToken!.userId;
 
       // 해당 유저가 찜한 캠프 정보 불러오기
       const campPickFind = await campRepo.myPickAllFind(userId);
@@ -80,7 +80,7 @@ export default {
     // 조회하는 유저 정보에서 userId 구하기
     const accesstoken = authorization?.split(" ")[1]
     const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
-    const userId = decodeAccessToken.userId;
+    const userId = decodeAccessToken!.userId;
 
     // 해당 유저가 찜한 캠프 정보 불러오기
     const campPickFind = await campRepo.myPickAllFind(userId);
