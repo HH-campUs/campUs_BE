@@ -21,8 +21,8 @@ export default {
     return await User.findByPk(userId);
   },
   //토큰 업데이트
-  updaterefreshToken: async ({ email, newPassword }: Users) => {
-    await User.update({ password:newPassword }, { where: { email } });
+  updaterefreshToken: async ({ email, refreshToken }: Users) => {
+    await User.update({ refreshToken }, { where: { email } });
   },
   //유저정보 수정
   updateUser: async ({ nickname, profileImg, userId }: Users) => {
