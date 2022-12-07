@@ -12,6 +12,10 @@ const reviewrouter = Router();
 //쿼리검색하기
 reviewrouter.get('/querysearch', reviewController.querysearch);
 
+//캠핑장쿼리검색+sort
+reviewrouter.get('/searchSort', reviewController.searchSort);
+
+
 //새로올라온 리뷰조회
 reviewrouter.get('/', reviewController.getNewReview);
 
