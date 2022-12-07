@@ -1,24 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
 import campServ from './campServ';
-import { getCamp, trip } from '../../interface/camp'
+import { getCamp, trip, pick } from '../../interface/camp'
 
 export default {
   // 주제별 캠핑장 조회
   getTopicCamp: async (req: Request<getCamp,{},{},getCamp>, res: Response, next: NextFunction) => {
     try {
-      const {numOfRows, pageNo} = req.query;
+      const {numOfRows, pageNo, sort} = req.query;
       const {topicId} = req.params;
-      res.status(200).json(await campServ.getTopicCamp({topicId, numOfRows, pageNo}));
+      const { authorization } = req.headers;
+      const result = authorization ? await campServ.getTopicCamp({topicId, numOfRows, pageNo, authorization, sort}) : 
+                      await campServ.nonGetTopicCamp({topicId, numOfRows, pageNo, authorization, sort})
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
   },
 
   // 지역별 캠핑장 조회
-  getByRegionCamp: async (req: Request<getCamp,{},{},getCamp>, res: Response, next: NextFunction) => {
+  getByRegionCamp: async (req: Request<{},{},{},getCamp>, res: Response, next: NextFunction) => {
     try {
-      const { doNm, numOfRows, pageNo } = req.query;
-      res.status(200).json(await campServ.getByRegionCamp({doNm, numOfRows, pageNo}));
+      const { doNm, numOfRows, pageNo, sort } = req.query;
+      const { authorization } = req.headers;
+      console.log(typeof doNm,'doNm다', typeof numOfRows,'numOfRows다', typeof pageNo,'pageNo다','컨트롤러')
+      const result = authorization ? await campServ.getByRegionCamp({doNm, numOfRows, pageNo, sort, authorization}) :
+                      await campServ.nonGetByRegionCamp({doNm, numOfRows, pageNo, sort})
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }
@@ -46,17 +53,12 @@ export default {
   },
 
   // 내 여행 일정 등록
-  myTripSave: async(req:Request, res:Response, next:NextFunction)=>{
+  myTripSave: async(req:Request<trip,{},trip>, res:Response, next:NextFunction)=>{
     try{
-      const { userId } = await res.locals.user;
-      const { campId } = req.params; // await 불필요
-      const { date } = await req.body;
-      const ids: trip ={
-        userId,
-        campId:Number(campId),
-        date
-      };
-      await campServ.myTripSave(ids);
+      const { userId }:trip = res.locals.user;
+      const { campId } = req.params;
+      const { memo, date } = req.body;
+      await campServ.myTripSave({userId, campId, memo, date});
       res.status(201).json({message : "여행일정 등록"});
     }catch(err){
       next(err);
@@ -82,9 +84,9 @@ export default {
   // 캠핑장 찜하기
   campPick: async(req:Request, res:Response, next:NextFunction)=>{
     try{
-      const { userId } = res.locals.user;
-      const { campId } = req.params;
-      res.status(200).json(await campServ.campPick(userId, Number(campId)));
+      const { userId }:pick = res.locals.user;
+      const { campId }:pick = req.params;
+      res.status(200).json(await campServ.campPick({userId, campId}));
     }catch(err){
       next(err);
     }
