@@ -1,9 +1,11 @@
-import { Users } from '../../interface/user';
+import { coordinate, Users } from '../../interface/user';
 import { User } from '../../database/models/user';
 import Review from '../../database/models/review';
 import Pick from '../../database/models/pick';
 import Trip from '../../database/models/trip';
 import Camp from '../../database/models/camp';
+import { sequelize } from '../../database/models/sequlize';
+import { QueryTypes } from 'sequelize';
 
 
 export default {
@@ -30,6 +32,13 @@ export default {
   changePW: async ({ email, newPassword }: Users) => {
     await User.update({password:newPassword }, { where: { email } });
   },
+  //가까운 캠핑장 찾기
+  nearCamp: async ({campX,campY}:coordinate) => {
+    const query = `SELECT camp.*,
+    ( 6371 * acos( cos( radians( ${campX} ) ) * cos( radians( camp.X) ) * cos( radians( camp.Y ) - radians(${campY}) ) + sin( radians( ${campX}) ) * sin( radians( camp.X ) ) ) )as distance
+    FROM camp HAVING distance < 30 ORDER BY distance LIMIT 0,2`
+    return await sequelize.query(query, {type: QueryTypes.SELECT})
+   },
   //찜 목록 조회
   getMyPick: async({userId}:Users)=>{
   return await User.findAll({
