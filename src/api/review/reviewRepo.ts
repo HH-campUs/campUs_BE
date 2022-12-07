@@ -1,25 +1,26 @@
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
-import  User from '../../database/models/user';
+import User from '../../database/models/user';
 import { Op } from 'sequelize';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import { sequelize } from '../../database/models/sequlize';
 import { QueryTypes } from 'sequelize';
 
-
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
-    return await Review.findAll({ where: { campId },
-      attributes:{exclude:['userId']},
+    return await Review.findAll({
+      where: { campId },
+      attributes: { exclude: ['userId'] },
       include: [
         {
-          model:User,
-          as :'User',
-          attributes:['profileImg', 'nickname']
-        }
-      ]});
+          model: User,
+          as: 'User',
+          attributes: ['profileImg', 'nickname'],
+        },
+      ],
+    });
   },
 
   //리뷰작성
@@ -101,20 +102,34 @@ export default {
 
   //내가쓴리뷰조회
   getMyReview: async ({ userId }: review) => {
-    return await Review.findAll({ where: { userId },
+    return await Review.findAll({
+      where: { userId },
       include: [
         {
-          model:Camp,
-          as :'Camp',
-          attributes:['campName']
-        }
-      ] });
+          model: Camp,
+          as: 'Camp',
+          attributes: ['campName'],
+        },
+      ],
+    });
   },
 
-    //새로올라온 리뷰조회
-    getNewReview: async () => {
-      return await Review.findAll({order: [['createdAt','DESC']]});
-    },
+  //새로올라온 리뷰조회
+  getNewReview: async () => {
+    return await Review.findAll({
+      where: {},
+      attributes: { exclude: ['userId'] },
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          as: 'User',
+          attributes: ['profileImg', 'nickname'],
+        },
+      ],
+    });
+  },
+
   // //유저찾기
   // findUser: async (userId:number, reviewId:number) => {
   //   return await User.findOne({
@@ -122,15 +137,15 @@ export default {
   //     include:[{model:User}] });
   // },
 
-   //캠핑장쿼리검색+sort
-   searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
+  //캠핑장쿼리검색+sort
+  searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
     const numofrows = Number(numOfRows);
     const pageno = Number(pageNo);
     const searchResult = await Camp.findAll({
       where: {
-        [Op.or]:[
+        [Op.or]: [
           {
-            campName:{
+            campName: {
               [Op.like]: '%' + keyword + '%',
             },
           },
@@ -204,24 +219,14 @@ export default {
               [Op.like]: '%' + keyword + '%',
             },
           },
-        ]
+        ],
       },
-      order:[[`${sort}`,'DESC']],
+      order: [[`${sort}`, 'DESC']],
       limit: numofrows,
       offset: pageno,
     });
     return searchResult;
   },
-
-
-
-
-
-
-
-
-
-
 
   //캠핑장이름검색
   CampSearch: async ({ keyword, numOfRows, pageNo }: search) => {
