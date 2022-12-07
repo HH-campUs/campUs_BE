@@ -1,6 +1,6 @@
 //서비스로 불러와서 바로 사용가능 서비스도 인스턴스로 내보내기
 import {Request,Response, NextFunction } from 'express';
-import { Users } from '../../interface/user';
+import { coordinate, Users } from '../../interface/user';
 import {InvalidParamsError} from '../../utils/exceptions'
 import userServ from './userServ';
 import Token from '../../utils/jwt';
@@ -82,10 +82,21 @@ export default {
   signupcheck: async(req:Request,res:Response,next:NextFunction)=>{
     try{
       const { email }:Users = req.body
-      console.log(email)
       const findEmail = await User.findOne({where:{email}})
       if(findEmail)  return res.status(400).send({"message":"이미 존재하는 이메일 입니다."})
       res.status(200).send({"message":"사용가능한 이메일 입니다."})
+    }catch(err){
+      next(err)
+    }
+  },
+   //나와 가까운 캠핑장
+   nearCamp: async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+      const { campX , campY }:coordinate = req.query
+      console.log(campX,campY)
+      if(!campX || !campY) throw new InvalidParamsError("좌표가 없습니다.")
+      const nearCamp = await userServ.nearCamp({campX,campY});
+      res.status(200).json({nearCamp})
     }catch(err){
       next(err)
     }

@@ -1,10 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import passport from "passport";
 import jwt from "jsonwebtoken";
-import { Users } from "../interface/user";
 import bcrypt from 'bcrypt';
-import User from "../database/models/user";
 import axios from "axios";
+import passport from "passport";
+import { NextFunction, Request, Response } from "express";
+import User from "../database/models/user";
 import { Unauthorized } from "./exceptions";
 
 export default async (req:Request, res:Response, next:NextFunction) => {

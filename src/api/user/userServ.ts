@@ -1,5 +1,5 @@
 import userRepo from './userRepo';
-import { Users } from '../../interface/user';
+import { coordinate, Users } from '../../interface/user';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import {ValidationErrors} from '../../utils/exceptions';
@@ -67,5 +67,9 @@ export default {
       throw new ValidationErrors('유저가 일치 하지 않습니다');
     }
     return await userRepo.getMyPick({userId});
+  },
+  //나와 가까운 캠핑장 조회
+  nearCamp: async ({campX,campY}:coordinate) => {
+    return await userRepo.nearCamp({campX,campY});
   },
 };

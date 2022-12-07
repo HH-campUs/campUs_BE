@@ -15,3 +15,8 @@ export interface Users  {
 export interface token extends IncomingHttpHeaders {
   refreshtoken?:string
 }
+
+export interface coordinate {
+  campX?:number
+  campY?:number
+}
