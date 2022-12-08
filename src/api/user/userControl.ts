@@ -93,8 +93,7 @@ export default {
    nearCamp: async(req:Request,res:Response,next:NextFunction)=>{
     try{
       const { campX , campY }:coordinate = req.query
-      console.log(campX,campY)
-      if(!campX || !campY) throw new InvalidParamsError("좌표가 없습니다.")
+      if((String(campX)!.indexOf('.') == -1) || (String(campY)!.indexOf('.') == -1)) throw new InvalidParamsError("좌표가 없습니다.")
       const nearCamp = await userServ.nearCamp({campX,campY});
       res.status(200).json({nearCamp})
     }catch(err){
