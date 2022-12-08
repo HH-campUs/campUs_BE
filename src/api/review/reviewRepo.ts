@@ -139,93 +139,19 @@ export default {
 
   //캠핑장쿼리검색+sort
   searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
-    const numofrows = Number(numOfRows);
-    const pageno = Number(pageNo);
-    const searchResult = await Camp.findAll({
-      where: {
-        [Op.or]: [
-          {
-            campName: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            induty: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            doNm: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            sigunguNm: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            address: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            operPdCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            operDeCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            animal: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            sbrsCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            posblFcltyCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            manageSttus: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            themaEnvrnCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            eqpmnLendCl: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            featureNm: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-          {
-            clturEvent: {
-              [Op.like]: '%' + keyword + '%',
-            },
-          },
-        ],
-      },
-      order: [[`${sort}`, 'DESC']],
-      limit: numofrows,
-      offset: pageno,
-    });
-    return searchResult;
+    console.log(pageNo, '페이지 넘버입니다')
+    const query=`
+    SELECT *
+    FROM camp
+    WHERE (Camp.campName LIKE CONCAT('%',$keyword,'%') OR Camp.induty LIKE CONCAT('%',$keyword,'%') OR Camp.doNm LIKE CONCAT('%',$keyword,'%') OR Camp.sigunguNm LIKE CONCAT('%',$keyword,'%') OR Camp.address LIKE CONCAT('%',$keyword,'%') OR Camp.operPdCl LIKE CONCAT('%',$keyword,'%') OR Camp.operDeCl LIKE CONCAT('%',$keyword,'%') OR Camp.animal LIKE CONCAT('%',$keyword,'%') OR Camp.sbrsCl LIKE CONCAT('%',$keyword,'%') OR Camp.posblFcltyCl LIKE CONCAT('%',$keyword,'%') OR Camp.manageSttus LIKE CONCAT('%',$keyword,'%') OR Camp.themaEnvrnCl LIKE CONCAT('%',$keyword,'%') OR Camp.eqpmnLendCl LIKE CONCAT('%',$keyword,'%') OR Camp.featureNm LIKE CONCAT('%',$keyword,'%') OR Camp.clturEvent LIKE CONCAT('%',$keyword,'%'))
+    `
+    const orderNlimit = `
+      ORDER BY ${sort} DESC
+      LIMIT $numOfRows OFFSET $pageNo;
+    `
+    const searchCamp = await sequelize.query(query+orderNlimit, {bind:{ keyword, numOfRows, pageNo:String(pageNo) }, type: QueryTypes.SELECT})
+    const total = await sequelize.query(query, {bind : {keyword}, type: QueryTypes.SELECT})
+    return { searchCamp, total : total.length }
   },
 
   //캠핑장이름검색
