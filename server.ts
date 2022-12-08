@@ -15,21 +15,37 @@ dotenv.config();
 const app = express();
 const prod: boolean = process.env.NODE_ENV === 'production';
 
-const Domain = process.env.DOMAIN
-
 app.set('port', prod ? process.env.PORT : 3000);
-
 app.use(helmet())
 app.use(hpp())
-app.use(
-  cors({
-    origin: '*',
-    methods: "GET,POST,PUT,DELETE,PATCH",
-    credentials: true,
-  })
-  );
- 
 
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: "GET,POST,PUT,DELETE,PATCH",
+//     credentials: true,
+//   })
+//   );
+  
+const whitelist = [
+  "http://localhost:3000",
+  process.env.Client_1,
+  undefined
+]
+const corsOptions = {
+  origin: function (origin:any, callback:any) {
+    if (whitelist.indexOf(origin) !== -1) {
+      // 만일 whitelist 배열에 origin인자가 있을 경우
+      callback(null, true); // cors 허용
+    } else {
+      callback(new Error("Not Allowed Origin!")); // cors 비허용
+    }
+  },
+  methods: "GET,POST,PUT,DELETE,PATCH",
+  credentials: true,
+};
+  
+app.use(cors(corsOptions)) //옵션 추가한 cors 미들웨어 추가
 app.use(express.json());
 app.use(cookieParser());
 
@@ -42,9 +58,9 @@ app.use(errorHandler);
 if (prod) {
   try {
     const options = {
-      ca: fs.readFileSync(`/etc/letsencrypt/live/${Domain}/fullchain.pem`),
-      key: fs.readFileSync(`/etc/letsencrypt/live/${Domain}/privkey.pem`),
-      cert: fs.readFileSync(`/etc/letsencrypt/live/${Domain}/cert.pem`),
+      ca: fs.readFileSync(`${process.env.CA}`),
+      key: fs.readFileSync(`${process.env.KEY}`),
+      cert: fs.readFileSync(`${process.env.CERT}`),
     };
     HTTPS.createServer(options, app).listen(app.get('port'), async () => {
       console.log('https 서버가 실행되었습니다. 포트 :: ' + app.get('port'));
