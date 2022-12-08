@@ -151,7 +151,7 @@ export default {
   },
 
   // 해당 유저가 찜한 모든 캠핑장 조회
-  myPickAllFind: async(userId:number)=>{
+  myPickAllFind: async({userId}:getCamp)=>{
     return await Pick.findAll({
       where: {userId}
     });
