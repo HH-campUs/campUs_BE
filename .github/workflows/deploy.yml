@@ -49,6 +49,6 @@ jobs:
         run: aws deploy create-deployment
           --application-name campusautocode
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name campus
+          --deployment-group-name campusautocodeGrop
           --s3-location bucket=campus123,bundleType=zip,key=build/cicdtest.zip
       
