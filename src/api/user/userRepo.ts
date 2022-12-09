@@ -39,7 +39,7 @@ export default {
     FROM camp HAVING distance < 30 ORDER BY distance LIMIT 0,2`
     return await sequelize.query(query, {type: QueryTypes.SELECT})
    },
-  //찜 목록 조회
+  //찜 목록 조회 
   getMyPick: async({userId}:Users)=>{
   return await User.findAll({
     where:{userId},
