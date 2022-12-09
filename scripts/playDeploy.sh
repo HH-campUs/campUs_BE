@@ -1,5 +1,5 @@
 #!/bin/bash
-REPOSITORY=/home/ubuntu/autocode/build
+REPOSITORY=/home/ubuntu/autocode/
 
 
 cd $REPOSITORY
