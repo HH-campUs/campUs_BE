@@ -33,17 +33,17 @@ jobs:
         run: |
           npm install
       - name: zip file
-        run: zip -r cicdtest.zip ./build ./scripts ./appspec.yml ./env ./package.json
+        run: zip -r campustest.zip ./build ./scripts ./appspec.yml ./env ./package.json
 
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
-          aws-region: ca-central-1
+          aws-region: ap-northeast-2
 
       - name: upload to S3
-        run: aws s3 cp --region ca-central-1 ./cicdtest.zip s3://campus123/build/
+        run: aws s3 cp --region ap-northeast-2 ./campustest.zip s3://qwerqwer/build/
 
 
       - name: deploy with AWS codeDeploy
@@ -51,5 +51,5 @@ jobs:
           --application-name campusauto
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name campusautoGrop
-          --s3-location bucket=campus123,bundleType=zip,key=build/cicdtest.zip
+          --s3-location bucket=qwerqwer,bundleType=zip,key=build/campustest.zip
       
