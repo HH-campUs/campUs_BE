@@ -48,8 +48,8 @@ jobs:
 
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name campusautocode
+          --application-name campusA
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name campusautoGrop
+          --deployment-group-name campusA
           --s3-location bucket=qwerqwer,bundleType=zip,key=build/campustest.zip
       
