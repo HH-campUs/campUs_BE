@@ -195,14 +195,13 @@ export default {
     const NOW = new Date();
     const hours =  9 * 60 * 60 * 1000;
     NOW.setTime(NOW.getTime() + 0 + hours + 0 + 0)
-    // const NOWDate = NOW.toISOString().substring(0, 10)
     console.log(NOW)
 
     const date = await campRepo.myTripDate({userId})
     const dt = date?.dataValues.date
 
     // 일정에 저장된 날짜
-    const DATE = new Date(dt.slice(0,4) + '-' + dt.slice(4, 6) + '-' + dt.slice(6,8));
+    const DATE = new Date(`${dt.slice(0,4)}-${dt.slice(4, 6)}-${dt.slice(6,8)}`);
 
     // 현재 날짜에서 저장된 날짜의 차이
     const difDate = +DATE - +NOW
