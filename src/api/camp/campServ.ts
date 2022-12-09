@@ -202,7 +202,7 @@ export default {
     const dt = date?.dataValues.date
 
     // 일정에 저장된 날짜
-    const DATE = new Date(dt.slice(0,4) + '-' + dt.slice(4, 6) + '-' + dt.slice(6,8));
+    const DATE = new Date(`${dt.slice(0,4)}-${dt.slice(4, 6)}-${dt.slice(6,8)}`);
 
     // 현재 날짜에서 저장된 날짜의 차이
     const difDate = +DATE - +NOW
