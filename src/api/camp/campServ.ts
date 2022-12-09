@@ -45,7 +45,7 @@ export default {
       return x.PickCamp
       })
       console.timeEnd("서비스")
-      return {camp:camp,total:topicCamp.total}
+      return {topicCamp : camp, total : topicCamp.total}
   },
 
   // 비회원 주제별 캠핑장 조회
@@ -100,7 +100,7 @@ export default {
     return x.PickCamp
     })
     console.timeEnd("서비스")
-    return {camp:camp,total:regionCamp.total}
+    return { regionCamp : camp, total : regionCamp.total }
   },
 
   // 비회원 지역별 캠핑장 조회
@@ -114,7 +114,24 @@ export default {
   },
 
   // 캠핑장 상세 조회
-  getDetailCamp: async ({campId}:getCamp) => {
+  getDetailCamp: async ({campId, userId}:getCamp) => {
+    const detailCamp = await campRepo.getDetailCamp({campId})
+    if(!detailCamp){ throw new Error("캠핑장이 존재하지 않음") }
+
+    const detailPick = await campRepo.getDetailPick({userId, campId})
+    const status = detailPick.length ? true : false
+
+    const result = detailCamp.map((x)=>{
+      return {
+        ...x.dataValues,
+        status
+      }
+    })
+    return result;    
+  },
+
+  // 비회원 캠핑장 상세 조회
+  nonGetDetailCamp: async ({campId}:getCamp) => {
     const detailCamp = await campRepo.getDetailCamp({campId})
     if(!detailCamp){ throw new Error("캠핑장이 존재하지 않음") }
     return detailCamp;    
@@ -147,7 +164,15 @@ export default {
   },
 
   // most 캠핑장 조회
-  getMostCamp: async () => {
+  getMostCamp: async ({userId}:getCamp) => {
+    const mostLook = {look : await campRepo.getMostLook()}
+    const mostReview = {review : await campRepo.getMostReview()}
+    const mostPick = {pick : await campRepo.getMostPick()}
+    return [ mostLook, mostReview, mostPick ]
+  },
+
+  // 비회원 most 캠핑장 조회
+  nonGetMostCamp: async () => {
     const mostLook = {look : await campRepo.getMostLook()}
     const mostReview = {review : await campRepo.getMostReview()}
     const mostPick = {pick : await campRepo.getMostPick()}
@@ -156,9 +181,48 @@ export default {
 
   // 내 여행 일정 등록
   myTripSave: async({userId, campId, memo, date}:trip)=>{
-    const aa = await campRepo.myTripSave({userId, campId, memo, date});
-    if(!aa.campId) throw new Error("존재하지 않는 캠핑장")
-    return aa
+    const tripSave = await campRepo.myTripSave({userId, campId, memo, date});
+    if(!tripSave.campId) throw new Error("존재하지 않는 캠핑장")
+    return tripSave
+  },
+
+  // 내 여행 일정 조회
+  myTripGet: async({userId}:trip)=>{
+    const tripGet = await campRepo.myTripGet({userId});
+    console.log(tripGet,'getttt')
+
+    // 현재 날짜
+    const NOW = new Date();
+    const NOWDate = NOW.toISOString().substring(0, 10)
+    console.log(NOWDate)
+
+    const date = await campRepo.myTripDate({userId})
+    const dt = date?.dataValues.date
+
+    // 일정에 저장된 날짜
+    const DATE = new Date(dt.slice(0,4) + '-' + dt.slice(4, 6) + '-' + dt.slice(6,8));
+
+    // 현재 날짜에서 저장된 날짜의 차이
+    const difDate = +DATE - +NOW
+    const difDay = Math.floor(difDate / (1000*60*60*24))
+
+    const result = tripGet.map((d)=>{
+      return {
+        ...d,
+        dDay : difDay+1 
+      }
+    });
+
+    console.log(difDay)
+    return result
+  },
+
+  // 내 여행 일정 수정
+  myTripUpdate: async({userId, tripId, memo, date}:trip)=>{
+    const tripUpdate = await campRepo.myTripUpdate({userId, tripId, memo, date});
+    const trip = await campRepo.findByTripId({tripId});
+    if(!trip) throw new Error("존재하지 않는 여행 일정")
+    return tripUpdate
   },
 
   // 내 여행 일정 삭제
