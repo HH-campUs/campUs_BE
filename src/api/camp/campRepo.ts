@@ -4,7 +4,7 @@ import { Pick } from '../../database/models/pick';
 import { LookUp } from '../../database/models/lookUp';
 import { getCamp, trip, ip, pick } from '../../interface/camp';
 import { sequelize } from '../../database/models/sequlize';
-import { QueryTypes } from 'sequelize';
+import { Model, QueryTypes } from 'sequelize';
 import Topic from '../../database/models/topic';
 
 export default {
@@ -73,6 +73,20 @@ export default {
     return await Camp.findAll({where:{campId}})
   },
 
+  // 캠핑장 상세 조회 ( pick join )
+  getDetailPick: async({userId, campId}:getCamp)=>{
+    return await Camp.findAll({
+      where:{campId},
+      include:[
+        {
+          model: Pick,
+          as: 'Pick',
+          where:{userId}
+        }
+      ]
+    })
+  },
+
   // 조회수를 올린 IP 존재 여부
   getIpCamp: async ({ip, campId}:ip) => {
     console.log("ip GET입니다")
@@ -98,25 +112,19 @@ export default {
   
   // most 조회수
   getMostLook: async () => {
-    // async function as(mostLook:number[]) {
-    //   Math.max.apply(null,mostLook)
-    // } 
     const mostLook = await Camp.max('lookUp')
     return await Camp.findOne({
-      where:{lookUp : mostLook}
+      where:{lookUp : mostLook},
+      // include
     })
   }, 
   
   // most 리뷰
   getMostReview: async()=>{
     const mostReview = await Camp.max('reviewCount')
-    if(mostReview == 0){
-      return false // undefined null
-    }else{
       return await Camp.findOne({
         where:{reviewCount : mostReview}
       })
-    }
   },
 
   // most 찜
@@ -134,6 +142,56 @@ export default {
     return await Trip.create({
       userId, campId, memo, address:Address?.address, date
     });
+  },
+
+  // 내 여행 일정 id 조회
+  findByTripId: async({tripId}:trip)=>{
+    return await Trip.findByPk(tripId)
+  },
+
+  // 내 여행 일정 조회
+  myTripGet: async({userId}:trip)=>{
+    // return await Trip.findAll({
+    //   where:{userId, tripId},
+    //   attributes:['address', 'date'],
+    //   include:[
+    //     {
+    //       model: Camp,
+    //       as: 'Camp',
+    //       attributes:['campName', 'ImageUrl']
+    //     }
+    //   ]
+    // });
+    const NOW = new Date();
+    const NOWDate = NOW.toISOString().substring(0, 10)
+    const query = `
+      SELECT Trip.tripId, Trip.address, Trip.date,
+      Camp.campName, Camp.ImageUrl 
+      FROM trip AS Trip 
+      INNER JOIN camp AS Camp ON Trip.campId = Camp.campId 
+      WHERE Trip.userId = $userId
+      ORDER BY ABS(DATEDIFF( $NOWDate, date ))
+      LIMIT 1;
+    `
+    const trip = await sequelize.query(query,{
+      bind:{userId : String(userId), NOWDate},
+      type: QueryTypes.SELECT
+    })
+    return trip
+  },
+
+  // 내 여행 일정 날짜 구하기
+  myTripDate: async({userId}:trip)=>{
+    const tripDate = await Trip.min('date')
+    return await Trip.findOne({where:{userId, date:tripDate}, attributes:['date']})
+  },
+
+  // 내 여행 일정 수정
+  myTripUpdate: async({userId, tripId, memo, date}:trip)=>{
+    return await Trip.update(
+      {memo, date},
+      {where: {userId, tripId}}
+    );
   },
 
   // 내 여행 일정 삭제
