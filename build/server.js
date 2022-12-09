@@ -27,15 +27,35 @@ const sequlize_1 = require("./src/database/models/sequlize");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const prod = process.env.NODE_ENV === 'production';
-const Domain = process.env.DOMAIN;
 app.set('port', prod ? process.env.PORT : 3000);
 app.use((0, helmet_1.default)());
 app.use((0, hpp_1.default)());
-app.use((0, cors_1.default)({
-    origin: '*',
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: "GET,POST,PUT,DELETE,PATCH",
+//     credentials: true,
+//   })
+//   );
+const whitelist = [
+    "http://localhost:3000",
+    process.env.Client_1,
+    undefined
+];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            // 만일 whitelist 배열에 origin인자가 있을 경우
+            callback(null, true); // cors 허용
+        }
+        else {
+            callback(new Error("Not Allowed Origin!")); // cors 비허용
+        }
+    },
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
-}));
+};
+app.use((0, cors_1.default)(corsOptions)); //옵션 추가한 cors 미들웨어 추가
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use('/', index_1.default);
@@ -46,9 +66,9 @@ app.use(errorhandler_1.errorHandler);
 if (prod) {
     try {
         const options = {
-            ca: fs_1.default.readFileSync(`/etc/letsencrypt/live/${Domain}/fullchain.pem`),
-            key: fs_1.default.readFileSync(`/etc/letsencrypt/live/${Domain}/privkey.pem`),
-            cert: fs_1.default.readFileSync(`/etc/letsencrypt/live/${Domain}/cert.pem`),
+            ca: fs_1.default.readFileSync(`${process.env.CA}`),
+            key: fs_1.default.readFileSync(`${process.env.KEY}`),
+            cert: fs_1.default.readFileSync(`${process.env.CERT}`),
         };
         https_1.default.createServer(options, app).listen(app.get('port'), () => __awaiter(void 0, void 0, void 0, function* () {
             console.log('https 서버가 실행되었습니다. 포트 :: ' + app.get('port'));

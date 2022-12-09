@@ -16,6 +16,8 @@ const camp_1 = __importDefault(require("../../database/models/camp"));
 const review_1 = __importDefault(require("../../database/models/review"));
 const user_1 = __importDefault(require("../../database/models/user"));
 const sequelize_1 = require("sequelize");
+const sequlize_1 = require("../../database/models/sequlize");
+const sequelize_2 = require("sequelize");
 exports.default = {
     //캠핑장 리뷰조회
     getReview: ({ campId }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -124,93 +126,19 @@ exports.default = {
     // },
     //캠핑장쿼리검색+sort
     searchSort: ({ keyword, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
-        const numofrows = Number(numOfRows);
-        const pageno = Number(pageNo);
-        const searchResult = yield camp_1.default.findAll({
-            where: {
-                [sequelize_1.Op.or]: [
-                    {
-                        campName: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        induty: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        doNm: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        sigunguNm: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        address: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        operPdCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        operDeCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        animal: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        sbrsCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        posblFcltyCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        manageSttus: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        themaEnvrnCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        eqpmnLendCl: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        featureNm: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                    {
-                        clturEvent: {
-                            [sequelize_1.Op.like]: '%' + keyword + '%',
-                        },
-                    },
-                ],
-            },
-            order: [[`${sort}`, 'DESC']],
-            limit: numofrows,
-            offset: pageno,
-        });
-        return searchResult;
+        console.log(pageNo, '페이지 넘버입니다');
+        const query = `
+    SELECT *
+    FROM camp
+    WHERE (Camp.campName LIKE CONCAT('%',$keyword,'%') OR Camp.induty LIKE CONCAT('%',$keyword,'%') OR Camp.doNm LIKE CONCAT('%',$keyword,'%') OR Camp.sigunguNm LIKE CONCAT('%',$keyword,'%') OR Camp.address LIKE CONCAT('%',$keyword,'%') OR Camp.operPdCl LIKE CONCAT('%',$keyword,'%') OR Camp.operDeCl LIKE CONCAT('%',$keyword,'%') OR Camp.animal LIKE CONCAT('%',$keyword,'%') OR Camp.sbrsCl LIKE CONCAT('%',$keyword,'%') OR Camp.posblFcltyCl LIKE CONCAT('%',$keyword,'%') OR Camp.manageSttus LIKE CONCAT('%',$keyword,'%') OR Camp.themaEnvrnCl LIKE CONCAT('%',$keyword,'%') OR Camp.eqpmnLendCl LIKE CONCAT('%',$keyword,'%') OR Camp.featureNm LIKE CONCAT('%',$keyword,'%') OR Camp.clturEvent LIKE CONCAT('%',$keyword,'%'))
+    `;
+        const orderNlimit = `
+      ORDER BY ${sort} DESC
+      LIMIT $numOfRows OFFSET $pageNo;
+    `;
+        const searchCamp = yield sequlize_1.sequelize.query(query + orderNlimit, { bind: { keyword, numOfRows, pageNo: String(pageNo) }, type: sequelize_2.QueryTypes.SELECT });
+        const total = yield sequlize_1.sequelize.query(query, { bind: { keyword }, type: sequelize_2.QueryTypes.SELECT });
+        return { searchCamp, total: total.length };
     }),
     //캠핑장이름검색
     CampSearch: ({ keyword, numOfRows, pageNo }) => __awaiter(void 0, void 0, void 0, function* () {

@@ -13,10 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const campRepo_1 = __importDefault(require("./campRepo"));
-const jwt_1 = __importDefault(require("../../utils/jwt"));
 exports.default = {
     // 회원 주제별 캠핑장 조회
-    getTopicCamp: ({ topicId, numOfRows, pageNo, authorization, sort }) => __awaiter(void 0, void 0, void 0, function* () {
+    getTopicCamp: ({ topicId, numOfRows, pageNo, userId, sort }) => __awaiter(void 0, void 0, void 0, function* () {
         console.time("서비스");
         // 0 이하의 페이지를 요청하면 pageNo 를 1로
         pageNo <= 0 ? pageNo = 1 : pageNo = (pageNo - 1) * numOfRows;
@@ -25,12 +24,8 @@ exports.default = {
         const topicid = yield campRepo_1.default.getTopic({ topicId });
         if (!topicid)
             throw new Error("존재하지 않는 주제입니다");
-        // 조회하는 유저 정보에서 userId 구하기
-        const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
-        const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
-        const userId = decodeAccessToken.userId;
         // 해당 유저가 찜한 캠프 정보 불러오기
-        const campPickFind = yield campRepo_1.default.myPickAllFind(userId);
+        const campPickFind = yield campRepo_1.default.myPickAllFind({ userId });
         // 해당 유저가 찜한 campId 구하기
         const myPick = campPickFind.map((e) => {
             return e.dataValues.campId;
@@ -69,7 +64,7 @@ exports.default = {
         return topicCamp;
     }),
     // 지역별 캠핑장 조회
-    getByRegionCamp: ({ doNm, numOfRows, pageNo, sort, authorization }) => __awaiter(void 0, void 0, void 0, function* () {
+    getByRegionCamp: ({ doNm, numOfRows, pageNo, sort, userId }) => __awaiter(void 0, void 0, void 0, function* () {
         // 0 이하의 페이지를 요청하면 pageNo 를 1로
         pageNo <= 0 ? pageNo = 1 : pageNo = (pageNo - 1) * numOfRows;
         console.log(typeof doNm, 'doNm다', typeof numOfRows, 'numOfRows다', typeof pageNo, 'pageNo다', '서비스');
@@ -77,12 +72,8 @@ exports.default = {
         const RegionCamp = regionCamp.regionCamp;
         if (!RegionCamp)
             throw new Error("지역에 맞는 캠핑장이 존재하지 않음");
-        // 조회하는 유저 정보에서 userId 구하기
-        const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
-        const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
-        const userId = decodeAccessToken.userId;
         // 해당 유저가 찜한 캠프 정보 불러오기
-        const campPickFind = yield campRepo_1.default.myPickAllFind(userId);
+        const campPickFind = yield campRepo_1.default.myPickAllFind({ userId });
         // 해당 유저가 찜한 campId 구하기
         const myPick = campPickFind.map((e) => {
             return e.dataValues.campId;

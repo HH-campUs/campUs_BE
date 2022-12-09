@@ -111,8 +111,7 @@ exports.default = {
     nearCamp: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { campX, campY } = req.query;
-            console.log(campX, campY);
-            if (!campX || !campY)
+            if ((String(campX).indexOf('.') == -1) || (String(campY).indexOf('.') == -1))
                 throw new exceptions_1.InvalidParamsError("좌표가 없습니다.");
             const nearCamp = yield userServ_1.default.nearCamp({ campX, campY });
             res.status(200).json({ nearCamp });

@@ -1,5 +1,5 @@
 name: campus
-
+# 어디브랜치에 쓸꺼니?
 on:
   push:
     branches: [CDTEST]
@@ -7,10 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+# 노드버전 쓰기
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -21,9 +21,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
+# env파일 생성 
       - name: create env file
-        working-directory: ./build
+        working-directory: ./
         run: |
           touch .env
           cat << EOF >> .env
@@ -32,20 +32,21 @@ jobs:
         working-directory: ./
         run: |
           npm install
+# 어떤 파일을 알집하고 어떤이름으로 할꺼니
       - name: zip file
         run: zip -r campustest.zip ./build ./scripts ./appspec.yml ./env ./package.json
-
+# aws연결 할 때 사용자 에세스키와 비밀키 깃헙 액션에 등록하기
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: ap-northeast-2
-
+# 버켓 지역 적기
       - name: upload to S3
         run: aws s3 cp --region ap-northeast-2 ./campustest.zip s3://qwerqwer/build/
-
-
+# 지역 이름과 알집파일 버켓이름 적기
+# deploy도 같은 지역으로 만들어야함 아니면 deploy 오류
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
           --application-name campusA

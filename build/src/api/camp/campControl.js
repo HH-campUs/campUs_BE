@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const campServ_1 = __importDefault(require("./campServ"));
+const jwt_1 = __importDefault(require("../../utils/jwt"));
 exports.default = {
     // 주제별 캠핑장 조회
     getTopicCamp: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,9 +21,16 @@ exports.default = {
             const { numOfRows, pageNo, sort } = req.query;
             const { topicId } = req.params;
             const { authorization } = req.headers;
-            const result = authorization ? yield campServ_1.default.getTopicCamp({ topicId, numOfRows, pageNo, authorization, sort }) :
-                yield campServ_1.default.nonGetTopicCamp({ topicId, numOfRows, pageNo, authorization, sort });
-            res.status(200).json(result);
+            // 조회하는 유저 정보에서 userId 구하기
+            const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
+            const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
+            if (decodeAccessToken == null) {
+                res.status(200).json(yield campServ_1.default.nonGetTopicCamp({ topicId, numOfRows, pageNo, sort }));
+            }
+            else {
+                const userId = decodeAccessToken.userId;
+                res.status(200).json(yield campServ_1.default.getTopicCamp({ topicId, numOfRows, pageNo, userId, sort }));
+            }
         }
         catch (err) {
             next(err);
@@ -34,9 +42,16 @@ exports.default = {
             const { doNm, numOfRows, pageNo, sort } = req.query;
             const { authorization } = req.headers;
             console.log(typeof doNm, 'doNm다', typeof numOfRows, 'numOfRows다', typeof pageNo, 'pageNo다', '컨트롤러');
-            const result = authorization ? yield campServ_1.default.getByRegionCamp({ doNm, numOfRows, pageNo, sort, authorization }) :
-                yield campServ_1.default.nonGetByRegionCamp({ doNm, numOfRows, pageNo, sort });
-            res.status(200).json(result);
+            // 조회하는 유저 정보에서 userId 구하기
+            const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
+            const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
+            if (decodeAccessToken == null) {
+                res.status(200).json(yield campServ_1.default.nonGetByRegionCamp({ doNm, numOfRows, pageNo, sort }));
+            }
+            else {
+                const userId = decodeAccessToken.userId;
+                res.status(200).json(yield campServ_1.default.getByRegionCamp({ doNm, numOfRows, pageNo, sort, userId }));
+            }
         }
         catch (err) {
             next(err);

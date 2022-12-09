@@ -251,11 +251,11 @@ exports.default = {
     //캠핑장쿼리검색+sort
     searchSort: ({ keyword, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
         // 0 이하의 페이지를 요청하면 pageNo 를 1로
-        pageNo <= 0 ? (pageNo = 1) : (pageNo = (pageNo - 1) * numOfRows);
+        console.log(pageNo, '페이지 넘버입니다 서비스');
+        pageNo <= 0 ? pageNo = 1 : pageNo = (pageNo - 1) * numOfRows;
+        console.log(pageNo, '페이지 넘버입니다 계산 다음 서비스');
         const searchSort = yield reviewRepo_1.default.searchSort({ keyword, numOfRows, pageNo, sort });
-        return {
-            searchSort,
-        };
+        return searchSort;
     }),
 };
 // return getCampName

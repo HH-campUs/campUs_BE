@@ -50,7 +50,7 @@ exports.default = {
     FROM camp HAVING distance < 30 ORDER BY distance LIMIT 0,2`;
         return yield sequlize_1.sequelize.query(query, { type: sequelize_1.QueryTypes.SELECT });
     }),
-    //찜 목록 조회
+    //찜 목록 조회 
     getMyPick: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
         return yield user_1.User.findAll({
             where: { userId },
@@ -99,7 +99,7 @@ exports.default = {
                 {
                     model: trip_1.default,
                     as: 'Trip',
-                    attributes: ['date'],
+                    attributes: ['date', 'tripId'],
                     include: [
                         {
                             model: camp_1.default,

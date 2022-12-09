@@ -149,7 +149,7 @@ exports.default = {
         });
     }),
     // 해당 유저가 찜한 모든 캠핑장 조회
-    myPickAllFind: (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    myPickAllFind: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
         return yield pick_1.Pick.findAll({
             where: { userId }
         });
