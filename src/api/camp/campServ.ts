@@ -193,8 +193,10 @@ export default {
 
     // 현재 날짜
     const NOW = new Date();
-    const NOWDate = NOW.toISOString().substring(0, 10)
-    console.log(NOWDate)
+    const hours =  9 * 60 * 60 * 1000;
+    NOW.setTime(NOW.getTime() + 0 + hours + 0 + 0)
+    // const NOWDate = NOW.toISOString().substring(0, 10)
+    console.log(NOW)
 
     const date = await campRepo.myTripDate({userId})
     const dt = date?.dataValues.date
