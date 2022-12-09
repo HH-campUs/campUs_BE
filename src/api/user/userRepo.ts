@@ -88,7 +88,7 @@ export default {
         {
           model: Trip,
           as: 'Trip',
-          attributes: ['date'],
+          attributes: ['date','tripId'],
           include: [
             {
               model: Camp,
