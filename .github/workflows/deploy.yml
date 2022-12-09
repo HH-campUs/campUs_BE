@@ -45,6 +45,7 @@ jobs:
       - name: upload to S3
         run: aws s3 cp --region ca-central-1 ./cicdtest.zip s3://campus123/build/
 
+
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
           --application-name campusautocode
