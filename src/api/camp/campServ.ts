@@ -195,7 +195,6 @@ export default {
     const NOW = new Date();
     const hours =  9 * 60 * 60 * 1000;
     NOW.setTime(NOW.getTime() + 0 + hours + 0 + 0)
-    // const NOWDate = NOW.toISOString().substring(0, 10)
     console.log(NOW)
 
     const date = await campRepo.myTripDate({userId})
