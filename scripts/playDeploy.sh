@@ -6,4 +6,4 @@ cd $REPOSITORY
 
 npm install
 
-# sudo pm2 start server.js --watch
+sudo pm2 start server.js
