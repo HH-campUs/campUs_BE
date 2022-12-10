@@ -29,7 +29,7 @@ export default {
       const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).json({"message":"로그인을 성공하였습니다!!",Tokens});
+      res.status(200).json({message:"로그인을 성공하였습니다!!",Tokens});
     } catch (err) {
       next(err);
     }
@@ -40,7 +40,7 @@ export default {
       const { email, changePassword }:Users = req.body
       if(!email || !changePassword) throw new InvalidParamsError("입력 값이 없습니다.")
       await userServ.changePW({email, changePassword})
-      res.status(201).send({"message" :"비밀번호 변경 완료!"})
+      res.status(201).send({message :"비밀번호 변경 완료!"})
     }catch(err){
       next(err)
     }
