@@ -75,7 +75,7 @@ export default {
       const accesstoken = authorization?.split(" ")[1]
       const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
       if(decodeAccessToken == null){
-        res.status(200).json(await campServ.nonGetMostCamp());
+        res.status(200).json({MostList : await campServ.nonGetMostCamp()});
       }else {
         const userId = decodeAccessToken!.userId;
         res.status(200).json({ MostList : await campServ.getMostCamp({userId}) });
