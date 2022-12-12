@@ -31,7 +31,6 @@ export default async (req:Request, res:Response, next:NextFunction) => {
             })
           }
           const {authorization}=req.headers;
-          console.log(authorization,"<============구글 헤더")
     if(!authorization) throw new Unauthorized("토큰 정보가 없습니다.")
     const GoogleAccessToken = authorization
   const googleUser = await axios
@@ -51,7 +50,6 @@ const exUser = await User.findOne({
 })
 if(!exUser){
   const newUser = await User.create({googleId,nickname,provider,profileImg,email});
-  console.log(newUser,"<================================저장한 값")
   const { userId } = newUser;
   console.log("회원가입 했어여~")
   googlejwt(userId)
