@@ -164,9 +164,9 @@ export default {
     });
     return { searchCamp, total: total.length };
   },
-  
+
   //검색결과 북마크
-  getsearchPick: async ({  userId }: search) => {
+  getsearchPick: async ({ userId }: search) => {
     return await User.findAll({
       where: { userId },
       include: [

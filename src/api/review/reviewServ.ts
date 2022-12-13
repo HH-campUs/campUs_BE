@@ -350,10 +350,10 @@ export default {
 
     const searchPick = await reviewRepo.getsearchPick({ userId });
 
-    let keys = Object.keys(searchPick)
+    let keys = Object.keys(searchPick);
     let values = Object.values(searchPick);
     let vals_arr = [];
-    const mypick = vals_arr.push(values)
+    const mypick = vals_arr.push(values);
     // console.log(vals_arr,"aaaaaaaaaaaaa")
     // for(let values in searchPick){
     //   searchPick
@@ -363,17 +363,16 @@ export default {
     // let mypick = Object.values(searchPick).map((a)=>{
     //   return {r}
     // })
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-    for (const [key,value]of Object.entries(searchPick)){
-      console.dir(`${key}:${value}`)
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+    for (const [key, value] of Object.entries(searchPick)) {
+      console.dir(`${key}:${value}`);
     }
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
 
     // Object.entries(searchPick).filter(Pick)
 
-    
     let status = searchPick.length ? true : false;
-    const searchResult = searchSort.searchCamp
+    const searchResult = searchSort.searchCamp;
     const totalSearchResult = searchSort.total;
     console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
     // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
@@ -385,7 +384,7 @@ export default {
       };
     });
     // return { result, totalSearchResult };
-    return {values}
+    return { values };
   },
 };
 
