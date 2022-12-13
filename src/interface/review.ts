@@ -28,6 +28,4 @@ export interface search {
   pageNo?: number;
   keyword?: number;
   sort?:string;
-  userId?:number
-  campId?:number
 }

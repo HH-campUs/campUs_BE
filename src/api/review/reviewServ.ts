@@ -1,29 +1,26 @@
 import reviewRepo from './reviewRepo';
 import { review } from '../../interface/review';
-import { Camps } from '../../interface/openApi';
 import { deleteFile } from '../../utils/multer';
 import Review from '../../database/models/review';
 import { search } from '../../interface/review';
-import Pick from '../../database/models/pick';
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
     const data = await reviewRepo.getReview({ campId });
     if (!campId || !data) throw new Error('잘못된요청입니다');
-    return data.map((x) => {
+    return data.map((x)=>{
       return {
-        reviewId: x.reviewId,
-        campId: x.campId,
-        campName: x.Camp.campName,
-        profileImg: x.User.profileImg,
-        nickname: x.User.nickname,
-        reviewImg: x.reviewImg,
-        reviewComment: x.reviewComment,
-        likeStatus: x.likeStatus,
-        createdAt: x.createdAt,
-        updatedAt: x.updatedAt,
-      };
-    });
+        reviewId:x.reviewId,
+        campId:x.campId,
+        profileImg:x.User.profileImg,
+        nickname:x.User.nickname,
+        reviewImg:x.reviewImg,
+        reviewComment:x.reviewComment,
+        likeStatus:x.likeStatus,
+        createdAt:x.createdAt,
+        updatedAt:x.updatedAt,
+      }
+    })
   },
 
   //리뷰작성
@@ -36,8 +33,7 @@ export default {
   }: review) => {
     if (!reviewComment!.trim()) throw new Error('코멘트를 입력해주세요');
     const likestring = String(likeStatus)[0];
-    if (likeStatus! <= 0 || likeStatus! > 3 || Number(likestring) <= 0)
-      throw new Error('셋중하나만선택해주세요');
+    if(likeStatus!<=0 || likeStatus!>3 || Number(likestring)<=0)throw new Error("셋중하나만선택해주세요");
     return await reviewRepo.createReview({
       userId,
       campId,
@@ -96,20 +92,19 @@ export default {
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 수정할 수 있습니다');
-    //이미지 삭제 로직
-    const findImage = findByauthor.reviewImg?.split(',');
-    findImage!.forEach((ImageUrl) => {
-      const fileName = ImageUrl.slice(55);
-      const fileDir = ImageUrl.slice(48, 54);
-      deleteFile(fileDir, fileName);
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+    findImage!.forEach(ImageUrl => {
+      const fileName = ImageUrl.slice(55)
+      const fileDir = ImageUrl.slice(48,54)
+      deleteFile(fileDir,fileName)
     });
     //예외처리
     if (!findByauthor) throw new Error('잘못된요청입니다');
-    if (userId !== findByauthor?.userId) throw new Error('권한이없습니다');
-
+    if (userId !== findByauthor?.userId) throw new Error("권한이없습니다");
+    
     const likestring = String(likeStatus)[0];
-    if (likeStatus! <= 0 || likeStatus! > 3 || Number(likestring) <= 0)
-      throw new Error('셋중하나만선택해주세요');
+    if(likeStatus!<=0 || likeStatus!>3 || Number(likestring)<=0)throw new Error("셋중하나만선택해주세요");
     const updateReview = await reviewRepo.updateReview({
       reviewId,
       userId,
@@ -128,13 +123,13 @@ export default {
     if (!findByauthor) throw new Error('잘못된요청입니다');
     if (findByauthor.userId !== userId)
       throw new Error('본인만 삭제할 수 있습니다');
-    //이미지 삭제 로직
-    const findImage = findByauthor.reviewImg?.split(',');
-    findImage!.forEach((ImageUrl) => {
-      const fileName = ImageUrl.slice(55);
-      const fileDir = ImageUrl.slice(48, 54);
-      deleteFile(fileDir, fileName);
-    });
+      //이미지 삭제 로직
+    const findImage = findByauthor.reviewImg?.split(",")
+      findImage!.forEach(ImageUrl => {
+        const fileName = ImageUrl.slice(55)
+        const fileDir = ImageUrl.slice(48,54)
+        deleteFile(fileDir,fileName)
+      });
     const deleteReview = await reviewRepo.deleteReview({ campId, reviewId });
     return {
       reviewId: deleteReview,
@@ -149,7 +144,7 @@ export default {
         reviewId: x.userId,
         userId: x.userId,
         campId: x.campId,
-        campName: x.Camp.campName,
+        campName:x.Camp.campName,
         reviewImg: x.reviewImg,
         reviewComment: x.reviewComment,
         createdAt: x.createdAt,
@@ -157,24 +152,24 @@ export default {
       };
     });
   },
-  //새로올라온 리뷰조회
-  getNewReview: async () => {
-    const newReview = await reviewRepo.getNewReview();
-    if (!newReview) throw new Error('잘못된요청입니다');
-    return newReview.map((x) => {
-      return {
-        reviewId: x.reviewId,
-        campId: x.campId,
-        profileImg: x.User.profileImg,
-        nickname: x.User.nickname,
-        reviewImg: x.reviewImg,
-        reviewComment: x.reviewComment,
-        likeStatus: x.likeStatus,
-        createdAt: x.createdAt,
-        updatedAt: x.updatedAt,
-      };
-    });
-  },
+    //새로올라온 리뷰조회
+    getNewReview: async () => {
+      const newReview = await reviewRepo.getNewReview();
+      if (!newReview) throw new Error('잘못된요청입니다');
+      return newReview.map((x)=>{
+        return{
+          reviewId:x.reviewId,
+          campId:x.campId,
+          profileImg:x.User.profileImg,
+          nickname:x.User.nickname,
+          reviewImg:x.reviewImg,
+          reviewComment:x.reviewComment,
+          likeStatus:x.likeStatus,
+          createdAt:x.createdAt,
+          updatedAt:x.updatedAt,
+        }
+      })
+    },
 
   // //캠핑장검색
   // search: async ({ keyword }: review) => {
@@ -212,86 +207,31 @@ export default {
   //     clturEvent,
   //   };
   // },
-
-  //캠핑장쿼리검색
-  querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
+ 
+   //캠핑장쿼리검색
+   querysearch: async ({ keyword, numOfRows, pageNo }: search) => {
     // 0 이하의 페이지를 요청하면 pageNo 를 1로
     pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
-    const campName = await reviewRepo.CampSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const induty = await reviewRepo.indutySearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const doNm = await reviewRepo.doNmSearch({ keyword, numOfRows, pageNo });
-    const sigunguNm = await reviewRepo.sigunguNmSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const address = await reviewRepo.addressSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const operPdCl = await reviewRepo.operPdClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const operDeCl = await reviewRepo.operDeClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const animal = await reviewRepo.animalSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const sbrsCl = await reviewRepo.sbrsClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const posblFcltyCl = await reviewRepo.posblFcltyClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const manageSttus = await reviewRepo.manageSttusSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const featureNm = await reviewRepo.featureNmSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
-    const clturEvent = await reviewRepo.clturEventSearch({
-      keyword,
-      numOfRows,
-      pageNo,
-    });
+    const campName = await reviewRepo.CampSearch({ keyword , numOfRows, pageNo});
+    const induty = await reviewRepo.indutySearch({ keyword, numOfRows, pageNo });
+    const doNm = await reviewRepo.doNmSearch({keyword,numOfRows,pageNo,});
+    const sigunguNm = await reviewRepo.sigunguNmSearch({ keyword , numOfRows, pageNo});
+    const address = await reviewRepo.addressSearch({ keyword, numOfRows, pageNo });
+    const operPdCl = await reviewRepo.operPdClSearch({ keyword , numOfRows, pageNo});
+    const operDeCl = await reviewRepo.operDeClSearch({ keyword, numOfRows, pageNo });
+    const animal = await reviewRepo.animalSearch({ keyword, numOfRows, pageNo });
+    const sbrsCl = await reviewRepo.sbrsClSearch({ keyword, numOfRows, pageNo });
+    const posblFcltyCl = await reviewRepo.posblFcltyClSearch({ keyword, numOfRows, pageNo });
+    const manageSttus = await reviewRepo.manageSttusSearch({ keyword, numOfRows, pageNo });
+    const themaEnvrnCl = await reviewRepo.themaEnvrnClSearch({ keyword, numOfRows, pageNo });
+    const eqpmnLendCl = await reviewRepo.eqpmnLendClSearch({ keyword, numOfRows, pageNo });
+    const featureNm = await reviewRepo.featureNmSearch({ keyword , numOfRows, pageNo});
+    const clturEvent = await reviewRepo.clturEventSearch({ keyword, numOfRows, pageNo });
 
-    campName.sort((a, b) => {
-      return b.lookUp - a.lookUp;
-    });
+
+    campName.sort((a,b) => {
+      return b.lookUp - a.lookUp
+    })
 
     return {
       campName,
@@ -312,81 +252,15 @@ export default {
     };
   },
 
-  //캠핑장쿼리검색+sort
-  searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
-    // 0 이하의 페이지를 요청하면 pageNo 를 1로
-    pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
-    const searchSort = await reviewRepo.searchSort({
-      keyword,
-      numOfRows,
-      pageNo,
-      sort,
-    });
-
-    return searchSort;
-  },
-  //캠핑장쿼리검색+sort+user
-  userSearchSort: async ({
-    keyword,
-    numOfRows,
-    pageNo,
-    sort,
-    userId,
-  }: search) => {
-    //0 이하의 페이지를 요청하면 pageNo 를 1로
-    pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
-    const searchSort = await reviewRepo.searchSort({
-      keyword,
-      numOfRows,
-      pageNo,
-      sort,
-    });
-    const Search = searchSort.searchCamp;
-    // console.log(Search)
-    // const campId = Search.map((a:Camps)=>{
-    //   return a.campId
-    // })
-    // console.log(campId)
-
-    const searchPick = await reviewRepo.getsearchPick({ userId });
-
-    let keys = Object.keys(searchPick)
-    let values = Object.values(searchPick);
-    let vals_arr = [];
-    const mypick = vals_arr.push(values)
-    // console.log(vals_arr,"aaaaaaaaaaaaa")
-    // for(let values in searchPick){
-    //   searchPick
-    //   console.log(searchPick[values])
-    // }
-    // for (searchPick in Object)
-    // let mypick = Object.values(searchPick).map((a)=>{
-    //   return {r}
-    // })
-        console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-    for (const [key,value]of Object.entries(searchPick)){
-      console.dir(`${key}:${value}`)
-    }
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
-
-    // Object.entries(searchPick).filter(Pick)
-
-    
-    let status = searchPick.length ? true : false;
-    const searchResult = searchSort.searchCamp
-    const totalSearchResult = searchSort.total;
-    console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
-    // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
-
-    const result = searchResult.map((x) => {
-      return {
-        ...x,
-        status,
-      };
-    });
-    // return { result, totalSearchResult };
-    return {values}
-  },
+     //캠핑장쿼리검색+sort
+     searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로
+      console.log(pageNo,'페이지 넘버입니다 서비스')
+      pageNo!<=0 ? pageNo= 1 : pageNo = (pageNo! -1) * numOfRows!;
+      console.log(pageNo,'페이지 넘버입니다 계산 다음 서비스')
+      const searchSort = await reviewRepo.searchSort({ keyword , numOfRows, pageNo, sort});
+      return searchSort
+    },
 };
 
 // return getCampName

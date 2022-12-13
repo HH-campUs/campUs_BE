@@ -150,8 +150,6 @@ export default {
   searchSort: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { keyword, numOfRows, pageNo, sort }: search = req.query;
-      if (!keyword) throw new Error('키워드를 입력해주세요');
-      
       res
         .status(200)
         .json(
@@ -161,19 +159,4 @@ export default {
       next(error);
     }
   },
-    //캠핑장쿼리검색+sort+user
-    userSearchSort: async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const { keyword, numOfRows, pageNo, sort }: search = req.query;
-        const { userId }: search = res.locals.user;
-        if (!keyword) throw new Error('키워드를 입력해주세요');       
-        res
-          .status(200)
-          .json(
-            await reviewService.userSearchSort({ keyword, numOfRows, pageNo, sort, userId })
-          );
-      } catch (error) {
-        next(error);
-      }
-    },
 };
