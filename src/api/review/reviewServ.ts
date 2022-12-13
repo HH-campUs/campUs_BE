@@ -146,7 +146,7 @@ export default {
     const myreview = await reviewRepo.getMyReview({ userId });
     return myreview.map((x) => {
       return {
-        reviewId: x.userId,
+        reviewId: x.reviewId,
         userId: x.userId,
         campId: x.campId,
         campName: x.Camp.campName,
