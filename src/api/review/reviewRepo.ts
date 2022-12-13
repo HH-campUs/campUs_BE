@@ -132,6 +132,11 @@ export default {
           as: 'User',
           attributes: ['profileImg', 'nickname'],
         },
+        {
+          model: Camp,
+          as: 'Camp',
+          attributes: ['campName'],
+        },
       ],
     });
   },
