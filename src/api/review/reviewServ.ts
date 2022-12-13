@@ -165,6 +165,7 @@ export default {
       return {
         reviewId: x.reviewId,
         campId: x.campId,
+        campName: x.Camp.campName,
         profileImg: x.User.profileImg,
         nickname: x.User.nickname,
         reviewImg: x.reviewImg,
