@@ -1,7 +1,8 @@
 import Camp from '../../database/models/camp';
 import Review from '../../database/models/review';
 import User from '../../database/models/user';
-import { Op } from 'sequelize';
+import Pick from '../../database/models/pick';
+import { Model, Op } from 'sequelize';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
 import { sequelize } from '../../database/models/sequlize';
@@ -18,6 +19,11 @@ export default {
           model: User,
           as: 'User',
           attributes: ['profileImg', 'nickname'],
+        },
+        {
+          model: Camp,
+          as: 'Camp',
+          attributes: ['campName'],
         },
       ],
     });
@@ -139,19 +145,49 @@ export default {
 
   //캠핑장쿼리검색+sort
   searchSort: async ({ keyword, numOfRows, pageNo, sort }: search) => {
-    console.log(pageNo, '페이지 넘버입니다')
-    const query=`
+    const query = `
     SELECT *
-    FROM camp
+    FROM camp AS Camp
     WHERE (Camp.campName LIKE CONCAT('%',$keyword,'%') OR Camp.induty LIKE CONCAT('%',$keyword,'%') OR Camp.doNm LIKE CONCAT('%',$keyword,'%') OR Camp.sigunguNm LIKE CONCAT('%',$keyword,'%') OR Camp.address LIKE CONCAT('%',$keyword,'%') OR Camp.operPdCl LIKE CONCAT('%',$keyword,'%') OR Camp.operDeCl LIKE CONCAT('%',$keyword,'%') OR Camp.animal LIKE CONCAT('%',$keyword,'%') OR Camp.sbrsCl LIKE CONCAT('%',$keyword,'%') OR Camp.posblFcltyCl LIKE CONCAT('%',$keyword,'%') OR Camp.manageSttus LIKE CONCAT('%',$keyword,'%') OR Camp.themaEnvrnCl LIKE CONCAT('%',$keyword,'%') OR Camp.eqpmnLendCl LIKE CONCAT('%',$keyword,'%') OR Camp.featureNm LIKE CONCAT('%',$keyword,'%') OR Camp.clturEvent LIKE CONCAT('%',$keyword,'%'))
-    `
+    `;
     const orderNlimit = `
       ORDER BY ${sort} DESC
       LIMIT $numOfRows OFFSET $pageNo;
-    `
-    const searchCamp = await sequelize.query(query+orderNlimit, {bind:{ keyword, numOfRows, pageNo:String(pageNo) }, type: QueryTypes.SELECT})
-    const total = await sequelize.query(query, {bind : {keyword}, type: QueryTypes.SELECT})
-    return { searchCamp, total : total.length }
+    `;
+    const searchCamp = await sequelize.query(query + orderNlimit, {
+      bind: { keyword, numOfRows, pageNo: String(pageNo) },
+      type: QueryTypes.SELECT,
+    });
+    const total = await sequelize.query(query, {
+      bind: { keyword },
+      type: QueryTypes.SELECT,
+    });
+    return { searchCamp, total: total.length };
+  },
+  
+  //검색결과 북마크
+  getsearchPick: async ({  userId }: search) => {
+    return await User.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Pick,
+          as: 'Pick',
+          where: { userId },
+          // include:[
+          //   {
+          //     model:Camp,
+          //     as:'Camp',
+          //   }
+          // ]
+        },
+        // {
+        //   model: Camp,
+        //   as: 'Camp',
+        //   where: { userId },
+        // },
+      ],
+    });
   },
 
   //캠핑장이름검색
