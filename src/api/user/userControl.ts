@@ -52,9 +52,9 @@ export default {
       const { location, size } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
       const { userId }: Users = res.locals.user;
       const { nickname }: Users = req.body;
-      if(size >= 1000000){
-         resizing(location)
-      }
+      // if(size >= 1000000){
+      //    resizing(location)
+      // }
       const profileImg = location
       console.log(req.file as Express.MulterS3.File ,"<=파일정보")
       await userServ.updateUser({nickname, profileImg, userId });
