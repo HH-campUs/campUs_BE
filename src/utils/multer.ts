@@ -5,6 +5,7 @@ import multerS3 from 'multer-s3'
 import dotenv from 'dotenv'
 import path from 'path'
 import AWS from 'aws-sdk'
+import sharp from 'sharp'
 
 dotenv.config()
 
@@ -33,7 +34,7 @@ export const upload = (
     limits: { fileSize: 5 * 1024 * 1024 },
   })
 )
-
+//
 export const deleteFile = (fileDir:string, fileName:string) => {
   try {
     const s3 = new AWS.S3({
@@ -44,7 +45,7 @@ export const deleteFile = (fileDir:string, fileName:string) => {
         Bucket: process.env.S3_bUCKET!,
         Key: fileDir.concat('/', fileName)
       };
-        s3.deleteObject(params, function (err ) {
+        s3.deleteObject(params, function (err) {
           if (err) {
             console.log('err: ', err, err.stack);
           } else {
@@ -56,6 +57,36 @@ export const deleteFile = (fileDir:string, fileName:string) => {
         throw err;
       }
 	}
-
-
+  //이미지 리사이징
+  export const resizing = async (location:string) => {
+    try {
+      const s3 = new AWS.S3({
+        accessKeyId: process.env.S3_ACCESS_KEY!, //방급받은 ACCESSKEY
+        secretAccessKey: process.env.S3_SECRET_KEY!,//방급받은 SECRETKEY
+      })
+     const key = location.slice(48)
+     //원본 파일 버캣과 키값
+      const originalFile = {
+        Bucket: process.env.S3_bUCKET!,
+        Key: key
+      }
+    //리사이징 파일 버캣과 키값
+      const resizedFile:any = {
+        Bucket: process.env.S3_bUCKET!,
+        Key: key
+      }
+      // fetch(원본 파일 불러오기)
+      const imageData:any = s3.getObject(originalFile)
+    // resizing(원본 파일 body의 버퍼값 변경)
+      const imageBuffer = await sharp(imageData.Body).resize({ width: 600, height:600 }).toBuffer();
+      console.log(imageBuffer,"사이즈 변경후 버퍼")
+      resizedFile.Body = imageBuffer;
+      
+    // upload
+     const putObject =  await s3.putObject(resizedFile).promise();
+     console.log(putObject,"수정한 파일")
+    } catch(error) {
+      console.log('Get image by key from aws: ', error);
+    }
+  }
 
