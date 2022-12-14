@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/autocode
+    destination: /home/ubuntu/CD
     overwrite: yes
 
 permissions:
