@@ -76,17 +76,18 @@ export const deleteFile = (fileDir:string, fileName:string) => {
         Key: key
       }
       // fetch(원본 파일 불러오기)
-      const imageData:any = s3.getObject(originalFile)
+      const imageData:any = await s3.getObject(originalFile).promise()
+      console.log(imageData.Body,"사이즈 변경 전 버퍼")
     // resizing(원본 파일 body의 버퍼값 변경)
       const imageBuffer = await sharp(imageData.Body).resize({ width: 600, height:600 }).toBuffer();
-      console.log(imageBuffer,"사이즈 변경후 버퍼")
+      console.log(imageBuffer,"사이즈 변경 후 버퍼")
       resizedFile.Body = imageBuffer;
       
     // upload
      const putObject =  await s3.putObject(resizedFile).promise();
      console.log(putObject,"수정한 파일")
     } catch(error) {
-      console.log('Get image by key from aws: ', error);
+      console.log('AWS에러: ', error);
     }
   }
 
