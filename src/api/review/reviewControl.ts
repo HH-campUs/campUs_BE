@@ -26,9 +26,9 @@ export default {
 
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
-        if(x.size >= 1000000){
-          resizing(x.location)
-       }
+      //   if(x.size >= 1000000){
+      //     resizing(x.location)
+      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
@@ -69,9 +69,9 @@ export default {
       const { userId }: review = res.locals.user;
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
-        if(x.size >= 1000000){
-          resizing(x.location)
-       }
+      //   if(x.size >= 1000000){
+      //     resizing(x.location)
+      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
