@@ -84,8 +84,7 @@ export const deleteFile = (fileDir:string, fileName:string) => {
       resizedFile.Body = imageBuffer;
       
     // upload
-     const putObject =  await s3.putObject(resizedFile).promise();
-     console.log(putObject,"수정한 파일")
+      await s3.putObject(resizedFile).promise();
     } catch(error) {
       console.log('AWS에러: ', error);
     }
