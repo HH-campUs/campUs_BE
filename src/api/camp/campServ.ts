@@ -192,30 +192,28 @@ export default {
     console.log(tripGet,'getttt')
 
     // 현재 날짜
-    const NOW = new Date();
-    const hours =  9 * 60 * 60 * 1000;
-    NOW.setTime(NOW.getTime() + 0 + hours + 0 + 0)
-    console.log(NOW)
-
-    const date = await campRepo.myTripDate({userId})
-    const dt = date?.dataValues.date
-
+    const NOW = new Date().toLocaleDateString("kr");
+    console.log(NOW,'너어떻게나오니')
     // 일정에 저장된 날짜
-    const DATE = new Date(`${dt.slice(0,4)}-${dt.slice(4, 6)}-${dt.slice(6,8)}`);
-
-    // 현재 날짜에서 저장된 날짜의 차이
-    const difDate = +DATE - +NOW
-    const difDay = Math.floor(difDate / (1000*60*60*24))
-
-    const result = tripGet.map((d)=>{
-      return {
-        ...d,
-        dDay : difDay+1 
-      }
-    });
-
-    console.log(difDay)
-    return result
+    const date = await campRepo.myTripDate({userId})
+    const dt:string = date?.dataValues.date
+    const DATE = new Date(dt);
+    console.log(DATE,'dfsdfdfsdfdf')
+    // 저장된 날짜에서 현재 날짜 빼주기
+    var dDay = +DATE - +new Date(NOW)
+    // 밀리초로 나오는 값 정수 반환
+    const difDay = Math.floor(dDay / (1000*60*60*24))
+    // if(+new Date(NOW) == +DATE){
+    //   return
+    // }else{
+      const result = tripGet.map((d)=>{
+        return {
+          ...d,
+          dDay : difDay
+        }
+      });
+      return result
+    // }
   },
 
   // 내 여행 일정 수정

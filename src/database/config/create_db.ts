@@ -7,7 +7,7 @@ class options implements Options {
   dialect!: 'mysql';
   username!: string;
   password!: string;
-  host!:string
+  host!:string;
 }
 //데이터베이스 옵션
 const createDBOptions = new options();
