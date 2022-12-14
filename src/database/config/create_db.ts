@@ -7,13 +7,13 @@ class options implements Options {
   dialect!: 'mysql';
   username!: string;
   password!: string;
-  host?: string;
+  host!:string;
 }
 //데이터베이스 옵션
 const createDBOptions = new options();
 createDBOptions.username = process.env.DB_USER || 'root';
 createDBOptions.password = process.env.DB_PASSWORD || 'your password';
-createDBOptions.host = process.env.DB_HOST;
+createDBOptions.host = process.env.DB_HOST!;
 createDBOptions.dialect = 'mysql';
 //DB_NAME 없을시 new DateBase 생성
 let db_name = process.env.DB_NAME || 'new DataBase';

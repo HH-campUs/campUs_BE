@@ -1,0 +1,18 @@
+version: 0.0 
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/autocode
+    overwrite: yes
+
+permissions:
+  - object: /home/ubuntu
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  AfterInstall:
+    - location: scripts/playDeploy.sh
+      timeout: 180
+      runas: ubuntu

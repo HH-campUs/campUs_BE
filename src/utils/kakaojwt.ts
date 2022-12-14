@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 import axios from "axios";
-import passport from "passport";
 import { NextFunction, Request, Response } from "express";
 import User from "../database/models/user";
 import { Unauthorized } from "./exceptions";
@@ -40,10 +39,8 @@ export default async (req:Request, res:Response, next:NextFunction) => {
     Authorization: `Bearer ${kakaoAccessToken}`,
     },
   }); //유저 정보를 받아온다
-console.log(kakaoUser,"<=카카오 에서 받아옴")
-
 const profileImg:string = kakaoUser.properties.profile_image
-const kakaoId:number = kakaoUser.id
+const kakaoId:string = kakaoUser.id
 const nickname:string = kakaoUser.properties.nickname
 const provider:string = 'kakao'
 const email:string = kakaoUser.kakao_account.email
@@ -52,7 +49,6 @@ const exUser = await User.findOne({
 })
 if(!exUser){
   const newUser = await User.create({kakaoId,nickname,provider,profileImg,email});
-  console.log(newUser,"<================================저장한 값")
   const { userId } = newUser;
   console.log("회원가입 했어여~")
   kakaojwt(userId)

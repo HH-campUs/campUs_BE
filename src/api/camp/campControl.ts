@@ -14,6 +14,7 @@ export default {
       const accesstoken = authorization?.split(" ")[1]
       const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
       if(decodeAccessToken == null){
+        console.log("일로지나감")
         res.status(200).json(await campServ.nonGetTopicCamp({topicId, numOfRows, pageNo, sort}));
       }else {
         const userId = decodeAccessToken!.userId;
