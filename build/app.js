@@ -23,7 +23,7 @@ const sequlize_1 = require("./src/database/models/sequlize");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const prod = process.env.NODE_ENV === 'production';
-app.set('port', prod ? process.env.PORT : 3000);
+app.set('port', prod ? process.env.PORT : 3001);
 if (prod) {
     app.use((0, helmet_1.default)());
     app.use((0, cors_1.default)({
