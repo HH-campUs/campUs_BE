@@ -15,8 +15,12 @@ router.get('/camps/:topicId', campControl_1.default.getTopicCamp);
 router.get('/camps/', campControl_1.default.getByRegionCamp);
 // 캠핑장 상세 조회
 router.get('/camps/detail/:campId', campControl_1.default.getDetailCamp);
+// 내 여행 일정 조회
+router.get('/trip', authmiddleware_1.default, campControl_1.default.myTripGet);
 // 내 여행 일정 등록
 router.post('/camps/:campId', authmiddleware_1.default, campControl_1.default.myTripSave);
+// 내 여행 일정 수정
+router.put('/camps/:tripId', authmiddleware_1.default, campControl_1.default.myTripUpdate);
 // 내 여행 일정 삭제
 router.delete('/camps/:tripId', authmiddleware_1.default, campControl_1.default.myTripRemove);
 // 켐핑장 찜하기

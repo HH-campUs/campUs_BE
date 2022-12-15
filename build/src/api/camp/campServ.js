@@ -49,7 +49,7 @@ exports.default = {
             return x.PickCamp;
         });
         console.timeEnd("서비스");
-        return { camp: camp, total: topicCamp.total };
+        return { topicCamp: camp, total: topicCamp.total };
     }),
     // 비회원 주제별 캠핑장 조회
     nonGetTopicCamp: ({ topicId, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -96,7 +96,7 @@ exports.default = {
             return x.PickCamp;
         });
         console.timeEnd("서비스");
-        return { camp: camp, total: regionCamp.total };
+        return { regionCamp: camp, total: regionCamp.total };
     }),
     // 비회원 지역별 캠핑장 조회
     nonGetByRegionCamp: ({ doNm, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,7 +109,20 @@ exports.default = {
         return regionCamp;
     }),
     // 캠핑장 상세 조회
-    getDetailCamp: ({ campId }) => __awaiter(void 0, void 0, void 0, function* () {
+    getDetailCamp: ({ campId, userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        const detailCamp = yield campRepo_1.default.getDetailCamp({ campId });
+        if (!detailCamp) {
+            throw new Error("캠핑장이 존재하지 않음");
+        }
+        const detailPick = yield campRepo_1.default.getDetailPick({ userId, campId });
+        const status = detailPick.length ? true : false;
+        const result = detailCamp.map((x) => {
+            return Object.assign(Object.assign({}, x.dataValues), { status });
+        });
+        return result;
+    }),
+    // 비회원 캠핑장 상세 조회
+    nonGetDetailCamp: ({ campId }) => __awaiter(void 0, void 0, void 0, function* () {
         const detailCamp = yield campRepo_1.default.getDetailCamp({ campId });
         if (!detailCamp) {
             throw new Error("캠핑장이 존재하지 않음");
@@ -140,7 +153,14 @@ exports.default = {
             return yield campRepo_1.default.updateLookUp({ ip, campId, time });
     }),
     // most 캠핑장 조회
-    getMostCamp: () => __awaiter(void 0, void 0, void 0, function* () {
+    getMostCamp: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        const mostLook = { look: yield campRepo_1.default.getMostLook() };
+        const mostReview = { review: yield campRepo_1.default.getMostReview() };
+        const mostPick = { pick: yield campRepo_1.default.getMostPick() };
+        return [mostLook, mostReview, mostPick];
+    }),
+    // 비회원 most 캠핑장 조회
+    nonGetMostCamp: () => __awaiter(void 0, void 0, void 0, function* () {
         const mostLook = { look: yield campRepo_1.default.getMostLook() };
         const mostReview = { review: yield campRepo_1.default.getMostReview() };
         const mostPick = { pick: yield campRepo_1.default.getMostPick() };
@@ -148,10 +168,43 @@ exports.default = {
     }),
     // 내 여행 일정 등록
     myTripSave: ({ userId, campId, memo, date }) => __awaiter(void 0, void 0, void 0, function* () {
-        const aa = yield campRepo_1.default.myTripSave({ userId, campId, memo, date });
-        if (!aa.campId)
+        const tripSave = yield campRepo_1.default.myTripSave({ userId, campId, memo, date });
+        if (!tripSave.campId)
             throw new Error("존재하지 않는 캠핑장");
-        return aa;
+        return tripSave;
+    }),
+    // 내 여행 일정 조회
+    myTripGet: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        const tripGet = yield campRepo_1.default.myTripGet({ userId });
+        console.log(tripGet, 'getttt');
+        // 현재 날짜
+        const NOW = new Date().toLocaleDateString("kr");
+        console.log(NOW, '너어떻게나오니');
+        // 일정에 저장된 날짜
+        const date = yield campRepo_1.default.myTripDate({ userId });
+        const dt = date === null || date === void 0 ? void 0 : date.dataValues.date;
+        const DATE = new Date(dt);
+        console.log(DATE, 'dfsdfdfsdfdf');
+        // 저장된 날짜에서 현재 날짜 빼주기
+        var dDay = +DATE - +new Date(NOW);
+        // 밀리초로 나오는 값 정수 반환
+        const difDay = Math.floor(dDay / (1000 * 60 * 60 * 24));
+        // if(+new Date(NOW) == +DATE){
+        //   return
+        // }else{
+        const result = tripGet.map((d) => {
+            return Object.assign(Object.assign({}, d), { dDay: difDay });
+        });
+        return result;
+        // }
+    }),
+    // 내 여행 일정 수정
+    myTripUpdate: ({ userId, tripId, memo, date }) => __awaiter(void 0, void 0, void 0, function* () {
+        const tripUpdate = yield campRepo_1.default.myTripUpdate({ userId, tripId, memo, date });
+        const trip = yield campRepo_1.default.findByTripId({ tripId });
+        if (!trip)
+            throw new Error("존재하지 않는 여행 일정");
+        return tripUpdate;
     }),
     // 내 여행 일정 삭제
     myTripRemove: ({ userId, tripId }) => __awaiter(void 0, void 0, void 0, function* () {

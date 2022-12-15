@@ -33,6 +33,9 @@ exports.default = {
             const { reviewComment, likeStatus } = req.body;
             const files = req.files; //파일을 배열로 받음
             const reviewImgs = files.map((x) => {
+                //   if(x.size >= 1000000){
+                //     resizing(x.location)
+                //  }
                 return x.location;
             });
             const reviewImg = reviewImgs.join(',');
@@ -71,6 +74,9 @@ exports.default = {
             const { userId } = res.locals.user;
             const files = req.files; //파일을 배열로 받음
             const reviewImgs = files.map((x) => {
+                //   if(x.size >= 1000000){
+                //     resizing(x.location)
+                //  }
                 return x.location;
             });
             const reviewImg = reviewImgs.join(',');
@@ -151,9 +157,26 @@ exports.default = {
     searchSort: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { keyword, numOfRows, pageNo, sort } = req.query;
+            if (!keyword)
+                throw new Error('키워드를 입력해주세요');
             res
                 .status(200)
                 .json(yield reviewServ_1.default.searchSort({ keyword, numOfRows, pageNo, sort }));
+        }
+        catch (error) {
+            next(error);
+        }
+    }),
+    //캠핑장쿼리검색+sort+user
+    userSearchSort: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { keyword, numOfRows, pageNo, sort } = req.query;
+            const { userId } = res.locals.user;
+            if (!keyword)
+                throw new Error('키워드를 입력해주세요');
+            res
+                .status(200)
+                .json(yield reviewServ_1.default.userSearchSort({ keyword, numOfRows, pageNo, sort, userId }));
         }
         catch (error) {
             next(error);

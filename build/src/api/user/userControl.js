@@ -39,7 +39,7 @@ exports.default = {
             const Tokens = yield jwt_1.default.createTokens({ email, password });
             res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
             res.cookie('refreshToken', Tokens.RefreshToken);
-            res.status(200).json({ "message": "로그인을 성공하였습니다!!", Tokens });
+            res.status(200).json({ message: "로그인을 성공하였습니다!!", Tokens });
         }
         catch (err) {
             next(err);
@@ -52,7 +52,7 @@ exports.default = {
             if (!email || !changePassword)
                 throw new exceptions_1.InvalidParamsError("입력 값이 없습니다.");
             yield userServ_1.default.changePW({ email, changePassword });
-            res.status(201).send({ "message": "비밀번호 변경 완료!" });
+            res.status(201).send({ message: "비밀번호 변경 완료!" });
         }
         catch (err) {
             next(err);
@@ -61,10 +61,14 @@ exports.default = {
     //유저정보 수정
     updateUser: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { location } = req.file; //멀터의 타입을 사용함
+            const { location, size } = req.file; //멀터의 타입을 사용함
             const { userId } = res.locals.user;
             const { nickname } = req.body;
+            // if(size >= 1000000){
+            //    resizing(location)
+            // }
             const profileImg = location;
+            console.log(req.file, "<=파일정보");
             yield userServ_1.default.updateUser({ nickname, profileImg, userId });
             res.status(201).send({ message: '수정 완료' });
         }

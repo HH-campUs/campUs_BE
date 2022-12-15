@@ -25,6 +25,7 @@ exports.default = {
             const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
             const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
             if (decodeAccessToken == null) {
+                console.log("일로지나감");
                 res.status(200).json(yield campServ_1.default.nonGetTopicCamp({ topicId, numOfRows, pageNo, sort }));
             }
             else {
@@ -62,7 +63,17 @@ exports.default = {
         try {
             const { campId } = req.params;
             yield campServ_1.default.lookUp(req);
-            res.status(200).json({ detailCamp: yield campServ_1.default.getDetailCamp({ campId }) });
+            const { authorization } = req.headers;
+            // 조회하는 유저 정보에서 userId 구하기
+            const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
+            const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
+            if (decodeAccessToken == null) {
+                res.status(200).json(yield campServ_1.default.nonGetDetailCamp({ campId }));
+            }
+            else {
+                const userId = decodeAccessToken.userId;
+                res.status(200).json(yield campServ_1.default.getDetailCamp({ campId, userId }));
+            }
         }
         catch (err) {
             next(err);
@@ -71,8 +82,17 @@ exports.default = {
     // most 캠핑장 조회
     getMostCamp: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const mostList = yield campServ_1.default.getMostCamp();
-            res.status(200).json({ MostList: mostList });
+            const { authorization } = req.headers;
+            // 조회하는 유저 정보에서 userId 구하기
+            const accesstoken = authorization === null || authorization === void 0 ? void 0 : authorization.split(" ")[1];
+            const decodeAccessToken = yield jwt_1.default.validateAccessToken(accesstoken);
+            if (decodeAccessToken == null) {
+                res.status(200).json({ MostList: yield campServ_1.default.nonGetMostCamp() });
+            }
+            else {
+                const userId = decodeAccessToken.userId;
+                res.status(200).json({ MostList: yield campServ_1.default.getMostCamp({ userId }) });
+            }
         }
         catch (err) {
             next(err);
@@ -86,6 +106,29 @@ exports.default = {
             const { memo, date } = req.body;
             yield campServ_1.default.myTripSave({ userId, campId, memo, date });
             res.status(201).json({ message: "여행일정 등록" });
+        }
+        catch (err) {
+            next(err);
+        }
+    }),
+    // 내 여행 일정 조회
+    myTripGet: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { userId } = res.locals.user;
+            res.status(201).json({ trip: yield campServ_1.default.myTripGet({ userId }) });
+        }
+        catch (err) {
+            next(err);
+        }
+    }),
+    // 내 여행 일정 수정
+    myTripUpdate: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { userId } = res.locals.user;
+            const { tripId } = req.params;
+            const { memo, date } = req.body;
+            yield campServ_1.default.myTripUpdate({ userId, tripId, memo, date });
+            res.status(201).json({ message: "여행일정 수정" });
         }
         catch (err) {
             next(err);

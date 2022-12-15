@@ -14,6 +14,8 @@ const reviewrouter = (0, express_1.Router)();
 reviewrouter.get('/querysearch', reviewControl_1.default.querysearch);
 //캠핑장쿼리검색+sort
 reviewrouter.get('/searchSort', reviewControl_1.default.searchSort);
+//캠핑장쿼리검색+sort+회원
+reviewrouter.get('/userSearchSort', authmiddleware_1.default, reviewControl_1.default.userSearchSort);
 //새로올라온 리뷰조회
 reviewrouter.get('/', reviewControl_1.default.getNewReview);
 //내가쓴리뷰조회

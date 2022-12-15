@@ -46,9 +46,10 @@ exports.default = {
     //가까운 캠핑장 찾기
     nearCamp: ({ campX, campY }) => __awaiter(void 0, void 0, void 0, function* () {
         const query = `SELECT camp.*,
-    ( 6371 * acos( cos( radians( ${campX} ) ) * cos( radians( camp.X) ) * cos( radians( camp.Y ) - radians(${campY}) ) + sin( radians( ${campX}) ) * sin( radians( camp.X ) ) ) )as distance
+    ( 6371 * acos( cos( radians( $campX ) ) * cos( radians( camp.X) ) * cos( radians( camp.Y ) - 
+    radians($campY) ) + sin( radians( $campX) ) * sin( radians( camp.X ) ) ) )as distance
     FROM camp HAVING distance < 30 ORDER BY distance LIMIT 0,2`;
-        return yield sequlize_1.sequelize.query(query, { type: sequelize_1.QueryTypes.SELECT });
+        return yield sequlize_1.sequelize.query(query, { bind: { campX, campY }, type: sequelize_1.QueryTypes.SELECT });
     }),
     //찜 목록 조회 
     getMyPick: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -99,7 +100,7 @@ exports.default = {
                 {
                     model: trip_1.default,
                     as: 'Trip',
-                    attributes: ['date', 'tripId'],
+                    attributes: ['date', 'memo', 'tripId'],
                     include: [
                         {
                             model: camp_1.default,

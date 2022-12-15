@@ -79,6 +79,19 @@ exports.default = {
     getDetailCamp: ({ campId }) => __awaiter(void 0, void 0, void 0, function* () {
         return yield camp_1.Camp.findAll({ where: { campId } });
     }),
+    // 캠핑장 상세 조회 ( pick join )
+    getDetailPick: ({ userId, campId }) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield camp_1.Camp.findAll({
+            where: { campId },
+            include: [
+                {
+                    model: pick_1.Pick,
+                    as: 'Pick',
+                    where: { userId }
+                }
+            ]
+        });
+    }),
     // 조회수를 올린 IP 존재 여부
     getIpCamp: ({ ip, campId }) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("ip GET입니다");
@@ -101,25 +114,18 @@ exports.default = {
     }),
     // most 조회수
     getMostLook: () => __awaiter(void 0, void 0, void 0, function* () {
-        // async function as(mostLook:number[]) {
-        //   Math.max.apply(null,mostLook)
-        // } 
         const mostLook = yield camp_1.Camp.max('lookUp');
         return yield camp_1.Camp.findOne({
-            where: { lookUp: mostLook }
+            where: { lookUp: mostLook },
+            // include
         });
     }),
     // most 리뷰
     getMostReview: () => __awaiter(void 0, void 0, void 0, function* () {
         const mostReview = yield camp_1.Camp.max('reviewCount');
-        if (mostReview == 0) {
-            return false; // undefined null
-        }
-        else {
-            return yield camp_1.Camp.findOne({
-                where: { reviewCount: mostReview }
-            });
-        }
+        return yield camp_1.Camp.findOne({
+            where: { reviewCount: mostReview }
+        });
     }),
     // most 찜
     getMostPick: () => __awaiter(void 0, void 0, void 0, function* () {
@@ -133,8 +139,69 @@ exports.default = {
         console.log(typeof campId);
         const Address = yield camp_1.Camp.findOne({ where: { campId } });
         return yield trip_1.Trip.create({
-            userId, campId, memo, address: Address === null || Address === void 0 ? void 0 : Address.address, date
+            userId, campId, memo, address: Address === null || Address === void 0 ? void 0 : Address.address, date: `${date.toString().slice(0, 4)}-${date.toString().slice(4, 6)}-${date.toString().slice(6, 8)}`
         });
+    }),
+    // 내 여행 일정 id 조회
+    findByTripId: ({ tripId }) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield trip_1.Trip.findByPk(tripId);
+    }),
+    // 내 여행 일정 조회
+    myTripGet: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        // return await Trip.findAll({
+        //   where:{userId, tripId},
+        //   attributes:['address', 'date'],
+        //   include:[
+        //     {
+        //       model: Camp,
+        //       as: 'Camp',
+        //       attributes:['campName', 'ImageUrl']
+        //     }
+        //   ]
+        // });
+        const NOWDate = new Date().toLocaleDateString("kr");
+        // const query = `
+        //   SELECT Trip.tripId, Trip.address, Trip.date,
+        //   Camp.campName, Camp.ImageUrl 
+        //   FROM trip AS Trip 
+        //   INNER JOIN camp AS Camp ON Trip.campId = Camp.campId 
+        //   WHERE Trip.userId = $userId AND CAST(Trip.date AS DATE) >= CAST($NOWDate AS DATE)
+        //   ORDER BY ABS(DATEDIFF( $NOWDate, date ))
+        //   LIMIT 1;
+        // `
+        const query = `
+      SELECT Trip.tripId, Trip.address, Trip.date,
+      Camp.campName, Camp.ImageUrl 
+      FROM trip AS Trip 
+      INNER JOIN camp AS Camp ON Trip.campId = Camp.campId 
+      WHERE Trip.userId = $userId
+      ORDER BY ABS(DATEDIFF( $NOWDate, date ))
+      LIMIT 1;
+    `;
+        const trip = yield sequlize_1.sequelize.query(query, {
+            bind: { userId: String(userId), NOWDate },
+            type: sequelize_1.QueryTypes.SELECT
+        });
+        return trip;
+    }),
+    // 내 여행 일정 날짜 구하기
+    myTripDate: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        // const tripDate = new Date().toLocaleDateString("kr");
+        // console.log(tripDate,'레포 지금 시간')
+        // const min = await Trip.findOne({where:{
+        //   date : {[Op.gte]: new Date(`${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`)}
+        // }})
+        // console.log(min,'민민민민민민민민민')
+        // return await Trip.findOne({where:
+        //   {userId, date:{[Op.gte]: `${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`}}, 
+        //   attributes:['date']
+        // })
+        const tripDate = yield trip_1.Trip.min('date');
+        return yield trip_1.Trip.findOne({ where: { userId, date: tripDate }, attributes: ['date'] });
+    }),
+    // 내 여행 일정 수정
+    myTripUpdate: ({ userId, tripId, memo, date }) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield trip_1.Trip.update({ memo, date: `${date.toString().slice(0, 4)}-${date.toString().slice(4, 6)}-${date.toString().slice(6, 8)}` }, { where: { userId, tripId } });
     }),
     // 내 여행 일정 삭제
     myTripRemove: ({ userId, tripId }) => __awaiter(void 0, void 0, void 0, function* () {

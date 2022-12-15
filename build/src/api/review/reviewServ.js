@@ -24,6 +24,7 @@ exports.default = {
             return {
                 reviewId: x.reviewId,
                 campId: x.campId,
+                campName: x.Camp.campName,
                 profileImg: x.User.profileImg,
                 nickname: x.User.nickname,
                 reviewImg: x.reviewImg,
@@ -40,7 +41,7 @@ exports.default = {
             throw new Error('코멘트를 입력해주세요');
         const likestring = String(likeStatus)[0];
         if (likeStatus <= 0 || likeStatus > 3 || Number(likestring) <= 0)
-            throw new Error("셋중하나만선택해주세요");
+            throw new Error('셋중하나만선택해주세요');
         return yield reviewRepo_1.default.createReview({
             userId,
             campId,
@@ -93,8 +94,8 @@ exports.default = {
         if (findByauthor.userId !== userId)
             throw new Error('본인만 수정할 수 있습니다');
         //이미지 삭제 로직
-        const findImage = (_a = findByauthor.reviewImg) === null || _a === void 0 ? void 0 : _a.split(",");
-        findImage.forEach(ImageUrl => {
+        const findImage = (_a = findByauthor.reviewImg) === null || _a === void 0 ? void 0 : _a.split(',');
+        findImage.forEach((ImageUrl) => {
             const fileName = ImageUrl.slice(55);
             const fileDir = ImageUrl.slice(48, 54);
             (0, multer_1.deleteFile)(fileDir, fileName);
@@ -103,10 +104,10 @@ exports.default = {
         if (!findByauthor)
             throw new Error('잘못된요청입니다');
         if (userId !== (findByauthor === null || findByauthor === void 0 ? void 0 : findByauthor.userId))
-            throw new Error("권한이없습니다");
+            throw new Error('권한이없습니다');
         const likestring = String(likeStatus)[0];
         if (likeStatus <= 0 || likeStatus > 3 || Number(likestring) <= 0)
-            throw new Error("셋중하나만선택해주세요");
+            throw new Error('셋중하나만선택해주세요');
         const updateReview = yield reviewRepo_1.default.updateReview({
             reviewId,
             userId,
@@ -127,8 +128,8 @@ exports.default = {
         if (findByauthor.userId !== userId)
             throw new Error('본인만 삭제할 수 있습니다');
         //이미지 삭제 로직
-        const findImage = (_b = findByauthor.reviewImg) === null || _b === void 0 ? void 0 : _b.split(",");
-        findImage.forEach(ImageUrl => {
+        const findImage = (_b = findByauthor.reviewImg) === null || _b === void 0 ? void 0 : _b.split(',');
+        findImage.forEach((ImageUrl) => {
             const fileName = ImageUrl.slice(55);
             const fileDir = ImageUrl.slice(48, 54);
             (0, multer_1.deleteFile)(fileDir, fileName);
@@ -143,7 +144,7 @@ exports.default = {
         const myreview = yield reviewRepo_1.default.getMyReview({ userId });
         return myreview.map((x) => {
             return {
-                reviewId: x.userId,
+                reviewId: x.reviewId,
                 userId: x.userId,
                 campId: x.campId,
                 campName: x.Camp.campName,
@@ -163,6 +164,7 @@ exports.default = {
             return {
                 reviewId: x.reviewId,
                 campId: x.campId,
+                campName: x.Camp.campName,
                 profileImg: x.User.profileImg,
                 nickname: x.User.nickname,
                 reviewImg: x.reviewImg,
@@ -212,21 +214,77 @@ exports.default = {
     querysearch: ({ keyword, numOfRows, pageNo }) => __awaiter(void 0, void 0, void 0, function* () {
         // 0 이하의 페이지를 요청하면 pageNo 를 1로
         pageNo <= 0 ? (pageNo = 1) : (pageNo = (pageNo - 1) * numOfRows);
-        const campName = yield reviewRepo_1.default.CampSearch({ keyword, numOfRows, pageNo });
-        const induty = yield reviewRepo_1.default.indutySearch({ keyword, numOfRows, pageNo });
-        const doNm = yield reviewRepo_1.default.doNmSearch({ keyword, numOfRows, pageNo, });
-        const sigunguNm = yield reviewRepo_1.default.sigunguNmSearch({ keyword, numOfRows, pageNo });
-        const address = yield reviewRepo_1.default.addressSearch({ keyword, numOfRows, pageNo });
-        const operPdCl = yield reviewRepo_1.default.operPdClSearch({ keyword, numOfRows, pageNo });
-        const operDeCl = yield reviewRepo_1.default.operDeClSearch({ keyword, numOfRows, pageNo });
-        const animal = yield reviewRepo_1.default.animalSearch({ keyword, numOfRows, pageNo });
-        const sbrsCl = yield reviewRepo_1.default.sbrsClSearch({ keyword, numOfRows, pageNo });
-        const posblFcltyCl = yield reviewRepo_1.default.posblFcltyClSearch({ keyword, numOfRows, pageNo });
-        const manageSttus = yield reviewRepo_1.default.manageSttusSearch({ keyword, numOfRows, pageNo });
-        const themaEnvrnCl = yield reviewRepo_1.default.themaEnvrnClSearch({ keyword, numOfRows, pageNo });
-        const eqpmnLendCl = yield reviewRepo_1.default.eqpmnLendClSearch({ keyword, numOfRows, pageNo });
-        const featureNm = yield reviewRepo_1.default.featureNmSearch({ keyword, numOfRows, pageNo });
-        const clturEvent = yield reviewRepo_1.default.clturEventSearch({ keyword, numOfRows, pageNo });
+        const campName = yield reviewRepo_1.default.CampSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const induty = yield reviewRepo_1.default.indutySearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const doNm = yield reviewRepo_1.default.doNmSearch({ keyword, numOfRows, pageNo });
+        const sigunguNm = yield reviewRepo_1.default.sigunguNmSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const address = yield reviewRepo_1.default.addressSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const operPdCl = yield reviewRepo_1.default.operPdClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const operDeCl = yield reviewRepo_1.default.operDeClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const animal = yield reviewRepo_1.default.animalSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const sbrsCl = yield reviewRepo_1.default.sbrsClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const posblFcltyCl = yield reviewRepo_1.default.posblFcltyClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const manageSttus = yield reviewRepo_1.default.manageSttusSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const themaEnvrnCl = yield reviewRepo_1.default.themaEnvrnClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const eqpmnLendCl = yield reviewRepo_1.default.eqpmnLendClSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const featureNm = yield reviewRepo_1.default.featureNmSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
+        const clturEvent = yield reviewRepo_1.default.clturEventSearch({
+            keyword,
+            numOfRows,
+            pageNo,
+        });
         campName.sort((a, b) => {
             return b.lookUp - a.lookUp;
         });
@@ -251,11 +309,61 @@ exports.default = {
     //캠핑장쿼리검색+sort
     searchSort: ({ keyword, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
         // 0 이하의 페이지를 요청하면 pageNo 를 1로
-        console.log(pageNo, '페이지 넘버입니다 서비스');
-        pageNo <= 0 ? pageNo = 1 : pageNo = (pageNo - 1) * numOfRows;
-        console.log(pageNo, '페이지 넘버입니다 계산 다음 서비스');
-        const searchSort = yield reviewRepo_1.default.searchSort({ keyword, numOfRows, pageNo, sort });
+        pageNo <= 0 ? (pageNo = 1) : (pageNo = (pageNo - 1) * numOfRows);
+        const searchSort = yield reviewRepo_1.default.searchSort({
+            keyword,
+            numOfRows,
+            pageNo,
+            sort,
+        });
         return searchSort;
+    }),
+    //캠핑장쿼리검색+sort+user
+    userSearchSort: ({ keyword, numOfRows, pageNo, sort, userId, }) => __awaiter(void 0, void 0, void 0, function* () {
+        //0 이하의 페이지를 요청하면 pageNo 를 1로
+        pageNo <= 0 ? (pageNo = 1) : (pageNo = (pageNo - 1) * numOfRows);
+        const searchSort = yield reviewRepo_1.default.searchSort({
+            keyword,
+            numOfRows,
+            pageNo,
+            sort,
+        });
+        const Search = searchSort.searchCamp;
+        // console.log(Search)
+        // const campId = Search.map((a:Camps)=>{
+        //   return a.campId
+        // })
+        // console.log(campId)
+        const searchPick = yield reviewRepo_1.default.getsearchPick({ userId });
+        let keys = Object.keys(searchPick);
+        let values = Object.values(searchPick);
+        let vals_arr = [];
+        const mypick = vals_arr.push(values);
+        // console.log(vals_arr,"aaaaaaaaaaaaa")
+        // for(let values in searchPick){
+        //   searchPick
+        //   console.log(searchPick[values])
+        // }
+        // for (searchPick in Object)
+        // let mypick = Object.values(searchPick).map((a)=>{
+        //   return {r}
+        // })
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+        for (const [key, value] of Object.entries(searchPick)) {
+            console.dir(`${key}:${value}`);
+        }
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+        // Object.entries(searchPick).filter(Pick)
+        let status = searchPick.length ? true : false;
+        const searchResult = searchSort.searchCamp;
+        const totalSearchResult = searchSort.total;
+        console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
+        // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
+        const result = searchResult.map((x) => {
+            return Object.assign(Object.assign({}, x), { status });
+        });
+        // return { result, totalSearchResult };
+        return { values };
     }),
 };
 // return getCampName

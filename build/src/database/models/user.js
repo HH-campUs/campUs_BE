@@ -21,6 +21,10 @@ User.init({
         allowNull: true,
         type: sequelize_1.DataTypes.STRING(20),
     },
+    googleId: {
+        allowNull: true,
+        type: sequelize_1.DataTypes.STRING(50),
+    },
     provider: {
         allowNull: true,
         type: sequelize_1.DataTypes.STRING(20),

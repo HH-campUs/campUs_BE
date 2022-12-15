@@ -8,6 +8,6 @@ const sequelize_1 = require("sequelize");
 const config_1 = __importDefault(require("../config/config"));
 const env = process.env.NODE_ENV;
 const { username, password, database, host, dialect } = config_1.default[env];
-const sequelize = new sequelize_1.Sequelize(database, username, password, { dialect: 'mysql' });
+const sequelize = new sequelize_1.Sequelize(database, username, password, { host: host, dialect: 'mysql' });
 exports.sequelize = sequelize;
 exports.default = sequelize;
