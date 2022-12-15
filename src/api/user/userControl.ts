@@ -5,6 +5,7 @@ import {InvalidParamsError} from '../../utils/exceptions'
 import userServ from './userServ';
 import Token from '../../utils/jwt';
 import User from '../../database/models/user';
+import { resizing } from '../../utils/multer';
 
 
 //바로 사용가능 하다 인스턴스 시킬수 없음
@@ -29,7 +30,7 @@ export default {
       const Tokens = await Token.createTokens({email, password });
       res.cookie('accessToken', Tokens.AccessToken); // Access Token을 Cookie에 전달한다.
       res.cookie('refreshToken', Tokens.RefreshToken);
-      res.status(200).json({"message":"로그인을 성공하였습니다!!",Tokens});
+      res.status(200).json({message:"로그인을 성공하였습니다!!",Tokens});
     } catch (err) {
       next(err);
     }
@@ -40,7 +41,7 @@ export default {
       const { email, changePassword }:Users = req.body
       if(!email || !changePassword) throw new InvalidParamsError("입력 값이 없습니다.")
       await userServ.changePW({email, changePassword})
-      res.status(201).send({"message" :"비밀번호 변경 완료!"})
+      res.status(201).send({message :"비밀번호 변경 완료!"})
     }catch(err){
       next(err)
     }
@@ -48,10 +49,14 @@ export default {
   //유저정보 수정
   updateUser: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { location } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
+      const { location, size } = req.file as Express.MulterS3.File //멀터의 타입을 사용함
       const { userId }: Users = res.locals.user;
       const { nickname }: Users = req.body;
+      // if(size >= 1000000){
+      //    resizing(location)
+      // }
       const profileImg = location
+      console.log(req.file as Express.MulterS3.File ,"<=파일정보")
       await userServ.updateUser({nickname, profileImg, userId });
       res.status(201).send({ message: '수정 완료' });
     } catch (err) {

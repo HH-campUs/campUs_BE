@@ -14,6 +14,7 @@ export default {
       const accesstoken = authorization?.split(" ")[1]
       const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
       if(decodeAccessToken == null){
+        console.log("일로지나감")
         res.status(200).json(await campServ.nonGetTopicCamp({topicId, numOfRows, pageNo, sort}));
       }else {
         const userId = decodeAccessToken!.userId;
@@ -49,7 +50,17 @@ export default {
     try {
       const { campId } = req.params;
       await campServ.lookUp(req)
-      res.status(200).json({detailCamp : await campServ.getDetailCamp({campId})})
+      const { authorization } = req.headers;
+
+      // 조회하는 유저 정보에서 userId 구하기
+      const accesstoken = authorization?.split(" ")[1]
+      const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
+      if(decodeAccessToken == null){
+        res.status(200).json(await campServ.nonGetDetailCamp({campId}));
+      }else {
+        const userId = decodeAccessToken!.userId;
+        res.status(200).json(await campServ.getDetailCamp({campId, userId}));
+      }
     } catch (err) {
       next(err);
     }
@@ -58,8 +69,17 @@ export default {
   // most 캠핑장 조회
   getMostCamp: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const mostList = await campServ.getMostCamp()
-      res.status(200).json({ MostList : mostList })
+      const { authorization } = req.headers;
+
+      // 조회하는 유저 정보에서 userId 구하기
+      const accesstoken = authorization?.split(" ")[1]
+      const decodeAccessToken = await jwt.validateAccessToken(accesstoken!);
+      if(decodeAccessToken == null){
+        res.status(200).json({MostList : await campServ.nonGetMostCamp()});
+      }else {
+        const userId = decodeAccessToken!.userId;
+        res.status(200).json({ MostList : await campServ.getMostCamp({userId}) });
+      }
     } catch (err) {
       next(err);
     }
@@ -73,6 +93,29 @@ export default {
       const { memo, date } = req.body;
       await campServ.myTripSave({userId, campId, memo, date});
       res.status(201).json({message : "여행일정 등록"});
+    }catch(err){
+      next(err);
+    }
+  },
+
+  // 내 여행 일정 조회
+  myTripGet: async(req:Request<trip>, res:Response, next:NextFunction)=>{
+    try{
+      const { userId }:trip = res.locals.user; 
+      res.status(201).json({trip : await campServ.myTripGet({userId})});
+    }catch(err){
+      next(err);
+    }
+  },
+
+  // 내 여행 일정 수정
+  myTripUpdate: async(req:Request<trip,{},trip>, res:Response, next:NextFunction)=>{
+    try{
+      const { userId }:trip = res.locals.user;
+      const { tripId } = req.params;
+      const { memo, date } = req.body;
+      await campServ.myTripUpdate({userId, tripId, memo, date});
+      res.status(201).json({message : "여행일정 수정"});
     }catch(err){
       next(err);
     }
