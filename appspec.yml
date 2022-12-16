@@ -16,3 +16,4 @@ hooks:
     - location: scripts/playDeploy.sh
       timeout: 180
       runas: ubuntu
+      

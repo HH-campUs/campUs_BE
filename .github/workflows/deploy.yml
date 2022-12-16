@@ -34,7 +34,7 @@ jobs:
           npm install
 # 어떤 파일을 알집하고 어떤이름으로 할꺼니
       - name: zip file
-        run: zip -r campustest.zip ./build ./scripts ./appspec.yml ./env ./package.json
+        run: zip -r campustest.zip ./build ./scripts ./appspec.yml ./env ./package.json ./tsconfig.json
 # aws연결 할 때 사용자 에세스키와 비밀키 깃헙 액션에 등록하기
       - name: AWS connect
         uses: aws-actions/configure-aws-credentials@v1
@@ -49,8 +49,8 @@ jobs:
 # deploy도 같은 지역으로 만들어야함 아니면 deploy 오류
       - name: deploy with AWS codeDeploy
         run: aws deploy create-deployment
-          --application-name campusautocode
-          --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name campusautocodeGroup
-          --s3-location bucket=campus123,bundleType=zip,key=build/cicdtest.zip
+          --application-name campusA
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name campusA
+          --s3-location bucket=qwerqwer,bundleType=zip,key=build/campustest.zip
       

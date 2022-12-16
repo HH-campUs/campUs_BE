@@ -7,7 +7,7 @@ import { sequelize } from '../../database/models/sequlize';
 import { Model, Op, QueryTypes } from 'sequelize';
 import Topic from '../../database/models/topic';
 
-export default {
+export default { 
   // 주제별 캠핑장 조회
   getTopicCamp: async ({topicId, pageNo, numOfRows, sort}:getCamp) => {
     const topicCamp = `

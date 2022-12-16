@@ -3,6 +3,5 @@ node_modules
 sinario.yaml
 data.csv
 .gitignore
-build
 testreport
 test

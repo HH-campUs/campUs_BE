@@ -118,7 +118,7 @@ export default {
       next(error);
     }
   },
-
+ 
   //새로올라온 리뷰조회
   getNewReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
