@@ -326,66 +326,91 @@ export default {
 
     return searchSort;
   },
+    //캠핑장쿼리검색+sort
+    searchSortold: async ({ keyword, numOfRows, pageNo, sort }: search) => {
+      // 0 이하의 페이지를 요청하면 pageNo 를 1로
+      pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
+      const searchSort = await reviewRepo.searchSortold({
+        keyword,
+        numOfRows,
+        pageNo,
+        sort,
+      });
+  
+      return searchSort;
+    },
   //캠핑장쿼리검색+sort+user
-  userSearchSort: async ({
-    keyword,
-    numOfRows,
-    pageNo,
-    sort,
-    userId,
-  }: search) => {
+  userSearchSort: async ({keyword,numOfRows,pageNo,sort,userId}: search) => {
     //0 이하의 페이지를 요청하면 pageNo 를 1로
     pageNo! <= 0 ? (pageNo = 1) : (pageNo = (pageNo! - 1) * numOfRows!);
-    const searchSort = await reviewRepo.searchSort({
-      keyword,
-      numOfRows,
-      pageNo,
-      sort,
-    });
-    const Search = searchSort.searchCamp;
-    // console.log(Search)
-    // const campId = Search.map((a:Camps)=>{
-    //   return a.campId
-    // })
-    // console.log(campId)
-
-    const searchPick = await reviewRepo.getsearchPick({ userId });
-
-    let keys = Object.keys(searchPick);
-    let values = Object.values(searchPick);
-    let vals_arr = [];
-    const mypick = vals_arr.push(values);
-    // console.log(vals_arr,"aaaaaaaaaaaaa")
-    // for(let values in searchPick){
-    //   searchPick
-    //   console.log(searchPick[values])
-    // }
-    // for (searchPick in Object)
-    // let mypick = Object.values(searchPick).map((a)=>{
-    //   return {r}
-    // })
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-    for (const [key, value] of Object.entries(searchPick)) {
-      console.dir(`${key}:${value}`);
-    }
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-
-    // Object.entries(searchPick).filter(Pick)
-
-    let status = searchPick.length ? true : false;
-    const searchResult = searchSort.searchCamp;
+    const searchSort = await reviewRepo.searchSort({keyword,numOfRows,pageNo,sort});
     const totalSearchResult = searchSort.total;
-    console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
-    // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
+    const searchResult = searchSort.searchCamp;
+    const searchPick = await reviewRepo.getsearchPick({ userId });
+    let isPick:any
 
-    const result = searchResult.map((x) => {
-      return {
-        ...x,
-        status,
-      };
-    });
-    // return { result, totalSearchResult };
-    return { values };
+
+    // console.log(searchResult)
+    // const searchPickResult = searchResult.map((x)=>{
+    //   x.Pick.length?true:false
+    //   return{
+    //     isPick:x.isPick
+    //   }
+    // })
+    // return { searchPickResult };
+
+    // const searchPickFind = await reviewRepo.myPickAllFind({userId})
+    
+    // const myPick = searchPickFind.map((x)=>{
+    //   return  x.campId
+    // })
+    // console.log(myPick,'내가 찜한 검색 campId')
+    
+    // const getSearch = Search.filter(x =>Search.includes(x))
+    // console.log(getSearch,'검색시 조회되는 campId')
+    // // console.log(Search)
+    // // const campId = Search.map((a:Camps)=>{
+    // //   return a.campId
+    // // })
+    // // console.log(campId)
+
+    // const searchPick = await reviewRepo.getsearchPick({ userId });
+
+    // let keys = Object.keys(searchPick);
+    // let values = Object.values(searchPick);
+    // let vals_arr = [];
+    // const mypick = vals_arr.push(values);
+    // // console.log(vals_arr,"aaaaaaaaaaaaa")
+    // // for(let values in searchPick){
+    // //   searchPick
+    // //   console.log(searchPick[values])
+    // // }
+    // // for (searchPick in Object)
+    // // let mypick = Object.values(searchPick).map((a)=>{
+    // //   return {r}
+    // // })
+    // console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+    // for (const [key, value] of Object.entries(searchPick)) {
+    //   console.dir(`${key}:${value}`);
+    // }
+    // console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
+
+    // // Object.entries(searchPick).filter(Pick)
+
+    // let status = searchPick.length ? true : false;
+    // const searchResult = searchSort.searchCamp;
+    // const totalSearchResult = searchSort.total;
+    // console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
+    // // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
+
+    // const result = searchResult.map((x) => {
+    //   return {
+    //     ...x,
+    //     status,
+    //   };
+    // });
+    // // return { result, totalSearchResult };
+    // return { values };
   },
 };
 
