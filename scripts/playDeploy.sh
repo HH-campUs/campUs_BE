@@ -8,4 +8,4 @@ sudo npm install
 
 sudo pm2 kill
 
-sudo pm2 start ./build/server.js
+sudo pm2 start ./build/server.js --watch
