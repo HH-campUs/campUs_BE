@@ -2,7 +2,7 @@ name: campus
 # 어디브랜치에 쓸꺼니?
 on:
   push:
-    branches: [main]
+    branches: [CDTEST]
     
 jobs:
   build:
