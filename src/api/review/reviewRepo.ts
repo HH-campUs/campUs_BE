@@ -110,6 +110,7 @@ export default {
   getMyReview: async ({ userId }: review) => {
     return await Review.findAll({
       where: { userId },
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: Camp,
@@ -169,6 +170,185 @@ export default {
     });
     return { searchCamp, total: total.length };
   },
+  //캠핑장쿼리검색+sort
+  searchSortold: async ({ keyword, numOfRows, pageNo, sort }: search) => {
+   const numofrows = Number(numOfRows);
+   const pageno = Number(pageNo);
+   const searchResult = await Camp.findAll({
+     where: {
+       [Op.or]:[
+         {
+           campName:{
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           induty: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           doNm: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           sigunguNm: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           address: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           operPdCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           operDeCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           animal: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           sbrsCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           posblFcltyCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           manageSttus: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           themaEnvrnCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           eqpmnLendCl: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           featureNm: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+         {
+           clturEvent: {
+             [Op.like]: '%' + keyword + '%',
+           },
+         },
+       ]
+     },
+     order:[[`${sort}`,'DESC']],
+     limit: numofrows,
+     offset: pageno,
+   });
+   const totalSearchResult = await Camp.findAll({
+    where: {
+      [Op.or]:[
+        {
+          campName:{
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          induty: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          doNm: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          sigunguNm: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          address: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          operPdCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          operDeCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          animal: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          sbrsCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          posblFcltyCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          manageSttus: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          themaEnvrnCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          eqpmnLendCl: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          featureNm: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+        {
+          clturEvent: {
+            [Op.like]: '%' + keyword + '%',
+          },
+        },
+      ]
+    },
+    order:[[`${sort}`,'DESC']],
+  });
+   return {searchResult,total:totalSearchResult.length}
+ },
+
+  //유저가 찜한 검색결과
+  myPickAllFind: async ({ userId }: search) => {
+    return await Pick.findAll({
+      where: { userId },
+    });
+  },
 
   //검색결과 북마크
   getsearchPick: async ({ userId }: search) => {
@@ -179,12 +359,12 @@ export default {
           model: Pick,
           as: 'Pick',
           where: { userId },
-          // include:[
-          //   {
-          //     model:Camp,
-          //     as:'Camp',
-          //   }
-          // ]
+          include:[
+            {
+              model:Camp,
+              as:'Camp',
+            }
+          ]
         },
         // {
         //   model: Camp,
