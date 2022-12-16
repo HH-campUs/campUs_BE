@@ -1,7 +1,6 @@
 node_modules
 .env
 sinario.yaml
+testreport
 data.csv
 .gitignore
-testreport
-test
