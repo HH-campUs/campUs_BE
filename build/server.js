@@ -30,6 +30,7 @@ const prod = process.env.NODE_ENV === 'production';
 app.set('port', prod ? process.env.PORT : 3000);
 app.use((0, helmet_1.default)());
 app.use((0, hpp_1.default)());
+console.log("배포용 서버 확인완료")
 // app.use(
 //   cors({
 //     origin: "*",
