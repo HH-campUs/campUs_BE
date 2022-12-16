@@ -1,30 +1,31 @@
 
 
 export interface Camps {
-  body: JSON;
-  facltNm: string;
-  induty: string;
-  doNm: string;
-  sigunguNm: string;
-  addr1: string;
-  mapX: string;
-  mapY: string;
-  operPdCl: string;
-  operDeCl: string;
-  animalCmgCl: string;
-  firstImageUrl: string;
-  homepage: string;
-  sbrsCl: string;
-  posblFcltyCl: string;
-  wtrplCo: string;
-  swrmCo: string;
-  toiletCo: string;
-  manageSttus: string;
-  themaEnvrnCl: string;
-  createdtime: string;
-  eqpmnLendCl: string;
-  featureNm :string;
-  clturEvent:string;
+  body?: JSON;
+  campId?:number;
+  facltNm?: string;
+  induty?: string;
+  doNm?: string;
+  sigunguNm?: string;
+  addr1?: string;
+  mapX?: string;
+  mapY?: string;
+  operPdCl?: string;
+  operDeCl?: string;
+  animalCmgCl?: string;
+  firstImageUrl?: string;
+  homepage?: string;
+  sbrsCl?: string;
+  posblFcltyCl?: string;
+  wtrplCo?: string;
+  swrmCo?: string;
+  toiletCo?: string;
+  manageSttus?: string;
+  themaEnvrnCl?: string;
+  createdtime?: string;
+  eqpmnLendCl?: string;
+  featureNm ?:string;
+  clturEvent?:string;
 }
 
 export interface Date {

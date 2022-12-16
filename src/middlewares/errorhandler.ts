@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { SystemError } from '../interface/Error';
+import { ErrorHandler } from '../interface/Error';
 
-const errorLogger = (
+export const errorLogger = (
   err: Error,
   req: Request,
   res: Response,
@@ -12,8 +12,8 @@ const errorLogger = (
 };
 
 //에러 핸들러를 사용
-const errorHandler = (
-  err: SystemError,
+export const errorHandler = (
+  err: ErrorHandler,
   req: Request,
   res: Response,
   next: NextFunction
@@ -24,6 +24,3 @@ const errorHandler = (
   //해당하는 error메세지를 띄워준다.
   res.json({ errorMessage: err.message });
 };
-//밖으로 내보내준다
-
-export default { errorHandler, errorLogger };

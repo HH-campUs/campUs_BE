@@ -1,10 +1,7 @@
-import { ErrorConstructor } from '../interface/Error';
-
-//오류 선언해준다는 의미
-declare let Error: ErrorConstructor;
 
 //잘못된 매개변수 오류
-export class InvalidParamsError extends Error {
+export class InvalidParamsError extends Error{
+  public status:number
   //에러 메세지와 스테이터스를 생성함 데이터가 잘못 되었을때
   constructor(message: string, status?: number) {
     //생성한 메세지를 상속받아 사용
@@ -15,6 +12,7 @@ export class InvalidParamsError extends Error {
 }
 //유효성 검사 에러
 export class ValidationErrors extends Error {
+  public status:number
   constructor(message: string, status?: number) {
     super(message);
     this.status = status || 412;
@@ -23,6 +21,7 @@ export class ValidationErrors extends Error {
 }
 //인증 에러
 export class Unauthorized extends Error {
+  public status:number
   constructor(message: string, status?: number) {
     super(message);
     this.status = status || 401;

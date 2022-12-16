@@ -1,3 +1,4 @@
+/* 
 import passport from 'passport';
 import dotenv from 'dotenv';
 import { User } from '../database/models/user';
@@ -45,4 +46,4 @@ export default () => {
     )
   );
 };
-
+*/

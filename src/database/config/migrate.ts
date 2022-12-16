@@ -12,7 +12,7 @@ import sequelize from '../models/sequlize';
  referenced by a foreign key constrain 에러로 인한 drop create 테이블 리스트분리
 */
 const dropTable = [Review, Trip, Pick, LookUp, Topic, Camp, User, Weather];
-const createTable = [Camp, Topic, LookUp, User, Review, Trip, Pick, Weather];
+const createTable = [Camp, Topic, User, Review, Trip, Pick, LookUp, Weather];
 console.log(`======Drop & Create Table======`);
 //배열을 반복문을 돌려서 넣어줌
 async function migrate() {
@@ -42,6 +42,6 @@ async function migrate() {
 }
 
 (async () => {
-  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`)
+  await sequelize.query(`DROP TABLE IF EXISTS topicMapping`);
   await migrate();
 })();
