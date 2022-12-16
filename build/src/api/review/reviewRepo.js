@@ -100,6 +100,7 @@ exports.default = {
     getMyReview: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
         return yield review_1.default.findAll({
             where: { userId },
+            order: [['createdAt', 'DESC']],
             include: [
                 {
                     model: camp_1.default,
@@ -156,6 +157,184 @@ exports.default = {
         });
         return { searchCamp, total: total.length };
     }),
+    //캠핑장쿼리검색+sort
+    searchSortold: ({ keyword, numOfRows, pageNo, sort }) => __awaiter(void 0, void 0, void 0, function* () {
+        const numofrows = Number(numOfRows);
+        const pageno = Number(pageNo);
+        const searchResult = yield camp_1.default.findAll({
+            where: {
+                [sequelize_1.Op.or]: [
+                    {
+                        campName: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        induty: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        doNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        sigunguNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        address: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        operPdCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        operDeCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        animal: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        sbrsCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        posblFcltyCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        manageSttus: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        themaEnvrnCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        eqpmnLendCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        featureNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        clturEvent: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                ]
+            },
+            order: [[`${sort}`, 'DESC']],
+            limit: numofrows,
+            offset: pageno,
+        });
+        const totalSearchResult = yield camp_1.default.findAll({
+            where: {
+                [sequelize_1.Op.or]: [
+                    {
+                        campName: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        induty: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        doNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        sigunguNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        address: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        operPdCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        operDeCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        animal: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        sbrsCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        posblFcltyCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        manageSttus: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        themaEnvrnCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        eqpmnLendCl: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        featureNm: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                    {
+                        clturEvent: {
+                            [sequelize_1.Op.like]: '%' + keyword + '%',
+                        },
+                    },
+                ]
+            },
+            order: [[`${sort}`, 'DESC']],
+        });
+        return { searchResult, total: totalSearchResult.length };
+    }),
+    //유저가 찜한 검색결과
+    myPickAllFind: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield pick_1.default.findAll({
+            where: { userId },
+        });
+    }),
     //검색결과 북마크
     getsearchPick: ({ userId }) => __awaiter(void 0, void 0, void 0, function* () {
         return yield user_1.default.findAll({
@@ -165,12 +344,12 @@ exports.default = {
                     model: pick_1.default,
                     as: 'Pick',
                     where: { userId },
-                    // include:[
-                    //   {
-                    //     model:Camp,
-                    //     as:'Camp',
-                    //   }
-                    // ]
+                    include: [
+                        {
+                            model: camp_1.default,
+                            as: 'Camp',
+                        }
+                    ]
                 },
                 // {
                 //   model: Camp,

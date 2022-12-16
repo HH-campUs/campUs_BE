@@ -4,6 +4,8 @@ REPOSITORY=/home/ubuntu/CD/
 
 cd $REPOSITORY
 
-# sudo npm install
+sudo npm install
 
-sudo pm2 start ./build/app.js 
+sudo pm2 kill
+
+sudo pm2 start ./build/server.js --watch

@@ -167,6 +167,20 @@ exports.default = {
             next(error);
         }
     }),
+    //캠핑장쿼리검색+sort
+    searchSortold: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { keyword, numOfRows, pageNo, sort } = req.query;
+            if (!keyword)
+                throw new Error('키워드를 입력해주세요');
+            res
+                .status(200)
+                .json(yield reviewServ_1.default.searchSortold({ keyword, numOfRows, pageNo, sort }));
+        }
+        catch (error) {
+            next(error);
+        }
+    }),
     //캠핑장쿼리검색+sort+user
     userSearchSort: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
