@@ -2,6 +2,7 @@ node_modules
 .env
 sinario.yaml
 data.csv
-test
 .gitignore
 build
+testreport
+test

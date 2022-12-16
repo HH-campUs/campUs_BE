@@ -1,9 +1,9 @@
 #!/bin/bash
-REPOSITORY=/home/ubuntu/autocode/build
+REPOSITORY=/home/ubuntu/CD/
 
 
 cd $REPOSITORY
 
-npm install
+sudo npm install
 
-sudo pm2 start server.js
+sudo pm2 start ./build/server.js

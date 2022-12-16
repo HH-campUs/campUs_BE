@@ -4,7 +4,7 @@ import { Pick } from '../../database/models/pick';
 import { LookUp } from '../../database/models/lookUp';
 import { getCamp, trip, ip, pick } from '../../interface/camp';
 import { sequelize } from '../../database/models/sequlize';
-import { Model, QueryTypes } from 'sequelize';
+import { Model, Op, QueryTypes } from 'sequelize';
 import Topic from '../../database/models/topic';
 
 export default {
@@ -140,7 +140,7 @@ export default {
     console.log(typeof campId)
     const Address = await Camp.findOne({where:{campId}})
     return await Trip.create({
-      userId, campId, memo, address:Address?.address, date
+      userId, campId, memo, address:Address?.address, date:`${date!.toString().slice(0,4)}-${date!.toString().slice(4, 6)}-${date!.toString().slice(6,8)}`
     });
   },
 
@@ -162,8 +162,16 @@ export default {
     //     }
     //   ]
     // });
-    const NOW = new Date();
-    const NOWDate = NOW.toISOString().substring(0, 10)
+    const NOWDate = new Date().toLocaleDateString("kr");
+    // const query = `
+    //   SELECT Trip.tripId, Trip.address, Trip.date,
+    //   Camp.campName, Camp.ImageUrl 
+    //   FROM trip AS Trip 
+    //   INNER JOIN camp AS Camp ON Trip.campId = Camp.campId 
+    //   WHERE Trip.userId = $userId AND CAST(Trip.date AS DATE) >= CAST($NOWDate AS DATE)
+    //   ORDER BY ABS(DATEDIFF( $NOWDate, date ))
+    //   LIMIT 1;
+    // `
     const query = `
       SELECT Trip.tripId, Trip.address, Trip.date,
       Camp.campName, Camp.ImageUrl 
@@ -182,6 +190,16 @@ export default {
 
   // 내 여행 일정 날짜 구하기
   myTripDate: async({userId}:trip)=>{
+    // const tripDate = new Date().toLocaleDateString("kr");
+    // console.log(tripDate,'레포 지금 시간')
+    // const min = await Trip.findOne({where:{
+    //   date : {[Op.gte]: new Date(`${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`)}
+    // }})
+    // console.log(min,'민민민민민민민민민')
+    // return await Trip.findOne({where:
+    //   {userId, date:{[Op.gte]: `${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`}}, 
+    //   attributes:['date']
+    // })
     const tripDate = await Trip.min('date')
     return await Trip.findOne({where:{userId, date:tripDate}, attributes:['date']})
   },
@@ -189,7 +207,7 @@ export default {
   // 내 여행 일정 수정
   myTripUpdate: async({userId, tripId, memo, date}:trip)=>{
     return await Trip.update(
-      {memo, date},
+      {memo, date:`${date!.toString().slice(0,4)}-${date!.toString().slice(4, 6)}-${date!.toString().slice(6,8)}`},
       {where: {userId, tripId}}
     );
   },

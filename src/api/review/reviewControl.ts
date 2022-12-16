@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
+import { resizing } from '../../utils/multer';
 import reviewService from './reviewServ'; //받아온다
 
 export default {
@@ -25,6 +26,9 @@ export default {
 
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
+      //   if(x.size >= 1000000){
+      //     resizing(x.location)
+      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
@@ -65,6 +69,9 @@ export default {
       const { userId }: review = res.locals.user;
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
+      //   if(x.size >= 1000000){
+      //     resizing(x.location)
+      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');

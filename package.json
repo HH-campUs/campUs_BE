@@ -16,12 +16,14 @@
     "migrateJs": "node ./build/src/database/config/migrate.js",
     "dataJs": "node ./build/src/database/data.js",
     "mappingJs": "node ./build/src/database/mapping.js",
-    "dev": "nodemon build/server.js"
+    "dev": "nodemon build/server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/artillery": "^1.6.3",
     "@types/aws-sdk": "^2.7.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
@@ -36,7 +38,8 @@
     "@types/nodemailer": "^6.4.6",
     "@types/passport": "^1.0.11",
     "@types/passport-kakao": "^1.0.0",
-    "aws-sdk": "^2.1259.0",
+    "@types/sharp": "^0.31.0",
+    "aws-sdk": "^2.1274.0",
     "axios": "^1.1.3",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
@@ -50,22 +53,29 @@
     "hpp": "^0.2.3",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "moment-timezone": "^0.5.40",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^3.0.1",
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",
-    "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",
     "sequelize": "^6.25.5",
     "sequelize-cli": "^6.5.2",
+    "sharp": "^0.31.2",
     "typescipt": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@jest/globals": "^29.3.1",
     "@types/validator": "^13.7.10",
     "artillery": "^2.0.0-27",
+    "babel-jest": "^29.3.1",
     "nodemon": "^2.0.20",
     "prettier": "2.7.1",
+    "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
   }
 }

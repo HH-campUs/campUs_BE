@@ -8,6 +8,7 @@ export class User extends Model {
   //? 조회 후 사용 되어질 요소들의 타입명시 설정이 되어 있지 않으면 조회시 또는 조회 후 데이터 타입체크에서 오류
   public readonly userId!: number;
   public kakaoId!: string;
+  public googleId!: string;
   public provider!: string;
   public profileImg!: string;
   public email!: string;
@@ -32,6 +33,10 @@ User.init(
     kakaoId: {
       allowNull: true,
       type: DataTypes.STRING(20),
+    },
+    googleId: {
+      allowNull: true,
+      type: DataTypes.STRING(50),
     },
     provider: {
       allowNull: true,

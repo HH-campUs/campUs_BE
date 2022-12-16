@@ -13,6 +13,7 @@ class options implements Options {
 const createDBOptions = new options();
 createDBOptions.username = process.env.DB_USER || 'root';
 createDBOptions.password = process.env.DB_PASSWORD || 'your password';
+createDBOptions.host = process.env.DB_HOST!;
 createDBOptions.dialect = 'mysql';
 createDBOptions.host = process.env.DB_HOST!;
 
