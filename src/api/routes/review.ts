@@ -14,6 +14,8 @@ reviewrouter.get('/querysearch', reviewController.querysearch);
 
 //캠핑장쿼리검색+sort
 reviewrouter.get('/searchSort', reviewController.searchSort);
+//캠핑장쿼리검색+sort+예전거
+reviewrouter.get('/searchSortold', reviewController.searchSortold);
 //캠핑장쿼리검색+sort+회원
 reviewrouter.get('/userSearchSort', authmiddleware, reviewController.userSearchSort);
 

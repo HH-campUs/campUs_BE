@@ -15,6 +15,8 @@ createDBOptions.username = process.env.DB_USER || 'root';
 createDBOptions.password = process.env.DB_PASSWORD || 'your password';
 createDBOptions.host = process.env.DB_HOST!;
 createDBOptions.dialect = 'mysql';
+createDBOptions.host = process.env.DB_HOST!;
+
 //DB_NAME 없을시 new DateBase 생성
 let db_name = process.env.DB_NAME || 'new DataBase';
 //시퀄라이즈 생성 메서드
