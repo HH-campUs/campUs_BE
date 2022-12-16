@@ -89,7 +89,7 @@ export default {
         {
           model: Trip,
           as: 'Trip',
-          attributes: ['date','memo'],
+          attributes: ['date','memo','tripId'],
           include: [
             {
               model: Camp,
