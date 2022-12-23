@@ -36,7 +36,7 @@ export default {
   nearCamp: async ({campX,campY}:coordinate) => {
     const query = `SELECT camp.*,
     ( 6371 * acos( cos( radians( $campX ) ) * cos( radians( camp.X) ) * cos( radians( camp.Y ) - 
-    radians($campY) ) + sin( radians( $campX) ) * sin( radians( camp.X ) ) ) )as distance
+    radians($campY) ) + sin( radians( $campX ) ) * sin( radians( camp.X ) ) ) )as distance
     FROM camp HAVING distance < 30 ORDER BY distance LIMIT 0,2`
     return await sequelize.query(query, {bind:{campX,campY},type: QueryTypes.SELECT})
    },

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { review } from '../../interface/review';
 import { search } from '../../interface/review';
-import { resizing } from '../../utils/multer';
 import reviewService from './reviewServ'; //받아온다
 
 export default {
@@ -26,9 +25,6 @@ export default {
 
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
-      //   if(x.size >= 1000000){
-      //     resizing(x.location)
-      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
@@ -45,21 +41,6 @@ export default {
       next(error);
     }
   },
-  // //리뷰작성시 캠핑장 좋아요
-  // updateCampLike: async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { userId }: review = res.locals.user;
-  //     const { reviewId }: review = req.params;
-
-  //     const camplike = await reviewService.updateCampLike({
-  //       userId,
-  //       reviewId,
-  //     });
-  //     res.status(201).json(camplike);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
 
   //리뷰수정
   updateReview: async (req: Request, res: Response, next: NextFunction) => {
@@ -69,9 +50,6 @@ export default {
       const { userId }: review = res.locals.user;
       const files = req.files as Express.MulterS3.File[]; //파일을 배열로 받음
       const reviewImgs = files.map((x) => {
-      //   if(x.size >= 1000000){
-      //     resizing(x.location)
-      //  }
         return x.location;
       });
       const reviewImg = reviewImgs.join(',');
@@ -95,8 +73,7 @@ export default {
     try {
       const { campId, reviewId }: review = req.params;
       const { userId }: review = res.locals.user;
-      const findreview = await reviewService.findReviewAuthor({ reviewId });
-
+      await reviewService.findReviewAuthor({ reviewId });
       await reviewService.deleteReview({ campId, reviewId, userId });
       res.status(200).json({ massage: '리뷰삭제완료' });
     } catch (error) {
@@ -108,8 +85,6 @@ export default {
   getMyReview: async (req: Request, res: Response, next: NextFunction) => {
     try {
       // 만약에 다른사람 리뷰 볼수 있을 때
-      // const { userId }: review = req.params;
-
       const { userId }: review = res.locals.user;
       const myreview = await reviewService.getMyReview({ userId });
 
@@ -130,18 +105,6 @@ export default {
     }
   },
 
-  // //캠핑장검색
-  // search: async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { keyword }: review = req.body;
-  //     const result = await reviewService.search({ keyword });
-  //     if (!keyword) throw new Error('키워드를 입력해주세요');
-
-  //     return res.status(200).json({ data: result });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
   //캠핑장쿼리검색
   querysearch: async (req: Request, res: Response, next: NextFunction) => {
     try {

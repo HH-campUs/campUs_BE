@@ -6,3 +6,4 @@ data.csv
 build
 testreport
 test
+babel.config.js
