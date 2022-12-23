@@ -1,10 +1,6 @@
 import reviewRepo from './reviewRepo';
-import { review } from '../../interface/review';
-import { Camps } from '../../interface/openApi';
+import { review,search } from '../../interface/review';
 import { deleteFile } from '../../utils/multer';
-import Review from '../../database/models/review';
-import { search } from '../../interface/review';
-import Pick from '../../database/models/pick';
 export default {
   //캠핑장 리뷰조회
   getReview: async ({ campId }: review) => {
@@ -346,101 +342,6 @@ export default {
     const searchSort = await reviewRepo.searchSort({keyword,numOfRows,pageNo,sort});
     const totalSearchResult = searchSort.total;
     const searchResult = searchSort.searchCamp;
-    const searchPick = await reviewRepo.getsearchPick({ userId });
-    let isPick:any
-
-
-    // console.log(searchResult)
-    // const searchPickResult = searchResult.map((x)=>{
-    //   x.Pick.length?true:false
-    //   return{
-    //     isPick:x.isPick
-    //   }
-    // })
-    // return { searchPickResult };
-
-    // const searchPickFind = await reviewRepo.myPickAllFind({userId})
-    
-    // const myPick = searchPickFind.map((x)=>{
-    //   return  x.campId
-    // })
-    // console.log(myPick,'내가 찜한 검색 campId')
-    
-    // const getSearch = Search.filter(x =>Search.includes(x))
-    // console.log(getSearch,'검색시 조회되는 campId')
-    // // console.log(Search)
-    // // const campId = Search.map((a:Camps)=>{
-    // //   return a.campId
-    // // })
-    // // console.log(campId)
-
-    // const searchPick = await reviewRepo.getsearchPick({ userId });
-
-    // let keys = Object.keys(searchPick);
-    // let values = Object.values(searchPick);
-    // let vals_arr = [];
-    // const mypick = vals_arr.push(values);
-    // // console.log(vals_arr,"aaaaaaaaaaaaa")
-    // // for(let values in searchPick){
-    // //   searchPick
-    // //   console.log(searchPick[values])
-    // // }
-    // // for (searchPick in Object)
-    // // let mypick = Object.values(searchPick).map((a)=>{
-    // //   return {r}
-    // // })
-    // console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-    // for (const [key, value] of Object.entries(searchPick)) {
-    //   console.dir(`${key}:${value}`);
-    // }
-    // console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
-
-    // // Object.entries(searchPick).filter(Pick)
-
-    // let status = searchPick.length ? true : false;
-    // const searchResult = searchSort.searchCamp;
-    // const totalSearchResult = searchSort.total;
-    // console.log(searchPick, 'aaaaaaaaaaaaaaaaaaaaaaaa');
-    // // console.log(status,"aaaaaaaaaaaaaaaaaaaaaaaa");
-
-    // const result = searchResult.map((x) => {
-    //   return {
-    //     ...x,
-    //     status,
-    //   };
-    // });
-    // // return { result, totalSearchResult };
-    // return { values };
+    await reviewRepo.getsearchPick({ userId });
   },
 };
-
-// return getCampName
-
-// const getCampName = await reviewRepo.CampSearch({ keyword });
-// const campName = getCampName.map((camp) => {
-//   return {
-//     campId: camp.campId,
-//     campName: camp.campName,
-//     induty: camp.induty,
-//     doNm: camp.doNm,
-//     sigunguNm: camp.sigunguNm,
-//     address: camp.address,
-//     X: camp.X,
-//     Y: camp.Y,
-//     operPdCl: camp.operPdCl,
-//     operDeCl: camp.operDeCl,
-//     animal: camp.animal,
-//     ImageUrl: camp.ImageUrl,
-//     homePage: camp.homePage,
-//     sbrsCl: camp.sbrsCl,
-//     posblFcltyCl: camp.posblFcltyCl,
-//     wtrplCo: camp.wtrplCo,
-//     swrmCo: camp.swrmCo,
-//     toiletCo: camp.toiletCo,
-//     manageSttus: camp.manageSttus,
-//     themaEnvrnCl: camp.themaEnvrnCl,
-//     lookUp: camp.lookUp,
-//     eqpmnLendCl: camp.eqpmnLendCl,
-//     createdtime: camp.createdtime,
-//   };
-// });

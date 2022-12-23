@@ -16,7 +16,6 @@ export default {
      ON topicMapping.campId = Camp.campId
      WHERE topicMapping.topicId =$topicId
     `
-    // console.log(topicId,'topicId다', numOfRows,'numOfRows다', pageNo,'pageNo다')
     console.log(typeof sort,sort ,'sort다')
     const limitNorder = `ORDER BY ${sort} DESC
       LIMIT $numOfRows OFFSET $pageNo;`
@@ -37,18 +36,6 @@ export default {
     return await Topic.findOne({where:{topicId}})
   },
 
-  // camp
-  // getCamp: async({topicId}:getCamp)=>{
-  //   return await Camp.findAll({
-  //     include: [{
-  //       model: Topic,
-  //       through: {
-  //         attributes: ['campId'],
-  //         where: {topicId}
-  //       }
-  //     }]
-  //   })
-  // },
 
   // 지역별 캠핑장 조회
   getByRegionCamp: async ({doNm, numOfRows, pageNo, sort}:getCamp) => {
@@ -151,27 +138,7 @@ export default {
 
   // 내 여행 일정 조회
   myTripGet: async({userId}:trip)=>{
-    // return await Trip.findAll({
-    //   where:{userId, tripId},
-    //   attributes:['address', 'date'],
-    //   include:[
-    //     {
-    //       model: Camp,
-    //       as: 'Camp',
-    //       attributes:['campName', 'ImageUrl']
-    //     }
-    //   ]
-    // });
     const NOWDate = new Date().toLocaleDateString("kr");
-    // const query = `
-    //   SELECT Trip.tripId, Trip.address, Trip.date,
-    //   Camp.campName, Camp.ImageUrl 
-    //   FROM trip AS Trip 
-    //   INNER JOIN camp AS Camp ON Trip.campId = Camp.campId 
-    //   WHERE Trip.userId = $userId AND CAST(Trip.date AS DATE) >= CAST($NOWDate AS DATE)
-    //   ORDER BY ABS(DATEDIFF( $NOWDate, date ))
-    //   LIMIT 1;
-    // `
     const query = `
       SELECT Trip.tripId, Trip.address, Trip.date,
       Camp.campName, Camp.ImageUrl 
@@ -190,16 +157,6 @@ export default {
 
   // 내 여행 일정 날짜 구하기
   myTripDate: async({userId}:trip)=>{
-    // const tripDate = new Date().toLocaleDateString("kr");
-    // console.log(tripDate,'레포 지금 시간')
-    // const min = await Trip.findOne({where:{
-    //   date : {[Op.gte]: new Date(`${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`)}
-    // }})
-    // console.log(min,'민민민민민민민민민')
-    // return await Trip.findOne({where:
-    //   {userId, date:{[Op.gte]: `${tripDate!.toString().slice(0,4)}-${tripDate!.toString().slice(4, 6)}-${tripDate!.toString().slice(6,8)}`}}, 
-    //   attributes:['date']
-    // })
     const tripDate = await Trip.min('date')
     return await Trip.findOne({where:{userId, date:tripDate}, attributes:['date']})
   },

@@ -18,15 +18,7 @@ const prod: boolean = process.env.NODE_ENV === 'production';
 app.set('port', prod ? process.env.PORT : 3000);
 app.use(helmet())
 app.use(hpp())
-
-// app.use(
-//   cors({
-//     origin: "*",
-//     methods: "GET,POST,PUT,DELETE,PATCH",
-//     credentials: true,
-//   })
-//   );
-  
+ 
 const whitelist = [
   "http://localhost:3000",
   process.env.Client_1,

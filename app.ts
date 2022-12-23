@@ -42,7 +42,7 @@ app.use(errorHandler);
 
 app.listen(app.get('port'), async () => {
   console.log(`${app.get('port')}로 실행중`);
-  // createData(); 
+  createData(); 
   await sequelize.authenticate()
     .then(async () => {
       console.log('DB 연결완료');

@@ -366,11 +366,6 @@ export default {
             }
           ]
         },
-        // {
-        //   model: Camp,
-        //   as: 'Camp',
-        //   where: { userId },
-        // },
       ],
     });
   },
